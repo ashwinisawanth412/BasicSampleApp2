@@ -1,12 +1,14 @@
 package dabkick.com.basicsampleapp;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatEditText;
-import android.text.TextUtils;
-import android.widget.Toast;
+import android.view.View;
+import android.widget.RelativeLayout;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -17,6 +19,8 @@ public class SplashScreenActivity extends AppCompatActivity {
 
     @BindView(R.id.done_btn)
     AppCompatButton mDoneBtn;
+    @BindView(R.id.room_btn)
+    AppCompatButton mRoomBtn;
     @BindView(R.id.user_name_edit_text)
     AppCompatEditText mUserNameEditText;
 
@@ -24,30 +28,50 @@ public class SplashScreenActivity extends AppCompatActivity {
 
     private Unbinder unbinder;
 
+    SharedPreferences preferences;
+    SharedPreferences.Editor editor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_splash_screen);
 
         unbinder = ButterKnife.bind(this);
+
+        // 0 - for private mode
+        preferences = getApplicationContext().getSharedPreferences("MyPref", 0);
+        String name = preferences.getString("userName", "");
+        if (name != null && !name.trim().isEmpty()) {
+            //user name is already set
+            launchChatRoom();
+        }
 
     }
 
     @OnClick(R.id.done_btn)
     public void doneClick() {
-        if (!TextUtils.isEmpty(mUserNameEditText.getText())) {
-            mUserName = mUserNameEditText.getText().toString();
-
-            startActivity(new Intent(SplashScreenActivity.this, ChatRoomActivity.class));
-        } else {
-            Toast.makeText(SplashScreenActivity.this, "Enter valid user name", Toast.LENGTH_SHORT).show();
-        }
+        mUserName = mUserNameEditText.getText().toString().trim();
+        editor = preferences.edit();
+        editor.putString("userName", mUserName);
+        editor.commit();
+        launchChatRoom();
     }
+
+    @OnClick(R.id.room_btn)
+    public void roomBtnOnClick() {
+        doneClick();
+    }
+
+    public void launchChatRoom() {
+        Intent intent = new Intent(SplashScreenActivity.this, ChatRoomActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
+
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
         unbinder.unbind();
     }
 }

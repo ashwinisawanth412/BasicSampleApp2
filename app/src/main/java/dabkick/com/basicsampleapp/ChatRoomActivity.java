@@ -20,32 +20,37 @@ import com.dabkick.engine.Public.MessageInfo;
 import com.dabkick.engine.Public.UserInfo;
 import com.dabkick.engine.Public.UserPresenceCallBackListener;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
 public class ChatRoomActivity extends AppCompatActivity {
 
     public static final String roomName = "myRoom";
 
-    private EditText editText;
+    private Unbinder unbinder;
 
-    private RecyclerView recyclerView;
-
-    private Button button;
+    @BindView(R.id.edittext)
+    EditText editText;
+    @BindView(R.id.recycler)
+    RecyclerView recyclerView;
+    @BindView(R.id.button)
+    Button button;
+    @BindView(R.id.user_count)
+    TextView viewById;
 
     DKLiveChat dkLiveChat;
     Adapter adapter;
 
     private LiveChatCallbackListener liveChatCallbackListener;
-
     private UserPresenceCallBackListener userPresenceCallBackListener;
-    private TextView viewById;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_room);
-        editText = findViewById(R.id.edittext);
-        button = findViewById(R.id.button);
-        recyclerView = findViewById(R.id.recycler);
-        viewById = findViewById(R.id.user_count);
+        unbinder = ButterKnife.bind(this);
+
         adapter = new Adapter();
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -54,7 +59,6 @@ public class ChatRoomActivity extends AppCompatActivity {
         dkLiveChat = new DKLiveChat(this, auth, new CallbackListener() {
             @Override
             public void onSuccess(String s, Object... objects) {
-
             }
 
             @Override
@@ -162,5 +166,6 @@ public class ChatRoomActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         dkLiveChat.endLiveChat();
+        unbinder.unbind();
     }
 }
