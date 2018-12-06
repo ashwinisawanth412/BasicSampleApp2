@@ -52,6 +52,8 @@ public class SplashScreenActivity extends AppCompatActivity {
     public void doneClick() {
         mUserName = mUserNameEditText.getText().toString().trim();
         editor = preferences.edit();
+        if(mUserName.isEmpty())
+            mUserName = "anonymous";
         editor.putString("userName", mUserName);
         editor.commit();
         launchChatRoom();

@@ -63,6 +63,8 @@ public class ChatRoomActivity extends AppCompatActivity {
         dkLiveChat = new DKLiveChat(this, auth, new CallbackListener() {
             @Override
             public void onSuccess(String s, Object... objects) {
+                //update name after engine is successfully intialised
+                updateName();
             }
 
             @Override
@@ -71,8 +73,6 @@ public class ChatRoomActivity extends AppCompatActivity {
             }
         });
 
-        updateName();
-        
         liveChatCallbackListener = new LiveChatCallbackListener() {
             @Override
             public void receivedChatMessage(String roomName, MessageInfo message) {
@@ -173,15 +173,10 @@ public class ChatRoomActivity extends AppCompatActivity {
         SharedPreferences preferences = getApplicationContext().getSharedPreferences("MyPref", 0);
         String name = preferences.getString("userName", "");
 
-        //name not set
-        if (name.trim().isEmpty())
-            return;
-
         UserInfo userInfo = new UserInfo();
         userInfo.setName(name);
         userInfo.setProfilePicUrl("");
         userInfo.setAppSpecificUserID("A12345" + UUID.randomUUID().toString());
-
         dkLiveChat.addUserListener.updateUser("", userInfo, new CallbackListener() {
             @Override
             public void onSuccess(String msg, Object... obj) {

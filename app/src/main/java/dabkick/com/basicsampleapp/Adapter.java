@@ -29,8 +29,8 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MessageHolder> {
     @Override
     public void onBindViewHolder(@NonNull MessageHolder messageHolder, int i) {
         String name = messageInfoList.get(i).getUserName();
-
-        if(!TextUtils.isEmpty(name))
+        //dont diplay user name if not set
+        if (name != null && !name.equalsIgnoreCase("anonymous"))
             messageHolder.name.setText(messageInfoList.get(i).getUserName());
         else
             messageHolder.name.setVisibility(View.GONE); //if user name is not set, make it gone
