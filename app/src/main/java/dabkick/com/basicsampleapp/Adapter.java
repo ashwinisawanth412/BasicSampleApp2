@@ -2,6 +2,7 @@ package dabkick.com.basicsampleapp;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,13 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MessageHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull MessageHolder messageHolder, int i) {
+        String name = messageInfoList.get(i).getUserName();
+
+        if(!TextUtils.isEmpty(name))
+            messageHolder.name.setText(messageInfoList.get(i).getUserName());
+        else
+            messageHolder.name.setVisibility(View.GONE); //if user name is not set, make it gone
+
         messageHolder.msg.setText(messageInfoList.get(i).getChatMessage());
     }
 
@@ -36,11 +44,12 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MessageHolder> {
     }
 
     public class MessageHolder extends RecyclerView.ViewHolder {
-        public TextView msg;
+        public TextView msg, name;
 
         public MessageHolder(@NonNull View itemView) {
             super(itemView);
             msg = itemView.findViewById(R.id.message_text_view);
+            name = itemView.findViewById(R.id.user_name_text_view);
         }
     }
 

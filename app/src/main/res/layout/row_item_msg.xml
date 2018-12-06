@@ -13,8 +13,7 @@
         android:padding="8dp"
         android:text="name"
         android:textColor="@color/white"
-        android:textStyle="bold"
-        android:visibility="gone"/>
+        android:textStyle="bold"/>
 
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/message_text_view"

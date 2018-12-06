@@ -1,7 +1,9 @@
 package dabkick.com.basicsampleapp;
 
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,6 +21,8 @@ import com.dabkick.engine.Public.LiveChatCallbackListener;
 import com.dabkick.engine.Public.MessageInfo;
 import com.dabkick.engine.Public.UserInfo;
 import com.dabkick.engine.Public.UserPresenceCallBackListener;
+
+import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -66,6 +70,9 @@ public class ChatRoomActivity extends AppCompatActivity {
 
             }
         });
+
+        updateName();
+        
         liveChatCallbackListener = new LiveChatCallbackListener() {
             @Override
             public void receivedChatMessage(String roomName, MessageInfo message) {
@@ -160,6 +167,30 @@ public class ChatRoomActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Please enter message", Toast.LENGTH_LONG).show();
         }
 
+    }
+
+    public void updateName() {
+        SharedPreferences preferences = getApplicationContext().getSharedPreferences("MyPref", 0);
+        String name = preferences.getString("userName", "");
+
+        //name not set
+        if (name.trim().isEmpty())
+            return;
+
+        UserInfo userInfo = new UserInfo();
+        userInfo.setName(name);
+        userInfo.setProfilePicUrl("");
+        userInfo.setAppSpecificUserID("A12345" + UUID.randomUUID().toString());
+
+        dkLiveChat.addUserListener.updateUser("", userInfo, new CallbackListener() {
+            @Override
+            public void onSuccess(String msg, Object... obj) {
+            }
+
+            @Override
+            public void onError(String msg, Object... obj) {
+            }
+        });
     }
 
     @Override
