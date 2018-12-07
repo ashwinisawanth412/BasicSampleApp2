@@ -36,33 +36,18 @@
             android:hint="@string/enter_user_name_hint"
             android:paddingLeft="10dp" />
 
-        <LinearLayout
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/done_btn"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_below="@+id/user_name_edit_text"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="30dp"
             android:layout_marginRight="16dp"
-            android:orientation="horizontal">
-
-            <android.support.v7.widget.AppCompatButton
-                android:id="@+id/done_btn"
-                android:layout_width="150dp"
-                android:layout_height="50dp"
-                android:background="@drawable/rounded_corner"
-                android:text="done"
-                android:textSize="15sp" />
-
-            <android.support.v7.widget.AppCompatButton
-                android:id="@+id/room_btn"
-                android:layout_width="150dp"
-                android:layout_height="50dp"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="1"
-                android:background="@drawable/rounded_corner"
-                android:text="go to chat room"
-                android:textSize="15sp" />
-        </LinearLayout>
+            android:background="@drawable/rounded_corner"
+            android:text="Go to chat room"
+            android:textSize="15sp" />
 
     </RelativeLayout>
 

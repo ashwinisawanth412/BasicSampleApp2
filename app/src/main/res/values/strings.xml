@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">BasicSampleApp</string>
-    <string name="enter_user_name_hint">Enter your user name</string>
+    <string name="enter_user_name_hint">Enter your user name (optional)</string>
 </resources>

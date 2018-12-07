@@ -2,13 +2,10 @@ package dabkick.com.basicsampleapp;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatEditText;
-import android.view.View;
-import android.widget.RelativeLayout;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -57,11 +54,6 @@ public class SplashScreenActivity extends AppCompatActivity {
         editor.putString("userName", mUserName);
         editor.commit();
         launchChatRoom();
-    }
-
-    @OnClick(R.id.room_btn)
-    public void roomBtnOnClick() {
-        doneClick();
     }
 
     public void launchChatRoom() {
