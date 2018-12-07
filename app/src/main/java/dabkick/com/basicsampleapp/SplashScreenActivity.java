@@ -16,8 +16,6 @@ public class SplashScreenActivity extends AppCompatActivity {
 
     @BindView(R.id.done_btn)
     AppCompatButton mDoneBtn;
-    @BindView(R.id.room_btn)
-    AppCompatButton mRoomBtn;
     @BindView(R.id.user_name_edit_text)
     AppCompatEditText mUserNameEditText;
 
