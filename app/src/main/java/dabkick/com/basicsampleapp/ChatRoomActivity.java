@@ -42,6 +42,8 @@ public class ChatRoomActivity extends AppCompatActivity {
     Button button;
     @BindView(R.id.user_count)
     TextView viewById;
+    @BindView(R.id.app_bar_layout)
+    android.support.v7.widget.Toolbar mToolBar;
 
     DKLiveChat dkLiveChat;
     Adapter adapter;
@@ -54,6 +56,9 @@ public class ChatRoomActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_room);
         unbinder = ButterKnife.bind(this);
+
+        setSupportActionBar(mToolBar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         adapter = new Adapter();
         recyclerView.setAdapter(adapter);

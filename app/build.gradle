@@ -37,4 +37,6 @@ dependencies {
     api 'com.android.support:recyclerview-v7:27.1.1'
     implementation('com.dabkick.engine:engine:1.0.2') { transitive = true; changing = true }
 
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
+
 }
