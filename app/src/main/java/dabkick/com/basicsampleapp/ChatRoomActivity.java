@@ -5,12 +5,14 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +28,7 @@ import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 
 public class ChatRoomActivity extends AppCompatActivity {
@@ -39,7 +42,9 @@ public class ChatRoomActivity extends AppCompatActivity {
     @BindView(R.id.recycler)
     RecyclerView recyclerView;
     @BindView(R.id.button)
-    Button button;
+    AppCompatImageView button;
+    @BindView(R.id.back_arrow)
+    AppCompatImageView backBtnImg;
     @BindView(R.id.user_count)
     TextView viewById;
     @BindView(R.id.app_bar_layout)
@@ -150,6 +155,11 @@ public class ChatRoomActivity extends AppCompatActivity {
                                   }
         );
 
+    }
+
+    @OnClick(R.id.back_arrow)
+    public void backBtnClicked() {
+        onBackPressed();
     }
 
     public void sendMessage(String roomName, final String message) {
