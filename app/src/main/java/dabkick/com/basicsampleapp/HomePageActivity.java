@@ -1,6 +1,9 @@
 package dabkick.com.basicsampleapp;
 
+import android.app.Activity;
+import android.app.FragmentTransaction;
 import android.content.SharedPreferences;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatTextView;
@@ -13,6 +16,7 @@ import com.dabkick.engine.Public.DKLiveChat;
 import com.dabkick.engine.Public.UserInfo;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -44,6 +48,7 @@ public class HomePageActivity extends AppCompatActivity {
         setSupportActionBar(mToolBar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+        //show progress bar
         initEngine();
         initChatRooms();
 
@@ -66,11 +71,13 @@ public class HomePageActivity extends AppCompatActivity {
     }
 
     public void initChatRooms(){
-        ArrayList<String> mRoomList = new ArrayList<String>();
-        for(int i = 0; i < 5; i++)
-            mRoomList.add("Room " + (i+1));
+        List<String> mRoomList = new ArrayList<String>();
+        mRoomList = new ArrayList<String>();
+        for(int i = 0; i < 5; i++){
+            mRoomList.add("Room" + i);
+        }
 
-        mRoomListAdapter = new RoomListAdapter(mRoomList);
+        mRoomListAdapter = new RoomListAdapter(mRoomList, HomePageActivity.this);
         mRoomListView.setAdapter(mRoomListAdapter);
         mRoomListView.setLayoutManager(new LinearLayoutManager(this));
     }
@@ -83,9 +90,11 @@ public class HomePageActivity extends AppCompatActivity {
         userInfo.setName(name);
         userInfo.setProfilePicUrl("");
         userInfo.setAppSpecificUserID("A12345" + UUID.randomUUID().toString());
+
         dkLiveChat.addUserListener.updateUser("", userInfo, new CallbackListener() {
             @Override
             public void onSuccess(String msg, Object... obj) {
+                initChatRooms();
             }
 
             @Override

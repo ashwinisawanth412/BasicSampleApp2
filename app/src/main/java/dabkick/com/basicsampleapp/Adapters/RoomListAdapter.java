@@ -1,11 +1,18 @@
 package dabkick.com.basicsampleapp.Adapters;
 
+import android.app.Activity;
+import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,9 +21,11 @@ import dabkick.com.basicsampleapp.R;
 public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.RoomHolder> {
 
     private List<String> roomInfoList = new ArrayList<>();
+    private Activity context;
 
-    public RoomListAdapter(ArrayList<String> roomList) {
+    public RoomListAdapter(List<String> roomList, Activity activity) {
         this.roomInfoList = roomList;
+        this.context = activity;
     }
 
     @NonNull
@@ -47,6 +56,17 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.RoomHo
         public RoomHolder(@NonNull View itemView) {
             super(itemView);
             roomName = itemView.findViewById(R.id.room_name);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ChatRoomFragment chatRoom = ChatRoomFragment.newInstance(roomName.getText().toString());
+                    android.support.v4.app.FragmentTransaction transaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
+                    transaction.replace(R.id.frag_container, chatRoom);
+                    transaction.addToBackStack(null);
+                    transaction.commit();
+                }
+            });
         }
     }
 
@@ -54,4 +74,5 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.RoomHo
         roomInfoList.add(roomInfo);
         notifyItemInserted(roomInfoList.size() - 1);
     }
+
 }
