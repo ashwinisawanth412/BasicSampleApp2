@@ -1,11 +1,13 @@
 package dabkick.com.basicsampleapp;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatEditText;
+import android.text.TextUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,12 +35,11 @@ public class SplashScreenActivity extends AppCompatActivity {
 
         unbinder = ButterKnife.bind(this);
 
-        // 0 - for private mode
-        preferences = getApplicationContext().getSharedPreferences("MyPref", 0);
+        preferences = getApplicationContext().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
         String name = preferences.getString("userName", "");
         if (name != null && !name.trim().isEmpty()) {
             //user name is already set
-            launchChatRoom();
+            launchHomePage();
         }
 
     }
@@ -47,15 +48,15 @@ public class SplashScreenActivity extends AppCompatActivity {
     public void doneClick() {
         mUserName = mUserNameEditText.getText().toString().trim();
         editor = preferences.edit();
-        if(mUserName.isEmpty())
+        if (TextUtils.isEmpty(mUserName))
             mUserName = "anonymous";
         editor.putString("userName", mUserName);
         editor.commit();
-        launchChatRoom();
+        launchHomePage();
     }
 
-    public void launchChatRoom() {
-        Intent intent = new Intent(SplashScreenActivity.this, ChatRoomActivity.class);
+    public void launchHomePage() {
+        Intent intent = new Intent(SplashScreenActivity.this, HomePageActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
