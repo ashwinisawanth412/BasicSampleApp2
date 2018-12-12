@@ -140,6 +140,8 @@ public class ChatRoomFragment extends Fragment {
     public void sendMessage(String roomName, final String message) {
         if (getActivity().getClass() == HomePageActivity.class) {
             DKLiveChat dkLiveChat = ((HomePageActivity) getActivity()).dkLiveChat;
+            if(dkLiveChat == null)
+                return;
             MessageInfo messageInfo = new MessageInfo();
             if (!TextUtils.isEmpty(message)) {
                 messageInfo.setChatMessage(message);
