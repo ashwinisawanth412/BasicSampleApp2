@@ -118,13 +118,14 @@ public class HomePageActivity extends AppCompatActivity {
 
     @OnClick(R.id.disconnect_text_view)
     public void onClickDisconnect(){
-        //also shud add api to disconnect from firebase
         Intent intent = new Intent(HomePageActivity.this, SplashScreenActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         //clear shared pref
         SharedPreferences preferences = getApplicationContext().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
         preferences.edit().clear().commit();
+
+        //also shud add api to disconnect from firebase
     }
 
     @Override

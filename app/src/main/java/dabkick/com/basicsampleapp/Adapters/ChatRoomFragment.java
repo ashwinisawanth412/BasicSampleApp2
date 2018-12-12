@@ -1,7 +1,5 @@
 package dabkick.com.basicsampleapp.Adapters;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatImageView;
@@ -14,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dabkick.engine.Public.CallbackListener;
@@ -47,6 +44,8 @@ public class ChatRoomFragment extends Fragment {
     AppCompatImageView backBtnImg;
     @BindView(R.id.room_name_text_view)
     AppCompatTextView mRoomTitle;
+    @BindView(R.id.over_flow_icon)
+    AppCompatImageView mOverFlowIcon;
 
     Adapter adapter;
     private LiveChatCallbackListener liveChatCallbackListener;
@@ -58,7 +57,7 @@ public class ChatRoomFragment extends Fragment {
     public static ChatRoomFragment newInstance(String roomName) {
         ChatRoomFragment fragment = new ChatRoomFragment();
         Bundle args = new Bundle();
-        args.putString(roomName, roomName);
+        args.putString("roomName", roomName);
         fragment.setArguments(args);
         return fragment;
     }
@@ -74,9 +73,10 @@ public class ChatRoomFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_chat_room, container, false);
+        View view = inflater.inflate(R.layout.frag_chat_room, container, false);
         unbinder = ButterKnife.bind(this, view);
 
+        Log.d("chatRoom", "roomTitle: " + mRoomName);
         mRoomTitle.setText(mRoomName);
 
         adapter = new Adapter();
