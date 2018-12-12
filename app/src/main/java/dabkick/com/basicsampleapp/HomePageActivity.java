@@ -24,6 +24,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import dabkick.com.basicsampleapp.Adapters.Adapter;
+import dabkick.com.basicsampleapp.Adapters.ChatRoomFragment;
 import dabkick.com.basicsampleapp.Adapters.RoomListAdapter;
 
 public class HomePageActivity extends AppCompatActivity {
@@ -36,7 +37,7 @@ public class HomePageActivity extends AppCompatActivity {
 
     @BindView(R.id.tool_bar_layout) android.support.v7.widget.Toolbar mToolBar;
 
-    DKLiveChat dkLiveChat;
+    public DKLiveChat dkLiveChat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +50,9 @@ public class HomePageActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         //show progress bar
-        initEngine();
-        initChatRooms();
+//        initEngine();
+//        initChatRooms();
+        dummyMethod();
 
     }
 
@@ -101,6 +103,14 @@ public class HomePageActivity extends AppCompatActivity {
             public void onError(String msg, Object... obj) {
             }
         });
+    }
+
+    public void dummyMethod(){
+        ChatRoomFragment chatRoom = ChatRoomFragment.newInstance("myRoom");
+        android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.frag_container, chatRoom);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
 

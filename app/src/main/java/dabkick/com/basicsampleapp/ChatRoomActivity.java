@@ -43,8 +43,6 @@ public class ChatRoomActivity extends AppCompatActivity {
     AppCompatImageView button;
     @BindView(R.id.back_arrow)
     AppCompatImageView backBtnImg;
-    @BindView(R.id.user_count)
-    TextView viewById;
     @BindView(R.id.app_bar_layout)
     android.support.v7.widget.Toolbar mToolBar;
 

@@ -1,11 +1,7 @@
 package dabkick.com.basicsampleapp.Adapters;
 
 import android.app.Activity;
-import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -70,7 +66,7 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.RoomHo
         }
     }
 
-    public void addMessage(String roomInfo) {
+    public void addRoom(String roomInfo) {
         roomInfoList.add(roomInfo);
         notifyItemInserted(roomInfoList.size() - 1);
     }
