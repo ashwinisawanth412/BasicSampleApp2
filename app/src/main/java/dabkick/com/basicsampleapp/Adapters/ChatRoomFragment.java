@@ -131,7 +131,7 @@ public class ChatRoomFragment extends Fragment {
 
     @OnClick(R.id.back_arrow)
     public void backBtnClicked() {
-
+        getActivity().onBackPressed();
     }
 
     public void sendMessage(String roomName, final String message) {
