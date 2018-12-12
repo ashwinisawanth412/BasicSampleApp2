@@ -54,8 +54,7 @@ public class HomePageActivity extends AppCompatActivity {
 
         //show progress bar
 //        initEngine();
-//        initChatRooms();
-        dummyMethod();
+        initChatRooms();
 
     }
 

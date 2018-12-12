@@ -9,9 +9,12 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.PopupMenu;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.dabkick.engine.Public.CallbackListener;
@@ -160,10 +163,34 @@ public class ChatRoomFragment extends Fragment {
         }
     }
 
+    @OnClick(R.id.over_flow_icon)
+    public void onClickOverflowMenu() {
+        PopupMenu popup = new PopupMenu(getActivity(), mOverFlowIcon);
+        popup.getMenuInflater().inflate(R.menu.chat_tool_bar_menu, popup.getMenu());
+
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            public boolean onMenuItemClick(MenuItem item) {
+
+                switch (item.getItemId()) {
+                    case R.id.view_participants:
+
+                        break;
+
+                    case R.id.unsubscribe:
+
+                        break;
+                }
+
+                return true;
+            }
+        });
+        popup.show();//showing popup menu
+    }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if (getActivity().getClass() == HomePageActivity.class &&  ((HomePageActivity) getActivity()).dkLiveChat != null)
+        if (getActivity().getClass() == HomePageActivity.class && ((HomePageActivity) getActivity()).dkLiveChat != null)
             ((HomePageActivity) getActivity()).dkLiveChat.endLiveChat();
         unbinder.unbind();
     }
