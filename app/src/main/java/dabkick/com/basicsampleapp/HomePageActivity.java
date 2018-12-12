@@ -45,14 +45,7 @@ public class HomePageActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         initEngine();
-
-        ArrayList<String> mRoomList = new ArrayList<String>();
-        for(int i = 0; i < 5; i++)
-            mRoomList.add("Room " + (i+1));
-
-        mRoomListAdapter = new RoomListAdapter(mRoomList);
-        mRoomListView.setAdapter(mRoomListAdapter);
-        mRoomListView.setLayoutManager(new LinearLayoutManager(this));
+        initChatRooms();
 
     }
 
@@ -70,6 +63,16 @@ public class HomePageActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    public void initChatRooms(){
+        ArrayList<String> mRoomList = new ArrayList<String>();
+        for(int i = 0; i < 5; i++)
+            mRoomList.add("Room " + (i+1));
+
+        mRoomListAdapter = new RoomListAdapter(mRoomList);
+        mRoomListView.setAdapter(mRoomListAdapter);
+        mRoomListView.setLayoutManager(new LinearLayoutManager(this));
     }
 
     public void updateName() {
