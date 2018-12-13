@@ -12,7 +12,6 @@ import android.support.v7.widget.RecyclerView;
 import com.dabkick.engine.Public.Authentication;
 import com.dabkick.engine.Public.UserInfo;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,7 +19,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-import dabkick.com.basicsampleapp.Adapters.ChatRoomFragment;
 import dabkick.com.basicsampleapp.Adapters.RoomListAdapter;
 
 public class HomePageActivity extends AppCompatActivity {

@@ -12,6 +12,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import dabkick.com.basicsampleapp.ChatRoomFragment;
 import dabkick.com.basicsampleapp.R;
 
 public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.RoomHolder> {

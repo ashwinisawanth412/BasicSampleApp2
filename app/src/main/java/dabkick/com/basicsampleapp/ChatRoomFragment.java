@@ -1,7 +1,8 @@
-package dabkick.com.basicsampleapp.Adapters;
+package dabkick.com.basicsampleapp;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
@@ -23,16 +25,13 @@ import com.dabkick.engine.Public.MessageInfo;
 import com.dabkick.engine.Public.UserInfo;
 import com.dabkick.engine.Public.UserPresenceCallBackListener;
 
-import java.util.Objects;
 import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-import dabkick.com.basicsampleapp.HomePageActivity;
-import dabkick.com.basicsampleapp.R;
-import dabkick.com.basicsampleapp.SplashScreenActivity;
+import dabkick.com.basicsampleapp.Adapters.Adapter;
 
 public class ChatRoomFragment extends Fragment {
 
@@ -52,6 +51,8 @@ public class ChatRoomFragment extends Fragment {
     AppCompatTextView mRoomTitle;
     @BindView(R.id.over_flow_icon)
     AppCompatImageView mOverFlowIcon;
+    @BindView(R.id.view_participants_frag_container)
+    FrameLayout mViewParticipantsFragContainer;
 
     Adapter adapter;
     private LiveChatCallbackListener liveChatCallbackListener;
@@ -214,7 +215,11 @@ public class ChatRoomFragment extends Fragment {
 
                 switch (item.getItemId()) {
                     case R.id.view_participants:
-
+                        ViewParticipantFragment participantFragment = ViewParticipantFragment.newInstance(mRoomName);
+                        android.support.v4.app.FragmentTransaction transaction = ((AppCompatActivity) getActivity()).getSupportFragmentManager().beginTransaction();
+                        transaction.replace(R.id.view_participants_frag_container, participantFragment);
+                        transaction.addToBackStack(null);
+                        transaction.commit();
                         break;
 
                     case R.id.unsubscribe:

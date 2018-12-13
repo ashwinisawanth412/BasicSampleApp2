@@ -15,10 +15,11 @@
 
         <android.support.v7.widget.AppCompatImageView
             android:id="@+id/back_arrow"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_marginLeft="16dp"
-            android:padding="5dp"
+            android:padding="4dp"
+           android:layout_centerVertical="true"
             android:src="@drawable/arrow_back_white_24dp" />
 
         <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -29,6 +30,7 @@
             android:layout_toRightOf="@+id/back_arrow"
             android:src="@drawable/santa_img2"
             app:civ_border_color="@color/white"
+            android:layout_centerVertical="true"
             app:civ_border_width="2dp" />
 
         <android.support.v7.widget.AppCompatTextView
@@ -40,6 +42,7 @@
             android:fontFamily="cursive"
             android:textColor="@color/white"
             android:layout_toLeftOf="@+id/over_flow_icon"
+            android:layout_centerVertical="true"
             android:textSize="30sp"
             android:textStyle="bold"
             android:maxLines="1"
@@ -99,5 +102,11 @@
             android:src="@drawable/send_msg_black_24dp"
             android:text="SEND" />
     </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/view_participants_frag_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
 
 </RelativeLayout>
