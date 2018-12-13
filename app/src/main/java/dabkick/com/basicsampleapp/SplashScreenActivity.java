@@ -9,6 +9,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatEditText;
 import android.text.TextUtils;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 
 import com.dabkick.engine.Public.Authentication;
 import com.dabkick.engine.Public.CallbackListener;
@@ -25,6 +28,10 @@ public class SplashScreenActivity extends AppCompatActivity {
     AppCompatButton mDoneBtn;
     @BindView(R.id.user_name_edit_text)
     AppCompatEditText mUserNameEditText;
+    @BindView(R.id.progressBar)
+    ProgressBar mProgressBar;
+    @BindView(R.id.relativeLayoutProgressbar)
+    RelativeLayout mRelativeLayoutProgressbar;
 
     private String mUserName = "";
 
@@ -78,25 +85,44 @@ public class SplashScreenActivity extends AppCompatActivity {
     @OnClick(R.id.done_btn)
     public void doneClick() {
         mUserName = mUserNameEditText.getText().toString().trim();
+        mRelativeLayoutProgressbar.setVisibility(View.VISIBLE);
+        mProgressBar.setVisibility(View.VISIBLE);
         editor = preferences.edit();
         if (TextUtils.isEmpty(mUserName))
             mUserName = "anonymous";
         editor.putString("userName", mUserName);
         editor.commit();
+        /*mProgressBar.setVisibility(View.VISIBLE);
+
+        new Handler().postDelayed(new Runnable(){
+            @Override
+            public void run() {
+                mProgressBar.setVisibility(View.GONE);
+
+
+            }
+        }, 3000);
+*/
 
         launchHomePage();
     }
 
     public void launchHomePage() {
+
         new Handler().postDelayed(new Runnable(){
             @Override
             public void run() {
+                mProgressBar.setVisibility(View.GONE);
+                mRelativeLayoutProgressbar.setVisibility(View.GONE);
                 Intent intent = new Intent(SplashScreenActivity.this, HomePageActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
 
+
             }
-        }, 3000);
+        }, 2000);
+
+
 
     }
 

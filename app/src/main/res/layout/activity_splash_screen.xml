@@ -7,6 +7,22 @@
     android:background="@color/red"
     tools:context=".SplashScreenActivity">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black_transparent"
+        android:visibility="gone"
+        android:id="@+id/relativeLayoutProgressbar">
+        <ProgressBar
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:visibility="gone"
+            android:id="@+id/progressBar" />
+    </RelativeLayout>
+
     <TextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
