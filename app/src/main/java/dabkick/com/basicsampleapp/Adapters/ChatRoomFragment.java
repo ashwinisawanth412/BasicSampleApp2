@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.PopupMenu;
-import android.widget.Switch;
 import android.widget.Toast;
 
 import com.dabkick.engine.Public.CallbackListener;
@@ -30,6 +29,7 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import dabkick.com.basicsampleapp.HomePageActivity;
 import dabkick.com.basicsampleapp.R;
+import dabkick.com.basicsampleapp.SplashScreenActivity;
 
 public class ChatRoomFragment extends Fragment {
 
@@ -139,7 +139,7 @@ public class ChatRoomFragment extends Fragment {
 
     public void sendMessage(String roomName, final String message) {
         if (getActivity().getClass() == HomePageActivity.class) {
-            DKLiveChat dkLiveChat = ((HomePageActivity) getActivity()).dkLiveChat;
+            DKLiveChat dkLiveChat = SplashScreenActivity.getInstance().dkLiveChat;
             if(dkLiveChat == null)
                 return;
             MessageInfo messageInfo = new MessageInfo();
@@ -192,8 +192,8 @@ public class ChatRoomFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if (getActivity().getClass() == HomePageActivity.class && ((HomePageActivity) getActivity()).dkLiveChat != null)
-            ((HomePageActivity) getActivity()).dkLiveChat.endLiveChat();
+        if (getActivity().getClass() == HomePageActivity.class && SplashScreenActivity.getInstance().dkLiveChat != null)
+            SplashScreenActivity.getInstance().dkLiveChat.endLiveChat();
         unbinder.unbind();
     }
 }
