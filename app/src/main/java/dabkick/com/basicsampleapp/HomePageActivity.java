@@ -44,34 +44,14 @@ public class HomePageActivity extends AppCompatActivity {
         setSupportActionBar(mToolBar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        //show progress bar
-//        initEngine();
+        updateName();
         initChatRooms();
 
     }
 
-    public void initEngine(){
-        Authentication auth = new Authentication("DK09aff676f38011e88a1a06f", "3d8a7db548d5d91447d64d09a37f12");
-        /*dkLiveChat = new DKLiveChat(this, auth, new CallbackListener() {
-            @Override
-            public void onSuccess(String s, Object... objects) {
-                //update name after engine is successfully intialised
-                updateName();
-            }
-
-            @Override
-            public void onError(String s, Object... objects) {
-
-            }
-        });*/
-    }
-
     public void initChatRooms(){
         List<String> mRoomList = new ArrayList<String>();
-        mRoomList = SplashScreenActivity.getInstance().dkLiveChat.chatEventListener.getRoomList();
-        /*for(int i = 0; i < 5; i++){
-            mRoomList.add("Room" + i);
-        }*/
+        mRoomList = SplashScreenActivity.dkLiveChat.chatEventListener.getRoomList();
 
         mRoomListAdapter = new RoomListAdapter(mRoomList, HomePageActivity.this);
         mRoomListView.setAdapter(mRoomListAdapter);
@@ -86,17 +66,6 @@ public class HomePageActivity extends AppCompatActivity {
         userInfo.setName(name);
         userInfo.setProfilePicUrl("");
         userInfo.setAppSpecificUserID("A12345" + UUID.randomUUID().toString());
-
-       /* dkLiveChat.addUserListener.updateUser("", userInfo, new CallbackListener() {
-            @Override
-            public void onSuccess(String msg, Object... obj) {
-                initChatRooms();
-            }
-
-            @Override
-            public void onError(String msg, Object... obj) {
-            }
-        });*/
     }
 
     public void dummyMethod(){
@@ -109,6 +78,7 @@ public class HomePageActivity extends AppCompatActivity {
 
     @OnClick(R.id.disconnect_text_view)
     public void onClickDisconnect(){
+        //clear user details
         Intent intent = new Intent(HomePageActivity.this, SplashScreenActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
@@ -116,12 +86,15 @@ public class HomePageActivity extends AppCompatActivity {
         SharedPreferences preferences = getApplicationContext().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
         preferences.edit().clear().commit();
 
-        //also shud add api to disconnect from firebase
+        //disconnect from firebase
+        SplashScreenActivity.dkLiveChat.endLiveChat();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         mUnbinder.unbind();
+        //disconnect from firebase but retain user details
+        SplashScreenActivity.dkLiveChat.endLiveChat();
     }
 }

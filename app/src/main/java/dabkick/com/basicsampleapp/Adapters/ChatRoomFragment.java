@@ -139,7 +139,7 @@ public class ChatRoomFragment extends Fragment {
 
     public void sendMessage(String roomName, final String message) {
         if (getActivity().getClass() == HomePageActivity.class) {
-            DKLiveChat dkLiveChat = SplashScreenActivity.getInstance().dkLiveChat;
+            DKLiveChat dkLiveChat = SplashScreenActivity.dkLiveChat;
             if(dkLiveChat == null)
                 return;
             MessageInfo messageInfo = new MessageInfo();
@@ -192,8 +192,8 @@ public class ChatRoomFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if (getActivity().getClass() == HomePageActivity.class && SplashScreenActivity.getInstance().dkLiveChat != null)
-            SplashScreenActivity.getInstance().dkLiveChat.endLiveChat();
+        if (getActivity().getClass() == HomePageActivity.class && SplashScreenActivity.dkLiveChat != null)
+            SplashScreenActivity.dkLiveChat.endLiveChat();
         unbinder.unbind();
     }
 }

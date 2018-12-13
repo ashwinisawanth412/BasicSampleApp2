@@ -28,10 +28,8 @@ public class SplashScreenActivity extends AppCompatActivity {
     AppCompatButton mDoneBtn;
     @BindView(R.id.user_name_edit_text)
     AppCompatEditText mUserNameEditText;
-    @BindView(R.id.progressBar)
-    ProgressBar mProgressBar;
-    @BindView(R.id.relativeLayoutProgressbar)
-    RelativeLayout mRelativeLayoutProgressbar;
+    @BindView(R.id.container)
+    RelativeLayout mNameEditTextContainer;
 
     private String mUserName = "";
 
@@ -40,9 +38,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
 
-    public DKLiveChat dkLiveChat;
-
-    private static SplashScreenActivity splashScreenActivity;
+    public static DKLiveChat dkLiveChat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,29 +46,37 @@ public class SplashScreenActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash_screen);
 
         unbinder = ButterKnife.bind(this);
-        splashScreenActivity = this;
-
-        preferences = getApplicationContext().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
-        /*String name = preferences.getString("userName", "");
-        if (name != null && !name.trim().isEmpty()) {
-            //user name is already set
-            launchHomePage();
-        }*/
+        //initialize engine
         initEngine();
 
+        checkUserDetailsUpdated();
+
+
+
     }
 
-    public static SplashScreenActivity getInstance(){
-        return splashScreenActivity;
+    public void checkUserDetailsUpdated(){
+        preferences = getApplicationContext().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
+        String name = preferences.getString("userName", "anonymous");
+
+        if(name.trim().isEmpty() || name.equalsIgnoreCase("anonymous")){
+            //name not entered so display edit text
+        } else {
+            mNameEditTextContainer.setVisibility(View.GONE);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    launchHomePage();
+                }
+            }, 3000);
+        }
     }
 
-    public void initEngine(){
+    public void initEngine() {
         Authentication auth = new Authentication("DK09aff676f38011e88a1a06f", "3d8a7db548d5d91447d64d09a37f12");
         dkLiveChat = new DKLiveChat(this, auth, new CallbackListener() {
             @Override
             public void onSuccess(String s, Object... objects) {
-                //update name after engine is successfully intialised
-//                updateName();
             }
 
             @Override
@@ -85,45 +89,18 @@ public class SplashScreenActivity extends AppCompatActivity {
     @OnClick(R.id.done_btn)
     public void doneClick() {
         mUserName = mUserNameEditText.getText().toString().trim();
-        mRelativeLayoutProgressbar.setVisibility(View.VISIBLE);
-        mProgressBar.setVisibility(View.VISIBLE);
         editor = preferences.edit();
         if (TextUtils.isEmpty(mUserName))
             mUserName = "anonymous";
         editor.putString("userName", mUserName);
         editor.commit();
-        /*mProgressBar.setVisibility(View.VISIBLE);
-
-        new Handler().postDelayed(new Runnable(){
-            @Override
-            public void run() {
-                mProgressBar.setVisibility(View.GONE);
-
-
-            }
-        }, 3000);
-*/
-
         launchHomePage();
     }
 
     public void launchHomePage() {
-
-        new Handler().postDelayed(new Runnable(){
-            @Override
-            public void run() {
-                mProgressBar.setVisibility(View.GONE);
-                mRelativeLayoutProgressbar.setVisibility(View.GONE);
-                Intent intent = new Intent(SplashScreenActivity.this, HomePageActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-
-
-            }
-        }, 2000);
-
-
-
+        Intent intent = new Intent(SplashScreenActivity.this, HomePageActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
 
