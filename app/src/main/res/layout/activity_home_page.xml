@@ -21,7 +21,8 @@
             android:text="Sample App"
             android:textColor="@color/white"
             android:textSize="30sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            />
     </android.support.v7.widget.Toolbar>
 
     <android.support.v7.widget.RecyclerView
@@ -40,7 +41,7 @@
         android:layout_margin="16dp"
         android:background="@drawable/square_background_border"
         android:gravity="center_vertical|center"
-        android:text="@string/disconnect"
+        android:text="@string/end_chat"
         android:textAlignment="gravity"
         android:textColor="@color/colorPrimary" />
 

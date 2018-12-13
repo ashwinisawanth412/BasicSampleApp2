@@ -27,11 +27,14 @@ public class HomePageActivity extends AppCompatActivity {
 
     private Unbinder mUnbinder;
 
-    @BindView(R.id.disconnect_text_view) AppCompatTextView mDisconnect;
-    @BindView(R.id.room_list_view) RecyclerView mRoomListView;
+    @BindView(R.id.disconnect_text_view)
+    AppCompatTextView mDisconnect;
+    @BindView(R.id.room_list_view)
+    RecyclerView mRoomListView;
     RoomListAdapter mRoomListAdapter;
 
-    @BindView(R.id.tool_bar_layout) android.support.v7.widget.Toolbar mToolBar;
+    @BindView(R.id.tool_bar_layout)
+    android.support.v7.widget.Toolbar mToolBar;
 
 
     @Override
@@ -49,13 +52,16 @@ public class HomePageActivity extends AppCompatActivity {
 
     }
 
-    public void initChatRooms(){
-        List<String> mRoomList = new ArrayList<String>();
-        mRoomList = SplashScreenActivity.dkLiveChat.chatEventListener.getRoomList();
+    public void initChatRooms() {
+        try {
+            List<String> mRoomList = SplashScreenActivity.dkLiveChat.chatEventListener.getRoomList();
 
-        mRoomListAdapter = new RoomListAdapter(mRoomList, HomePageActivity.this);
-        mRoomListView.setAdapter(mRoomListAdapter);
-        mRoomListView.setLayoutManager(new LinearLayoutManager(this));
+            mRoomListAdapter = new RoomListAdapter(mRoomList, HomePageActivity.this);
+            mRoomListView.setAdapter(mRoomListAdapter);
+            mRoomListView.setLayoutManager(new LinearLayoutManager(this));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void updateName() {
@@ -68,7 +74,7 @@ public class HomePageActivity extends AppCompatActivity {
         userInfo.setAppSpecificUserID("A12345" + UUID.randomUUID().toString());
     }
 
-    public void dummyMethod(){
+    public void dummyMethod() {
         ChatRoomFragment chatRoom = ChatRoomFragment.newInstance("myRoom");
         android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.frag_container, chatRoom);
@@ -77,7 +83,7 @@ public class HomePageActivity extends AppCompatActivity {
     }
 
     @OnClick(R.id.disconnect_text_view)
-    public void onClickDisconnect(){
+    public void onClickDisconnect() {
         //clear user details
         Intent intent = new Intent(HomePageActivity.this, SplashScreenActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

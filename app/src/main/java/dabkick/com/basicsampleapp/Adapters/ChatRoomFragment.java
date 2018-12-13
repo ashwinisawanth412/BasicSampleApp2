@@ -23,6 +23,9 @@ import com.dabkick.engine.Public.MessageInfo;
 import com.dabkick.engine.Public.UserInfo;
 import com.dabkick.engine.Public.UserPresenceCallBackListener;
 
+import java.util.Objects;
+import java.util.UUID;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -86,6 +89,19 @@ public class ChatRoomFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        if (getActivity().getClass() == HomePageActivity.class) {
+            SplashScreenActivity.dkLiveChat.joinSession(mRoomName, createUserInfo(), new CallbackListener() {
+                @Override
+                public void onSuccess(String msg, Object... obj) {
+                    //call subscribe here
+                }
+
+                @Override
+                public void onError(String msg, Object... obj) {
+
+                }
+            });
+        }
 
         liveChatCallbackListener = new LiveChatCallbackListener() {
             @Override
@@ -120,6 +136,29 @@ public class ChatRoomFragment extends Fragment {
         UserInfo info = new UserInfo();
         info.setName("testuser");
 
+        SplashScreenActivity.dkLiveChat.subscribe(mRoomName, liveChatCallbackListener, userPresenceCallBackListener, new CallbackListener() {
+            @Override
+            public void onSuccess(String msg, Object... obj) {
+                //ashwini, currently not required to set user count
+               /* mUserCount.setText(String.valueOf(((HomepageActivity) getActivity()).mDKLiveChat.getNumberOfUsersLiveNow("", new CallbackListener() {
+                    @Override
+                    public void onSuccess(String msg, Object... obj) {
+
+                    }
+
+                    @Override
+                    public void onError(String msg, Object... obj) {
+
+                    }
+                })));*/
+            }
+
+            @Override
+            public void onError(String msg, Object... obj) {
+
+            }
+        });
+
 
         button.setOnClickListener(new View.OnClickListener() {
                                       @Override
@@ -140,7 +179,7 @@ public class ChatRoomFragment extends Fragment {
     public void sendMessage(String roomName, final String message) {
         if (getActivity().getClass() == HomePageActivity.class) {
             DKLiveChat dkLiveChat = SplashScreenActivity.dkLiveChat;
-            if(dkLiveChat == null)
+            if (dkLiveChat == null)
                 return;
             MessageInfo messageInfo = new MessageInfo();
             if (!TextUtils.isEmpty(message)) {
@@ -179,6 +218,19 @@ public class ChatRoomFragment extends Fragment {
                         break;
 
                     case R.id.unsubscribe:
+                        SplashScreenActivity.dkLiveChat
+                                .unSubscribe(mRoomName, liveChatCallbackListener, userPresenceCallBackListener, new CallbackListener() {
+                                    @Override
+                                    public void onSuccess(String msg, Object... obj) {
+                                        backBtnClicked();
+                                    }
+
+                                    @Override
+                                    public void onError(String msg, Object... obj) {
+
+                                    }
+                                });
+
 
                         break;
                 }
@@ -187,6 +239,13 @@ public class ChatRoomFragment extends Fragment {
             }
         });
         popup.show();//showing popup menu
+    }
+
+    private UserInfo createUserInfo() {
+        UserInfo userInfo = new UserInfo();
+        userInfo.setAppSpecificUserID(UUID.randomUUID().toString());
+        userInfo.setName(SplashScreenActivity.dkLiveChat.getUserName());
+        return userInfo;
     }
 
     @Override
