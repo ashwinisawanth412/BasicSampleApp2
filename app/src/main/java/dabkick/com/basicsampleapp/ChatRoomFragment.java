@@ -1,5 +1,6 @@
 package dabkick.com.basicsampleapp;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -32,6 +33,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import dabkick.com.basicsampleapp.Adapters.Adapter;
+import dabkick.com.basicsampleapp.Model.Room;
 
 public class ChatRoomFragment extends Fragment {
 
@@ -90,6 +92,13 @@ public class ChatRoomFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        //clear unread msg list
+        if (getActivity().getClass() == HomePageActivity.class) {
+            Room room = ((HomePageActivity) getActivity()).mRoomListAdapter.getRoomItem(mRoomName);
+            room.clearUnreadMsgList();
+            ((HomePageActivity) getActivity()).mRoomListAdapter.updateRoom(room);
+        }
+
         if (getActivity().getClass() == HomePageActivity.class) {
             SplashScreenActivity.dkLiveChat.joinSession(mRoomName, createUserInfo(), new CallbackListener() {
                 @Override
@@ -110,7 +119,15 @@ public class ChatRoomFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        adapter.addMessage(message);
+                        SharedPreferences preferences = getActivity().getApplicationContext().getSharedPreferences("MyPref", 0);
+                        String name = preferences.getString("userName", "");
+                        if (roomName.equalsIgnoreCase(mRoomName))
+                            adapter.addMessage(message);
+                        else if(!message.getUserName().equalsIgnoreCase(name)){
+                            Room room = ((HomePageActivity) getActivity()).mRoomListAdapter.getRoomItem(roomName);
+                            room.addUnreadMsg(message);
+                            ((HomePageActivity) getActivity()).mRoomListAdapter.updateRoom(room);
+                        }
                     }
                 });
             }
@@ -256,8 +273,8 @@ public class ChatRoomFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if (getActivity().getClass() == HomePageActivity.class && SplashScreenActivity.dkLiveChat != null)
-            SplashScreenActivity.dkLiveChat.endLiveChat();
+//        if (getActivity().getClass() == HomePageActivity.class && SplashScreenActivity.dkLiveChat != null)
+//            SplashScreenActivity.dkLiveChat.endLiveChat();
         unbinder.unbind();
     }
 }

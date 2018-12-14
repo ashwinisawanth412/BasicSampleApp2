@@ -23,4 +23,17 @@
         android:textSize="20sp"
         android:layout_centerVertical="true"/>
 
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/unread_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="16dp"
+        android:textColor="@color/white"
+        android:background="@drawable/unread_msg_drawable"
+        android:text="99+"
+        android:textStyle="bold"
+        android:textSize="20sp"/>
 </RelativeLayout>

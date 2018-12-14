@@ -8,10 +8,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import com.dabkick.engine.Public.Authentication;
 import com.dabkick.engine.Public.UserInfo;
+import com.dabkick.engine.Public.CallbackListener;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,6 +24,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import dabkick.com.basicsampleapp.Adapters.RoomListAdapter;
+import dabkick.com.basicsampleapp.Model.Room;
 
 public class HomePageActivity extends AppCompatActivity {
 
@@ -33,6 +38,8 @@ public class HomePageActivity extends AppCompatActivity {
 
     @BindView(R.id.tool_bar_layout)
     android.support.v7.widget.Toolbar mToolBar;
+    @BindView(R.id.progressBar)
+    ProgressBar mProgressBar;
 
 
     @Override
@@ -45,6 +52,7 @@ public class HomePageActivity extends AppCompatActivity {
         setSupportActionBar(mToolBar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+        mProgressBar.setVisibility(View.VISIBLE);
         updateName();
         initChatRooms();
 
@@ -52,11 +60,41 @@ public class HomePageActivity extends AppCompatActivity {
 
     public void initChatRooms() {
         try {
-            List<String> mRoomList = SplashScreenActivity.dkLiveChat.chatEventListener.getRoomList();
+            SplashScreenActivity.dkLiveChat.chatRoomListener.getRoomList(new CallbackListener() {
+                @Override
+                public void onSuccess(String msg, Object... obj) {
+                    try {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                mProgressBar.setVisibility(View.GONE);
+                                List<String> list = new ArrayList<>();
+                                list = (List<String>) obj[0];
 
-            mRoomListAdapter = new RoomListAdapter(mRoomList, HomePageActivity.this);
-            mRoomListView.setAdapter(mRoomListAdapter);
-            mRoomListView.setLayoutManager(new LinearLayoutManager(this));
+                                List<Room> mRoomList = new ArrayList<Room>();
+                                for (String roomName : list) {
+                                    Room room = new Room();
+                                    room.setRoomName(roomName);
+                                    mRoomList.add(room);
+                                }
+
+                                mRoomListAdapter = new RoomListAdapter(mRoomList, HomePageActivity.this);
+                                mRoomListView.setAdapter(mRoomListAdapter);
+                                mRoomListView.setLayoutManager(new LinearLayoutManager(HomePageActivity.this));
+                            }
+                        });
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+                @Override
+                public void onError(String msg, Object... obj) {
+                    mProgressBar.setVisibility(View.GONE);
+                }
+            });
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -97,8 +135,9 @@ public class HomePageActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mUnbinder.unbind();
         //disconnect from firebase but retain user details
         SplashScreenActivity.dkLiveChat.endLiveChat();
+
+        mUnbinder.unbind();
     }
 }
