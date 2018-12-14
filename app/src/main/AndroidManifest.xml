@@ -17,7 +17,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".ChatRoomActivity" />
-        <activity android:name=".HomePageActivity"></activity>
+        <activity android:name=".HomePageActivity" />
+        <activity android:name=".BaseActivity"></activity>
     </application>
 
 </manifest>

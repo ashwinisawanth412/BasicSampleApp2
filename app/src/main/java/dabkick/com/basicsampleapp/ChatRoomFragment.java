@@ -116,17 +116,17 @@ public class ChatRoomFragment extends Fragment {
         liveChatCallbackListener = new LiveChatCallbackListener() {
             @Override
             public void receivedChatMessage(String roomName, MessageInfo message) {
-                getActivity().runOnUiThread(new Runnable() {
+                BaseActivity.mCurrentActivity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        SharedPreferences preferences = getActivity().getApplicationContext().getSharedPreferences("MyPref", 0);
+                        SharedPreferences preferences = BaseActivity.mCurrentActivity.getApplicationContext().getSharedPreferences("MyPref", 0);
                         String name = preferences.getString("userName", "");
                         if (roomName.equalsIgnoreCase(mRoomName))
                             adapter.addMessage(message);
-                        else if(!message.getUserName().equalsIgnoreCase(name)){
-                            Room room = ((HomePageActivity) getActivity()).mRoomListAdapter.getRoomItem(roomName);
+                        else if (!message.getUserName().equalsIgnoreCase(name)) {
+                            Room room = ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.getRoomItem(roomName);
                             room.addUnreadMsg(message);
-                            ((HomePageActivity) getActivity()).mRoomListAdapter.updateRoom(room);
+                            ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.updateRoom(room);
                         }
                     }
                 });
@@ -157,18 +157,6 @@ public class ChatRoomFragment extends Fragment {
         SplashScreenActivity.dkLiveChat.subscribe(mRoomName, liveChatCallbackListener, userPresenceCallBackListener, new CallbackListener() {
             @Override
             public void onSuccess(String msg, Object... obj) {
-                //ashwini, currently not required to set user count
-               /* mUserCount.setText(String.valueOf(((HomepageActivity) getActivity()).mDKLiveChat.getNumberOfUsersLiveNow("", new CallbackListener() {
-                    @Override
-                    public void onSuccess(String msg, Object... obj) {
-
-                    }
-
-                    @Override
-                    public void onError(String msg, Object... obj) {
-
-                    }
-                })));*/
             }
 
             @Override
@@ -195,7 +183,7 @@ public class ChatRoomFragment extends Fragment {
     }
 
     public void sendMessage(String roomName, final String message) {
-        if (getActivity().getClass() == HomePageActivity.class) {
+        if (BaseActivity.mCurrentActivity.getClass() == HomePageActivity.class) {
             DKLiveChat dkLiveChat = SplashScreenActivity.dkLiveChat;
             if (dkLiveChat == null)
                 return;
@@ -217,7 +205,7 @@ public class ChatRoomFragment extends Fragment {
                     }
                 });
             } else {
-                Toast.makeText(getActivity(), "Please enter message", Toast.LENGTH_LONG).show();
+                Toast.makeText(BaseActivity.mCurrentActivity, "Please enter message", Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -273,8 +261,7 @@ public class ChatRoomFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-//        if (getActivity().getClass() == HomePageActivity.class && SplashScreenActivity.dkLiveChat != null)
-//            SplashScreenActivity.dkLiveChat.endLiveChat();
+        mRoomName = "";
         unbinder.unbind();
     }
 }

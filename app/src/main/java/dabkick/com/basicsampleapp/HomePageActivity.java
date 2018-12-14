@@ -26,7 +26,7 @@ import butterknife.Unbinder;
 import dabkick.com.basicsampleapp.Adapters.RoomListAdapter;
 import dabkick.com.basicsampleapp.Model.Room;
 
-public class HomePageActivity extends AppCompatActivity {
+public class HomePageActivity extends BaseActivity {
 
     private Unbinder mUnbinder;
 
