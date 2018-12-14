@@ -58,4 +58,9 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MessageHolder> {
         messageInfoList.add(messageInfo);
         notifyItemInserted(messageInfoList.size() - 1);
     }
+
+    public void addAllMessages(List<MessageInfo> messageList){
+        messageInfoList.addAll(messageList);
+        notifyDataSetChanged();
+    }
 }

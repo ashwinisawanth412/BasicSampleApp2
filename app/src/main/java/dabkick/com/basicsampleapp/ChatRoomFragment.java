@@ -2,6 +2,7 @@ package dabkick.com.basicsampleapp;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatImageView;
@@ -33,7 +34,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import dabkick.com.basicsampleapp.Adapters.Adapter;
-import dabkick.com.basicsampleapp.Model.Room;
 
 public class ChatRoomFragment extends Fragment {
 
@@ -93,11 +93,11 @@ public class ChatRoomFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         //clear unread msg list
-        if (getActivity().getClass() == HomePageActivity.class) {
+        /*if (getActivity().getClass() == HomePageActivity.class) {
             Room room = ((HomePageActivity) getActivity()).mRoomListAdapter.getRoomItem(mRoomName);
             room.clearUnreadMsgList();
             ((HomePageActivity) getActivity()).mRoomListAdapter.updateRoom(room);
-        }
+        }*/
 
         if (getActivity().getClass() == HomePageActivity.class) {
             SplashScreenActivity.dkLiveChat.joinSession(mRoomName, createUserInfo(), new CallbackListener() {
@@ -113,6 +113,10 @@ public class ChatRoomFragment extends Fragment {
             });
         }
 
+        if(SplashScreenActivity.dkLiveChat.isSubscribed(mRoomName)) {
+            adapter.addAllMessages(SplashScreenActivity.dkLiveChat.getAllMessageList(mRoomName));
+        }
+
         liveChatCallbackListener = new LiveChatCallbackListener() {
             @Override
             public void receivedChatMessage(String roomName, MessageInfo message) {
@@ -123,11 +127,11 @@ public class ChatRoomFragment extends Fragment {
                         String name = preferences.getString("userName", "");
                         if (roomName.equalsIgnoreCase(mRoomName))
                             adapter.addMessage(message);
-                        else if (!message.getUserName().equalsIgnoreCase(name)) {
+                        /*else if (!message.getUserName().equalsIgnoreCase(name)) {
                             Room room = ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.getRoomItem(roomName);
                             room.addUnreadMsg(message);
                             ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.updateRoom(room);
-                        }
+                        }*/
                     }
                 });
             }
@@ -151,19 +155,26 @@ public class ChatRoomFragment extends Fragment {
             }
         };
 
-        UserInfo info = new UserInfo();
-        info.setName("testuser");
+        if(!SplashScreenActivity.dkLiveChat.isSubscribed(mRoomName)) {
+            SplashScreenActivity.dkLiveChat.subscribe(mRoomName, liveChatCallbackListener, userPresenceCallBackListener, new CallbackListener() {
+                @Override
+                public void onSuccess(String msg, Object... obj) {
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Log.d("TAGGOW", "onSuccess:inside subscribe " + SplashScreenActivity.dkLiveChat.chatEventListener.getChatMessages(mRoomName).size());
+                            adapter.addAllMessages(SplashScreenActivity.dkLiveChat.chatEventListener.getChatMessages(mRoomName));
+                        }
+                    }, 3000);
+                }
 
-        SplashScreenActivity.dkLiveChat.subscribe(mRoomName, liveChatCallbackListener, userPresenceCallBackListener, new CallbackListener() {
-            @Override
-            public void onSuccess(String msg, Object... obj) {
-            }
+                @Override
+                public void onError(String msg, Object... obj) {
 
-            @Override
-            public void onError(String msg, Object... obj) {
 
-            }
-        });
+                }
+            });
+        }
 
 
         button.setOnClickListener(new View.OnClickListener() {

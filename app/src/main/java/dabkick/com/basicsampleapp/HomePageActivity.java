@@ -4,16 +4,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ProgressBar;
 
-import com.dabkick.engine.Public.Authentication;
-import com.dabkick.engine.Public.UserInfo;
 import com.dabkick.engine.Public.CallbackListener;
+import com.dabkick.engine.Public.UserInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -108,6 +106,18 @@ public class HomePageActivity extends BaseActivity {
         userInfo.setName(name);
         userInfo.setProfilePicUrl("");
         userInfo.setAppSpecificUserID("A12345" + UUID.randomUUID().toString());
+
+        SplashScreenActivity.dkLiveChat.updateName(userInfo, new CallbackListener() {
+            @Override
+            public void onSuccess(String s, Object... objects) {
+
+            }
+
+            @Override
+            public void onError(String s, Object... objects) {
+
+            }
+        });
     }
 
     public void dummyMethod() {

@@ -6,21 +6,23 @@ import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.dabkick.engine.Public.CallbackListener;
+import com.dabkick.engine.Public.UserInfo;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import dabkick.com.basicsampleapp.Adapters.ParticipantListAdapter;
-import  com.dabkick.engine.Public.UserInfo;
-import com.dabkick.engine.Public.CallbackListener;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ViewParticipantFragment extends Fragment {
 
@@ -68,6 +70,8 @@ public class ViewParticipantFragment extends Fragment {
         participantList = SplashScreenActivity.dkLiveChat.getUsers(mRoomName, new CallbackListener() {
             @Override
             public void onSuccess(String s, Object... objects) {
+                Log.d("TAGGOW", "onSuccess: ");
+                participantList = (List<UserInfo>) objects[0];
                 setAdapter();
                 mProgressBar.setVisibility(View.GONE);
             }
