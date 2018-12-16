@@ -18,7 +18,6 @@ public class PreferenceHandler {
 
     public static void clearAll(Context context) {
         SharedPreferences preferences = context.getApplicationContext().getSharedPreferences("SampleAppPref", Context.MODE_PRIVATE);
-        preferences.edit().clear();
-        preferences.edit().commit();
+        preferences.edit().clear().commit();
     }
 }
