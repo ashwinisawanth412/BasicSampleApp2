@@ -35,9 +35,6 @@ public class SplashScreenActivity extends BaseActivity {
 
     private Unbinder unbinder;
 
-    SharedPreferences preferences;
-    SharedPreferences.Editor editor;
-
     public static DKLiveChat dkLiveChat;
 
     @Override
@@ -56,8 +53,7 @@ public class SplashScreenActivity extends BaseActivity {
     }
 
     public void checkUserDetailsUpdated(){
-        preferences = getApplicationContext().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
-        String name = preferences.getString("userName", "anonymous");
+        String name = PreferenceHandler.getUserName(SplashScreenActivity.this);
 
         if(name.trim().isEmpty() || name.equalsIgnoreCase("anonymous")){
             //name not entered so display edit text
@@ -89,11 +85,10 @@ public class SplashScreenActivity extends BaseActivity {
     @OnClick(R.id.done_btn)
     public void doneClick() {
         mUserName = mUserNameEditText.getText().toString().trim();
-        editor = preferences.edit();
         if (TextUtils.isEmpty(mUserName))
             mUserName = "anonymous";
-        editor.putString("userName", mUserName);
-        editor.commit();
+
+        PreferenceHandler.setUserName(SplashScreenActivity.this, mUserName);
         launchHomePage();
     }
 

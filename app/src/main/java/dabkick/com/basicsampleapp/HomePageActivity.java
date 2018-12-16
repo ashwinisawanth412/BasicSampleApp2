@@ -99,9 +99,7 @@ public class HomePageActivity extends BaseActivity {
     }
 
     public void updateName() {
-        SharedPreferences preferences = getApplicationContext().getSharedPreferences("MyPref", 0);
-        String name = preferences.getString("userName", "");
-
+        String name = PreferenceHandler.getUserName(HomePageActivity.this);
         UserInfo userInfo = new UserInfo();
         userInfo.setName(name);
         userInfo.setProfilePicUrl("");
