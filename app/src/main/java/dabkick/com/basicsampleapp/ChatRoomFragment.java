@@ -103,18 +103,27 @@ public class ChatRoomFragment extends Fragment {
             ((HomePageActivity) getActivity()).mRoomListAdapter.updateRoom(room);
         }
 
-        if (getActivity().getClass() == HomePageActivity.class) {
-            SplashScreenActivity.dkLiveChat.joinSession(mRoomName, createUserInfo(), new CallbackListener() {
-                @Override
-                public void onSuccess(String msg, Object... obj) {
-                    //call subscribe here
-                }
+        try {
+            if (getActivity().getClass() == HomePageActivity.class) {
+                SplashScreenActivity.dkLiveChat.joinSession(mRoomName, createUserInfo(), new CallbackListener() {
+                    @Override
+                    public void onSuccess(String msg, Object... obj) {
+                        //call subscribe here
+                    }
 
-                @Override
-                public void onError(String msg, Object... obj) {
+                    @Override
+                    public void onError(String msg, Object... obj) {
 
-                }
-            });
+                    }
+                });
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if(SplashScreenActivity.dkLiveChat.isSubscribed(mRoomName)) {
+            adapter.addAllMessages(SplashScreenActivity.dkLiveChat.getAllMessageList(mRoomName));
+            recyclerView.scrollToPosition(adapter.getItemCount() - 1);
         }
 
         liveChatCallbackListener = new LiveChatCallbackListener() {
@@ -124,9 +133,10 @@ public class ChatRoomFragment extends Fragment {
                     @Override
                     public void run() {
                         Log.d("ChatRoomFrag", "receivedChatMsg: roomName: " + roomName + " msg: " + message.getChatMessage());
-                        String name = PreferenceHandler.getUserName(getActivity());
+                        String name = PreferenceHandler.getUserName(BaseActivity.mCurrentActivity);
                         if (roomName.equalsIgnoreCase(mRoomName)) {
                             adapter.addMessage(message);
+                            recyclerView.scrollToPosition(adapter.getItemCount() - 1);
                         } else if (!message.getUserName().equalsIgnoreCase(name)) {
                             //i am not in the same room as the msg received and am not the sender of the msg. So add it as unread msg
                             Room room = ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.getRoomItem(roomName);
@@ -167,6 +177,7 @@ public class ChatRoomFragment extends Fragment {
                         public void run() {
                             mProgressBar.setVisibility(View.GONE);
                             adapter.addAllMessages(SplashScreenActivity.dkLiveChat.chatEventListener.getChatMessages(mRoomName));
+                            recyclerView.scrollToPosition(adapter.getItemCount() - 1);
                         }
                     });
                 }
@@ -178,6 +189,7 @@ public class ChatRoomFragment extends Fragment {
             });
         } else {
             adapter.addAllMessages(SplashScreenActivity.dkLiveChat.getAllMessageList(mRoomName));
+            recyclerView.scrollToPosition(adapter.getItemCount() - 1);
         }
 
 
@@ -185,6 +197,7 @@ public class ChatRoomFragment extends Fragment {
                                       @Override
                                       public void onClick(View view) {
                                           sendMessage(mRoomName, editText.getText().toString());
+                                          recyclerView.scrollToPosition(adapter.getItemCount() - 1);
                                       }
                                   }
         );
@@ -271,13 +284,13 @@ public class ChatRoomFragment extends Fragment {
         UserInfo userInfo = new UserInfo();
         userInfo.setAppSpecificUserID(UUID.randomUUID().toString());
         userInfo.setName(PreferenceHandler.getUserName(getActivity()));
-        Log.d("ChatRoomFragment", "creating user info: name: " + SplashScreenActivity.dkLiveChat.getUserName());
         return userInfo;
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        mRoomName = "";
         unbinder.unbind();
     }
 }

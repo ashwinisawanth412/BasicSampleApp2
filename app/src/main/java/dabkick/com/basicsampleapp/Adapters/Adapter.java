@@ -63,4 +63,5 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MessageHolder> {
         messageInfoList.addAll(messageList);
         notifyDataSetChanged();
     }
+
 }
