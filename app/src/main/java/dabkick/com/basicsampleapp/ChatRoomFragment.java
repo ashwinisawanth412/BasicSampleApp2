@@ -99,7 +99,7 @@ public class ChatRoomFragment extends Fragment {
             Room room = ((HomePageActivity) getActivity()).mRoomListAdapter.getRoomItem(mRoomName);
             if (room != null) {
                 room.clearUnreadMsgList();
-                ((HomePageActivity) getActivity()).mRoomListAdapter.updateRoomUponNewMsg(room);
+                ((HomePageActivity) getActivity()).mRoomListAdapter.notifyDataSetChanged();
             }
         }
 
