@@ -31,10 +31,10 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MessageHolder> {
     public void onBindViewHolder(@NonNull MessageHolder messageHolder, int i) {
         String name = messageInfoList.get(i).getUserName();
         //dont diplay user name if not set
-        if (name != null && !name.equalsIgnoreCase("anonymous"))
+        if (name != null && !name.trim().isEmpty())
             messageHolder.name.setText(messageInfoList.get(i).getUserName());
         else
-            messageHolder.name.setVisibility(View.GONE); //if user name is not set, make it gone
+            messageHolder.name.setText("anonymous"); //if user name is not set, make it gone
 
         messageHolder.msg.setText(messageInfoList.get(i).getChatMessage());
     }
