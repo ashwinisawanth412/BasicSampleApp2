@@ -106,9 +106,18 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.RoomHo
 
     public void updateRoomUponNewMsg(Room room) {
         if (roomInfoList.contains(room)) {
-            //move room to top and rest of it below it
-            Collections.swap(roomInfoList, roomInfoList.indexOf(room), 0);
+            if(room.getUnreadMsgCount() > 0) {
+                Collections.swap(roomInfoList, roomInfoList.indexOf(room), 0);
+                notifyDataSetChanged();
+            }
+        }
+    }
+
+    public void updateRoomUponUnsubscribe(Room room) {
+        if (roomInfoList.contains(room)) {
+            Collections.swap(roomInfoList, roomInfoList.indexOf(room), roomInfoList.size() - 1);
             notifyDataSetChanged();
         }
+
     }
 }

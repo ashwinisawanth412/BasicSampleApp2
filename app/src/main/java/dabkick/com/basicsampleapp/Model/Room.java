@@ -8,6 +8,7 @@ import com.dabkick.engine.Public.MessageInfo;
 public class Room {
     private String roomName;
     List<MessageInfo> unreadMsgList;
+    Boolean isSubscribed;
 
     public Room() {
         unreadMsgList = new ArrayList<MessageInfo>();
@@ -37,4 +38,11 @@ public class Room {
         return this.unreadMsgList.size();
     }
 
+    public Boolean getSubscribed() {
+        return isSubscribed;
+    }
+
+    public void setSubscribed(Boolean subscribed) {
+        isSubscribed = subscribed;
+    }
 }

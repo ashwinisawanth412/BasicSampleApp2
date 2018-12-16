@@ -97,7 +97,7 @@ public class ChatRoomFragment extends Fragment {
         //clear unread msg list
         if (BaseActivity.mCurrentActivity.getClass() == HomePageActivity.class) {
             Room room = ((HomePageActivity) getActivity()).mRoomListAdapter.getRoomItem(mRoomName);
-            if(room != null) {
+            if (room != null) {
                 room.clearUnreadMsgList();
                 ((HomePageActivity) getActivity()).mRoomListAdapter.updateRoomUponNewMsg(room);
             }
@@ -175,15 +175,18 @@ public class ChatRoomFragment extends Fragment {
             SplashScreenActivity.dkLiveChat.subscribe(mRoomName, liveChatCallbackListener, userPresenceCallBackListener, new CallbackListener() {
                 @Override
                 public void onSuccess(String msg, Object... obj) {
-                    mProgressBar.setVisibility(View.GONE);
-                    BaseActivity.mCurrentActivity.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            mProgressBar.setVisibility(View.GONE);
-                            adapter.addAllMessages(SplashScreenActivity.dkLiveChat.chatEventListener.getChatMessages(mRoomName));
-                            recyclerView.scrollToPosition(adapter.getItemCount() - 1);
-                        }
-                    });
+                    try {
+                        mProgressBar.setVisibility(View.GONE);
+                        BaseActivity.mCurrentActivity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                mProgressBar.setVisibility(View.GONE);
+                                adapter.addAllMessages(SplashScreenActivity.dkLiveChat.chatEventListener.getChatMessages(mRoomName));
+                                recyclerView.scrollToPosition(adapter.getItemCount() - 1);
+                            }
+                        });
+                    } catch (Exception e) {
+                    }
                 }
 
                 @Override
@@ -266,6 +269,11 @@ public class ChatRoomFragment extends Fragment {
                                     public void onSuccess(String msg, Object... obj) {
                                         //move room to last pos
                                         backBtnClicked();
+                                        if (((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter != null) {
+                                            Room room = ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.getRoomItem(mRoomName);
+                                            if (room != null)
+                                                ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.updateRoomUponUnsubscribe(room);
+                                        }
                                     }
 
                                     @Override
