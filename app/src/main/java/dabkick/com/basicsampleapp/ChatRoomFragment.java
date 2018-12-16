@@ -203,8 +203,12 @@ public class ChatRoomFragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
                                       @Override
                                       public void onClick(View view) {
-                                          sendMessage(mRoomName, editText.getText().toString());
-                                          recyclerView.scrollToPosition(adapter.getItemCount() - 1);
+                                          if (!TextUtils.isEmpty(editText.getText().toString().trim())) {
+                                              sendMessage(mRoomName, editText.getText().toString());
+                                              recyclerView.scrollToPosition(adapter.getItemCount() - 1);
+                                          } else {
+                                              Toast.makeText(BaseActivity.mCurrentActivity, "Please enter message", Toast.LENGTH_LONG).show();
+                                          }
                                       }
                                   }
         );
@@ -223,25 +227,22 @@ public class ChatRoomFragment extends Fragment {
             if (dkLiveChat == null)
                 return;
             MessageInfo messageInfo = new MessageInfo();
-            if (!TextUtils.isEmpty(message)) {
-                messageInfo.setChatMessage(message);
+            messageInfo.setChatMessage(message);
 
-                messageInfo.setUserId(dkLiveChat.getUserId());
-                dkLiveChat.chatEventListener.sendMessage(roomName, messageInfo, new CallbackListener() {
-                    @Override
-                    public void onSuccess(String msg, Object... obj) {
-                        Log.d("ChatRoomActivity", "onSuccess chat msg");
-                        editText.setText("");
-                    }
+            messageInfo.setUserId(dkLiveChat.getUserId());
+            dkLiveChat.chatEventListener.sendMessage(roomName, messageInfo, new CallbackListener() {
+                @Override
+                public void onSuccess(String msg, Object... obj) {
+                    Log.d("ChatRoomActivity", "onSuccess chat msg");
+                    editText.setText("");
+                }
 
-                    @Override
-                    public void onError(String msg, Object... obj) {
-                        Log.d("ChatRoomActivity", "onError chat msg");
-                    }
-                });
-            } else {
-                Toast.makeText(BaseActivity.mCurrentActivity, "Please enter message", Toast.LENGTH_LONG).show();
-            }
+                @Override
+                public void onError(String msg, Object... obj) {
+                    Log.d("ChatRoomActivity", "onError chat msg");
+                }
+            });
+
         }
     }
 
