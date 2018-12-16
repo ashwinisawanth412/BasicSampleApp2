@@ -94,14 +94,14 @@ public class ChatRoomFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-       /* //clear unread msg list
+        //clear unread msg list
         if (BaseActivity.mCurrentActivity.getClass() == HomePageActivity.class) {
             Room room = ((HomePageActivity) getActivity()).mRoomListAdapter.getRoomItem(mRoomName);
             if(room != null) {
                 room.clearUnreadMsgList();
                 ((HomePageActivity) getActivity()).mRoomListAdapter.updateRoomUponNewMsg(room);
             }
-        }*/
+        }
 
         try {
             if (getActivity().getClass() == HomePageActivity.class) {
