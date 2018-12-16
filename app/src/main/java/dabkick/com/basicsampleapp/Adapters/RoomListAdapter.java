@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import dabkick.com.basicsampleapp.ChatRoomFragment;
@@ -21,7 +22,7 @@ import dabkick.com.basicsampleapp.R;
 
 public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.RoomHolder> {
 
-    private List<Room> roomInfoList = new ArrayList<>();
+    private List<Room> roomInfoList;
     private Activity context;
 
     public RoomListAdapter(List<Room> roomList, Activity activity) {
@@ -103,17 +104,11 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.RoomHo
         notifyItemInserted(roomInfoList.size() - 1);
     }
 
-    public void updateRoom(Room room) {
-        if(roomInfoList.contains(room))
-            roomInfoList.remove(room);
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                roomInfoList.set(0, room);
-                notifyItemChanged(0, room);
-            }
-        }, 500);
+    public void updateRoomUponNewMsg(Room room) {
+        if (roomInfoList.contains(room)) {
+            //move room to top and rest of it below it
+            Collections.swap(roomInfoList, roomInfoList.indexOf(room), 0);
+            notifyDataSetChanged();
+        }
     }
-
 }

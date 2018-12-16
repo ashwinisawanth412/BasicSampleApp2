@@ -1,8 +1,6 @@
 package dabkick.com.basicsampleapp;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatImageView;
@@ -96,12 +94,14 @@ public class ChatRoomFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        //clear unread msg list
+       /* //clear unread msg list
         if (BaseActivity.mCurrentActivity.getClass() == HomePageActivity.class) {
             Room room = ((HomePageActivity) getActivity()).mRoomListAdapter.getRoomItem(mRoomName);
-            room.clearUnreadMsgList();
-            ((HomePageActivity) getActivity()).mRoomListAdapter.updateRoom(room);
-        }
+            if(room != null) {
+                room.clearUnreadMsgList();
+                ((HomePageActivity) getActivity()).mRoomListAdapter.updateRoomUponNewMsg(room);
+            }
+        }*/
 
         try {
             if (getActivity().getClass() == HomePageActivity.class) {
@@ -121,7 +121,7 @@ public class ChatRoomFragment extends Fragment {
             e.printStackTrace();
         }
 
-        if(SplashScreenActivity.dkLiveChat.isSubscribed(mRoomName)) {
+        if (SplashScreenActivity.dkLiveChat.isSubscribed(mRoomName)) {
             adapter.addAllMessages(SplashScreenActivity.dkLiveChat.getAllMessageList(mRoomName));
             recyclerView.scrollToPosition(adapter.getItemCount() - 1);
         }
@@ -139,9 +139,13 @@ public class ChatRoomFragment extends Fragment {
                             recyclerView.scrollToPosition(adapter.getItemCount() - 1);
                         } else if (!message.getUserName().equalsIgnoreCase(name)) {
                             //i am not in the same room as the msg received and am not the sender of the msg. So add it as unread msg
+                            Log.d("ChatRoomFrag", "else of receivedChatMsg: roomName: " + roomName);
                             Room room = ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.getRoomItem(roomName);
-                            room.addUnreadMsg(message);
-                            ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.updateRoom(room);
+                            Log.d("ChatRoomFrag", "else of receivedChatMsg: room obj: " + room);
+                            if (room != null) {
+                                room.addUnreadMsg(message);
+                                ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.updateRoomUponNewMsg(room);
+                            }
                         }
                     }
                 });

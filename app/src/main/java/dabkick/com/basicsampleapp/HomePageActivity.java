@@ -56,6 +56,11 @@ public class HomePageActivity extends BaseActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
     public void initChatRooms() {
         try {
             SplashScreenActivity.dkLiveChat.chatRoomListener.getRoomList(new CallbackListener() {
@@ -133,8 +138,7 @@ public class HomePageActivity extends BaseActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         //clear shared pref
-        SharedPreferences preferences = getApplicationContext().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
-        preferences.edit().clear().commit();
+        PreferenceHandler.clearAll(HomePageActivity.this);
 
         //disconnect from firebase
         SplashScreenActivity.dkLiveChat.endLiveChat();
