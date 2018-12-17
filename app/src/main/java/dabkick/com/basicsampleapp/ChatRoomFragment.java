@@ -188,7 +188,8 @@ public class ChatRoomFragment extends Fragment {
                                     @Override
                                     public void run() {
                                         try {
-                                            mProgressBar.setVisibility(View.GONE);
+                                            if (mProgressBar != null)
+                                                mProgressBar.setVisibility(View.GONE);
                                             adapter.addAllMessages(SplashScreenActivity.dkLiveChat.chatEventListener.getChatMessages(mRoomName));
                                             recyclerView.scrollToPosition(adapter.getItemCount() - 1);
                                         } catch (Exception e) {
