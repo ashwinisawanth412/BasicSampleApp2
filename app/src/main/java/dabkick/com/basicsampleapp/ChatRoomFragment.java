@@ -125,7 +125,9 @@ public class ChatRoomFragment extends Fragment {
         }
 
         if (SplashScreenActivity.dkLiveChat.isSubscribed(mRoomName)) {
+            Log.d("adapter_issue", "msg count b4 add all " + adapter.getItemCount());
             adapter.addAllMessages(SplashScreenActivity.dkLiveChat.getAllMessageList(mRoomName));
+            Log.d("adapter_issue", "msg count after add ALL: " + adapter.getItemCount());
             recyclerView.scrollToPosition(adapter.getItemCount() - 1);
         }
 
@@ -135,7 +137,6 @@ public class ChatRoomFragment extends Fragment {
                 BaseActivity.mCurrentActivity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Log.d("ChatRoomFrag", "receivedChatMsg: roomName: " + roomName + " msg: " + message.getChatMessage());
                         String name = PreferenceHandler.getUserName(BaseActivity.mCurrentActivity);
                         if (roomName.equalsIgnoreCase(mRoomName)) {
 
@@ -143,15 +144,11 @@ public class ChatRoomFragment extends Fragment {
                                 recyclerView = view.findViewById(R.id.recycler);
                                 recyclerView.setAdapter(adapter);
                             }
-                            Log.d("adapter_issue", "msg count b4 rec: " + adapter.getItemCount());
                             adapter.addMessage(message);
-                            Log.d("adapter_issue", "msg count after rec: " + adapter.getItemCount());
                             recyclerView.scrollToPosition((adapter.getItemCount() - 1));
                         } else if (!message.getUserName().equalsIgnoreCase(name)) {
                             //i am not in the same room as the msg received and am not the sender of the msg. So add it as unread msg
-                            Log.d("ChatRoomFrag", "else of receivedChatMsg: roomName: " + roomName);
                             Room room = ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.getRoomItem(roomName);
-                            Log.d("ChatRoomFrag", "else of receivedChatMsg: room obj: " + room);
                             if (room != null) {
                                 room.addUnreadMsg(message);
                                 ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.updateRoomUponNewMsg(room);
@@ -192,9 +189,13 @@ public class ChatRoomFragment extends Fragment {
                                 new Handler().postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
-                                        mProgressBar.setVisibility(View.GONE);
-                                        adapter.addAllMessages(SplashScreenActivity.dkLiveChat.chatEventListener.getChatMessages(mRoomName));
-                                        recyclerView.scrollToPosition(adapter.getItemCount() - 1);
+                                        try {
+                                            mProgressBar.setVisibility(View.GONE);
+                                            adapter.addAllMessages(SplashScreenActivity.dkLiveChat.chatEventListener.getChatMessages(mRoomName));
+                                            recyclerView.scrollToPosition(adapter.getItemCount() - 1);
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
                                     }
                                 }, 3000);
 
@@ -327,7 +328,10 @@ public class ChatRoomFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         mRoomName = "";
-        adapter = null;
+        if (adapter != null) {
+            adapter.clearMsgs();
+            adapter = null;
+        }
         unbinder.unbind();
     }
 }

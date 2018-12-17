@@ -64,4 +64,8 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MessageHolder> {
         notifyDataSetChanged();
     }
 
+    public void clearMsgs(){
+        this.messageInfoList.clear();
+    }
+
 }
