@@ -210,9 +210,6 @@ public class ChatRoomFragment extends Fragment {
                     mProgressBar.setVisibility(View.GONE);
                 }
             });
-        } else {
-            adapter.addAllMessages(SplashScreenActivity.dkLiveChat.getAllMessageList(mRoomName));
-            recyclerView.scrollToPosition(adapter.getItemCount() - 1);
         }
 
 
