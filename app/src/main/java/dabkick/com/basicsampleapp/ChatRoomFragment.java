@@ -125,9 +125,7 @@ public class ChatRoomFragment extends Fragment {
         }
 
         if (SplashScreenActivity.dkLiveChat.isSubscribed(mRoomName)) {
-            Log.d("adapter_issue", "msg count b4 add all " + adapter.getItemCount());
             adapter.addAllMessages(SplashScreenActivity.dkLiveChat.getAllMessageList(mRoomName));
-            Log.d("adapter_issue", "msg count after add ALL: " + adapter.getItemCount());
             recyclerView.scrollToPosition(adapter.getItemCount() - 1);
         }
 
@@ -189,10 +187,13 @@ public class ChatRoomFragment extends Fragment {
                                 new Handler().postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
-                                        if (mProgressBar != null)
+                                        try {
                                             mProgressBar.setVisibility(View.GONE);
-                                        adapter.addAllMessages(SplashScreenActivity.dkLiveChat.chatEventListener.getChatMessages(mRoomName));
-                                        recyclerView.scrollToPosition(adapter.getItemCount() - 1);
+                                            adapter.addAllMessages(SplashScreenActivity.dkLiveChat.chatEventListener.getChatMessages(mRoomName));
+                                            recyclerView.scrollToPosition(adapter.getItemCount() - 1);
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
                                     }
                                 }, 3000);
 
@@ -207,6 +208,9 @@ public class ChatRoomFragment extends Fragment {
                     mProgressBar.setVisibility(View.GONE);
                 }
             });
+        } else {
+            adapter.addAllMessages(SplashScreenActivity.dkLiveChat.getAllMessageList(mRoomName));
+            recyclerView.scrollToPosition(adapter.getItemCount() - 1);
         }
 
 
@@ -219,7 +223,7 @@ public class ChatRoomFragment extends Fragment {
                                                   if (!TextUtils.isEmpty(editText.getText().toString().trim())) {
                                                       String message = editText.getText().toString().replaceAll("^\\s+|\\s+$", "");
                                                       sendMessage(mRoomName, message);
-                                                      Log.d("adapter_issue", "msg count in send: " + adapter.getItemCount());
+                                                      Utils.hideKeyboard(getActivity());
                                                       recyclerView.scrollToPosition(adapter.getItemCount() - 1);
                                                   } else {
                                                       Toast.makeText(BaseActivity.mCurrentActivity, "Please enter message", Toast.LENGTH_LONG).show();
