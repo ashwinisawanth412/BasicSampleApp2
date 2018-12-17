@@ -21,6 +21,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import dabkick.com.basicsampleapp.Utils.Utils;
 
 public class SplashScreenActivity extends BaseActivity {
 
@@ -98,6 +99,12 @@ public class SplashScreenActivity extends BaseActivity {
         startActivity(intent);
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        //hides kb
+        Utils.hideKeyboard(SplashScreenActivity.this);
+    }
 
     @Override
     protected void onDestroy() {

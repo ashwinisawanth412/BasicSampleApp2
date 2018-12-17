@@ -34,10 +34,11 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import dabkick.com.basicsampleapp.Adapters.Adapter;
 import dabkick.com.basicsampleapp.Model.Room;
+import dabkick.com.basicsampleapp.Utils.Utils;
 
 public class ChatRoomFragment extends Fragment {
 
-    private String mRoomName;
+    private static String mRoomName;
 
     private Unbinder unbinder;
 
@@ -58,7 +59,7 @@ public class ChatRoomFragment extends Fragment {
     @BindView(R.id.progressBar)
     ProgressBar mProgressBar;
 
-    Adapter adapter;
+    volatile Adapter adapter;
     private LiveChatCallbackListener liveChatCallbackListener;
     private UserPresenceCallBackListener userPresenceCallBackListener;
 
@@ -76,9 +77,6 @@ public class ChatRoomFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mRoomName = getArguments().getString("roomName");
-        }
     }
 
     @Override
@@ -86,6 +84,10 @@ public class ChatRoomFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.frag_chat_room, container, false);
         unbinder = ButterKnife.bind(this, view);
+
+        if (getArguments() != null) {
+            mRoomName = getArguments().getString("roomName");
+        }
 
         Log.d("chatRoom", "roomTitle: " + mRoomName);
         mRoomTitle.setText(mRoomName);
@@ -135,6 +137,10 @@ public class ChatRoomFragment extends Fragment {
                         Log.d("ChatRoomFrag", "receivedChatMsg: roomName: " + roomName + " msg: " + message.getChatMessage());
                         String name = PreferenceHandler.getUserName(BaseActivity.mCurrentActivity);
                         if (roomName.equalsIgnoreCase(mRoomName)) {
+
+                            if(recyclerView ==  null)
+                                recyclerView = view.findViewById(R.id.recycler);
+
                             adapter.addMessage(message);
                             recyclerView.scrollToPosition(adapter.getItemCount() - 1);
                         } else if (!message.getUserName().equalsIgnoreCase(name)) {
@@ -217,7 +223,9 @@ public class ChatRoomFragment extends Fragment {
     }
 
     @OnClick(R.id.back_arrow)
-    public void backBtnClicked() {
+    public void backBtnClicked()
+    {
+        Utils.hideKeyboard(getActivity());
         getActivity().onBackPressed();
     }
 

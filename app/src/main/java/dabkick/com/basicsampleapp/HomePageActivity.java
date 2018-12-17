@@ -123,14 +123,6 @@ public class HomePageActivity extends BaseActivity {
         });
     }
 
-    public void dummyMethod() {
-        ChatRoomFragment chatRoom = ChatRoomFragment.newInstance("myRoom");
-        android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.frag_container, chatRoom);
-        transaction.addToBackStack(null);
-        transaction.commit();
-    }
-
     @OnClick(R.id.disconnect_text_view)
     public void onClickDisconnect() {
         //clear user details
