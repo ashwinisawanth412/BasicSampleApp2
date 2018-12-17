@@ -241,6 +241,17 @@ public class ChatRoomFragment extends Fragment {
     public void backBtnClicked() {
         Utils.hideKeyboard(getActivity());
         getActivity().onBackPressed();
+        SplashScreenActivity.dkLiveChat.leaveSession(mRoomName, new CallbackListener() {
+            @Override
+            public void onSuccess(String s, Object... objects) {
+
+            }
+
+            @Override
+            public void onError(String s, Object... objects) {
+
+            }
+        });
     }
 
     public void sendMessage(String roomName, final String message) {
