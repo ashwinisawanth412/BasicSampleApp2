@@ -189,13 +189,10 @@ public class ChatRoomFragment extends Fragment {
                                 new Handler().postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
-                                        try {
+                                        if (mProgressBar != null)
                                             mProgressBar.setVisibility(View.GONE);
-                                            adapter.addAllMessages(SplashScreenActivity.dkLiveChat.chatEventListener.getChatMessages(mRoomName));
-                                            recyclerView.scrollToPosition(adapter.getItemCount() - 1);
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
-                                        }
+                                        adapter.addAllMessages(SplashScreenActivity.dkLiveChat.chatEventListener.getChatMessages(mRoomName));
+                                        recyclerView.scrollToPosition(adapter.getItemCount() - 1);
                                     }
                                 }, 3000);
 
