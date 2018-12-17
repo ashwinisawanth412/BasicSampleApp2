@@ -1,6 +1,7 @@
 package dabkick.com.basicsampleapp;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatImageView;
@@ -186,9 +187,15 @@ public class ChatRoomFragment extends Fragment {
                         BaseActivity.mCurrentActivity.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                mProgressBar.setVisibility(View.GONE);
-                                adapter.addAllMessages(SplashScreenActivity.dkLiveChat.chatEventListener.getChatMessages(mRoomName));
-                                recyclerView.scrollToPosition(adapter.getItemCount() - 1);
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        mProgressBar.setVisibility(View.GONE);
+                                        adapter.addAllMessages(SplashScreenActivity.dkLiveChat.chatEventListener.getChatMessages(mRoomName));
+                                        recyclerView.scrollToPosition(adapter.getItemCount() - 1);
+                                    }
+                                }, 3000);
+
                             }
                         });
                     } catch (Exception e) {
