@@ -16,7 +16,7 @@ import dabkick.com.basicsampleapp.R;
 
 public class Adapter extends RecyclerView.Adapter<Adapter.MessageHolder> {
 
-    private List<MessageInfo> messageInfoList = new ArrayList<>();
+    private volatile List<MessageInfo> messageInfoList = new ArrayList<>();
 
     @NonNull
     @Override
@@ -41,7 +41,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MessageHolder> {
 
     @Override
     public int getItemCount() {
-        return messageInfoList.size();
+        return this.messageInfoList.size();
     }
 
     public class MessageHolder extends RecyclerView.ViewHolder {
@@ -59,7 +59,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MessageHolder> {
         notifyItemInserted(messageInfoList.size() - 1);
     }
 
-    public void addAllMessages(List<MessageInfo> messageList){
+    public void addAllMessages(List<MessageInfo> messageList) {
         messageInfoList.addAll(messageList);
         notifyDataSetChanged();
     }

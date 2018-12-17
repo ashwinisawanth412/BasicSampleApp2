@@ -60,7 +60,7 @@ public class ChatRoomFragment extends Fragment {
     @BindView(R.id.progressBar)
     ProgressBar mProgressBar;
 
-    volatile Adapter adapter;
+    static Adapter adapter;
     private LiveChatCallbackListener liveChatCallbackListener;
     private UserPresenceCallBackListener userPresenceCallBackListener;
 
@@ -139,11 +139,14 @@ public class ChatRoomFragment extends Fragment {
                         String name = PreferenceHandler.getUserName(BaseActivity.mCurrentActivity);
                         if (roomName.equalsIgnoreCase(mRoomName)) {
 
-                            if(recyclerView ==  null)
+                            if (recyclerView == null) {
                                 recyclerView = view.findViewById(R.id.recycler);
-
+                                recyclerView.setAdapter(adapter);
+                            }
+                            Log.d("adapter_issue", "msg count b4 rec: " + adapter.getItemCount());
                             adapter.addMessage(message);
-                            recyclerView.scrollToPosition(adapter.getItemCount() - 1);
+                            Log.d("adapter_issue", "msg count after rec: " + adapter.getItemCount());
+                            recyclerView.scrollToPosition((adapter.getItemCount() - 1));
                         } else if (!message.getUserName().equalsIgnoreCase(name)) {
                             //i am not in the same room as the msg received and am not the sender of the msg. So add it as unread msg
                             Log.d("ChatRoomFrag", "else of receivedChatMsg: roomName: " + roomName);
@@ -183,7 +186,6 @@ public class ChatRoomFragment extends Fragment {
                 @Override
                 public void onSuccess(String msg, Object... obj) {
                     try {
-                        mProgressBar.setVisibility(View.GONE);
                         BaseActivity.mCurrentActivity.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -216,12 +218,19 @@ public class ChatRoomFragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
                                       @Override
                                       public void onClick(View view) {
-                                          if (!TextUtils.isEmpty(editText.getText().toString().trim())) {
-                                              sendMessage(mRoomName, editText.getText().toString());
-                                              recyclerView.scrollToPosition(adapter.getItemCount() - 1);
-                                          } else {
-                                              Toast.makeText(BaseActivity.mCurrentActivity, "Please enter message", Toast.LENGTH_LONG).show();
-                                          }
+                                          getActivity().runOnUiThread(new Runnable() {
+                                              @Override
+                                              public void run() {
+                                                  if (!TextUtils.isEmpty(editText.getText().toString().trim())) {
+                                                      String message = editText.getText().toString().replaceAll("^\\s+|\\s+$", "");
+                                                      sendMessage(mRoomName, message);
+                                                      Log.d("adapter_issue", "msg count in send: " + adapter.getItemCount());
+                                                      recyclerView.scrollToPosition(adapter.getItemCount() - 1);
+                                                  } else {
+                                                      Toast.makeText(BaseActivity.mCurrentActivity, "Please enter message", Toast.LENGTH_LONG).show();
+                                                  }
+                                              }
+                                          });
                                       }
                                   }
         );
@@ -230,8 +239,7 @@ public class ChatRoomFragment extends Fragment {
     }
 
     @OnClick(R.id.back_arrow)
-    public void backBtnClicked()
-    {
+    public void backBtnClicked() {
         Utils.hideKeyboard(getActivity());
         getActivity().onBackPressed();
     }
@@ -319,6 +327,7 @@ public class ChatRoomFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         mRoomName = "";
+        adapter = null;
         unbinder.unbind();
     }
 }
