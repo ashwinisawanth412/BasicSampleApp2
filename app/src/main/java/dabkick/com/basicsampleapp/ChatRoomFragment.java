@@ -182,7 +182,7 @@ public class ChatRoomFragment extends Fragment {
             SplashScreenActivity.dkLiveChat.subscribe(mRoomName, liveChatCallbackListener, userPresenceCallBackListener, new CallbackListener() {
                 @Override
                 public void onSuccess(String msg, Object... obj) {
-                    if(isSubscribeCalled) {
+                    if (isSubscribeCalled) {
                         try {
                             BaseActivity.mCurrentActivity.runOnUiThread(new Runnable() {
                                 @Override
@@ -192,8 +192,10 @@ public class ChatRoomFragment extends Fragment {
                                         public void run() {
                                             if (mProgressBar != null)
                                                 mProgressBar.setVisibility(View.GONE);
-                                            adapter.addAllMessages(SplashScreenActivity.dkLiveChat.chatEventListener.getChatMessages(mRoomName));
-                                            recyclerView.scrollToPosition(adapter.getItemCount() - 1);
+                                            if (adapter != null)
+                                                adapter.addAllMessages(SplashScreenActivity.dkLiveChat.chatEventListener.getChatMessages(mRoomName));
+                                            if (recyclerView != null)
+                                                recyclerView.scrollToPosition(adapter.getItemCount() - 1);
 
                                         }
                                     }, 3000);
