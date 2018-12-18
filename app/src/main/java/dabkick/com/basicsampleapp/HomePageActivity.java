@@ -1,14 +1,25 @@
 package dabkick.com.basicsampleapp;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.dabkick.engine.Public.CallbackListener;
 import com.dabkick.engine.Public.UserInfo;
@@ -38,6 +49,8 @@ public class HomePageActivity extends BaseActivity {
     android.support.v7.widget.Toolbar mToolBar;
     @BindView(R.id.progressBar)
     ProgressBar mProgressBar;
+    @BindView(R.id.create_room)
+    FloatingActionButton mCreateRoomBtn;
 
 
     @Override
@@ -129,11 +142,39 @@ public class HomePageActivity extends BaseActivity {
         Intent intent = new Intent(HomePageActivity.this, SplashScreenActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
-        //clear shared pref
-        PreferenceHandler.clearAll(HomePageActivity.this);
-
         //disconnect from firebase
         SplashScreenActivity.dkLiveChat.endLiveChat();
+    }
+
+    @OnClick(R.id.create_room)
+    public void createNewRoom() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater layoutInflater = getLayoutInflater();
+        View view = layoutInflater.inflate(R.layout.create_new_room_layout, null);
+        builder.setView(view);
+
+        AppCompatEditText roomNameEditText = view.findViewById(R.id.create_room_edit_text);
+        builder.setPositiveButton("Create", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+                String roomName = roomNameEditText.getText().toString().replaceAll("^\\s+|\\s+$", "");
+                if (TextUtils.isEmpty(roomName)) {
+                    Toast.makeText(HomePageActivity.this, "Enter Room Name", Toast.LENGTH_SHORT).show();
+                } else {
+                    dialog.cancel();
+                    //should add the dk room creation apis here
+
+                }
+                roomNameEditText.setText("");
+            }
+        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.cancel();
+                roomNameEditText.setText("");
+            }
+        });
+        builder.setCancelable(false);
+        builder.create().show();
     }
 
     @Override

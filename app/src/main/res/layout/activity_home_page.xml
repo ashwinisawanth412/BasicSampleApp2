@@ -45,6 +45,16 @@
         android:textAlignment="gravity"
         android:textColor="@color/colorPrimary" />
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/create_room"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentRight="true"
+        android:layout_above="@+id/disconnect_text_view"
+        android:layout_marginRight="16dp"
+        android:src="@drawable/add_white_18dp"
+        android:elevation="6dp"/>
+
     <FrameLayout
         android:id="@+id/frag_container"
         android:layout_width="match_parent"

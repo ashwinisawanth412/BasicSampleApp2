@@ -31,9 +31,6 @@ public class SplashScreenActivity extends BaseActivity {
     AppCompatEditText mUserNameEditText;
     @BindView(R.id.container)
     RelativeLayout mNameEditTextContainer;
-
-    private String mUserName = "";
-
     private Unbinder unbinder;
 
     public static DKLiveChat dkLiveChat;
@@ -46,27 +43,14 @@ public class SplashScreenActivity extends BaseActivity {
         unbinder = ButterKnife.bind(this);
         //initialize engine
         initEngine();
-
-        checkUserDetailsUpdated();
-
-
+        setUserDetailsIfUpdated();
 
     }
 
-    public void checkUserDetailsUpdated(){
+    public void setUserDetailsIfUpdated(){
         String name = PreferenceHandler.getUserName(SplashScreenActivity.this);
-
-        if(name.trim().isEmpty() || name.equalsIgnoreCase("anonymous")){
-            //name not entered so display edit text
-        } else {
-            mNameEditTextContainer.setVisibility(View.GONE);
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    launchHomePage();
-                }
-            }, 3000);
-        }
+        mUserNameEditText.setText(name);
+        mUserNameEditText.setSelection(name.length());
     }
 
     public void initEngine() {
@@ -85,11 +69,7 @@ public class SplashScreenActivity extends BaseActivity {
 
     @OnClick(R.id.done_btn)
     public void doneClick() {
-        mUserName = mUserNameEditText.getText().toString().trim();
-        if (TextUtils.isEmpty(mUserName))
-            mUserName = "anonymous";
-
-        PreferenceHandler.setUserName(SplashScreenActivity.this, mUserName);
+        PreferenceHandler.setUserName(SplashScreenActivity.this, mUserNameEditText.getText().toString().trim());
         launchHomePage();
     }
 
