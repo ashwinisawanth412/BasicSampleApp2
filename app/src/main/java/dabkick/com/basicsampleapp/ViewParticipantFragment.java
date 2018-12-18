@@ -21,6 +21,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 import dabkick.com.basicsampleapp.Adapters.ParticipantListAdapter;
 
@@ -28,7 +29,7 @@ public class ViewParticipantFragment extends Fragment {
 
     private Unbinder mUnbinder;
 
-    @BindView(R.id.back_arrow)
+    @BindView(R.id.back_arrow_participant)
     AppCompatImageView mBackArrow;
     @BindView(R.id.room_name_text_view)
     AppCompatTextView mRoomNameTextView;
@@ -70,10 +71,10 @@ public class ViewParticipantFragment extends Fragment {
         participantList = SplashScreenActivity.dkLiveChat.getUsers(mRoomName, new CallbackListener() {
             @Override
             public void onSuccess(String s, Object... objects) {
-                Log.d("TAGGOW", "onSuccess: ");
                 participantList = (List<UserInfo>) objects[0];
                 setAdapter();
                 mProgressBar.setVisibility(View.GONE);
+
             }
 
             @Override
@@ -91,8 +92,6 @@ public class ViewParticipantFragment extends Fragment {
         participantListAdapter = new ParticipantListAdapter(participantList);
         mParticipantListView.setAdapter(participantListAdapter);
         mParticipantListView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mProgressBar.setVisibility(View.GONE);
-
     }
 
 
@@ -100,5 +99,11 @@ public class ViewParticipantFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         mUnbinder.unbind();
+        participantList.clear();
+    }
+
+    @OnClick(R.id.back_arrow_participant)
+    public void backArrowClicked(){
+        getActivity().onBackPressed();
     }
 }

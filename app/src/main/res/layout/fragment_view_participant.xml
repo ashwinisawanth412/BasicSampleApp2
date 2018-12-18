@@ -13,7 +13,7 @@
         android:background="@color/colorPrimary">
 
         <android.support.v7.widget.AppCompatImageView
-            android:id="@+id/back_arrow"
+            android:id="@+id/back_arrow_participant"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_centerVertical="true"
@@ -28,7 +28,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="16dp"
             android:layout_toLeftOf="@+id/over_flow_icon"
-            android:layout_toRightOf="@+id/back_arrow"
+            android:layout_toRightOf="@+id/back_arrow_participant"
             android:ellipsize="end"
             android:fontFamily="cursive"
             android:maxLines="1"
