@@ -51,6 +51,7 @@ public class HomePageActivity extends BaseActivity {
     ProgressBar mProgressBar;
     @BindView(R.id.create_room)
     FloatingActionButton mCreateRoomBtn;
+    List<Room> mRoomList = new ArrayList<Room>();
 
 
     @Override
@@ -87,7 +88,6 @@ public class HomePageActivity extends BaseActivity {
                                 List<String> list = new ArrayList<>();
                                 list = (List<String>) obj[0];
 
-                                List<Room> mRoomList = new ArrayList<Room>();
                                 for (String roomName : list) {
                                     Room room = new Room();
                                     room.setRoomName(roomName);
@@ -163,6 +163,10 @@ public class HomePageActivity extends BaseActivity {
                 } else {
                     dialog.cancel();
                     //should add the dk room creation apis here
+                    Room mRoom = new Room();
+                    mRoom.setRoomName(roomName);
+                    mRoomList.add(mRoom);
+                    mRoomListAdapter.notifyDataSetChanged();
 
                 }
                 roomNameEditText.setText("");
