@@ -33,7 +33,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-import dabkick.com.basicsampleapp.Adapters.Adapter;
+import dabkick.com.basicsampleapp.Adapters.ChatMsgAdapter;
 import dabkick.com.basicsampleapp.Model.Room;
 import dabkick.com.basicsampleapp.Utils.Utils;
 
@@ -60,7 +60,7 @@ public class ChatRoomFragment extends Fragment {
     @BindView(R.id.progressBar)
     ProgressBar mProgressBar;
 
-    static Adapter adapter;
+    static ChatMsgAdapter chatMsgAdapter;
     private LiveChatCallbackListener liveChatCallbackListener;
     private UserPresenceCallBackListener userPresenceCallBackListener;
     private boolean isSubscribeCalled = false;
@@ -94,8 +94,8 @@ public class ChatRoomFragment extends Fragment {
         Log.d("chatRoom", "roomTitle: " + mRoomName);
         mRoomTitle.setText(mRoomName);
 
-        adapter = new Adapter();
-        recyclerView.setAdapter(adapter);
+        chatMsgAdapter = new ChatMsgAdapter();
+        recyclerView.setAdapter(chatMsgAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         //clear unread msg list
@@ -126,8 +126,8 @@ public class ChatRoomFragment extends Fragment {
         }
 
         if (SplashScreenActivity.dkLiveChat.isSubscribed(mRoomName)) {
-            adapter.addAllMessages(SplashScreenActivity.dkLiveChat.getAllMessageList(mRoomName));
-            recyclerView.scrollToPosition(adapter.getItemCount() - 1);
+            chatMsgAdapter.addAllMessages(SplashScreenActivity.dkLiveChat.getAllMessageList(mRoomName));
+            recyclerView.scrollToPosition(chatMsgAdapter.getItemCount() - 1);
         }
 
         liveChatCallbackListener = new LiveChatCallbackListener() {
@@ -141,10 +141,10 @@ public class ChatRoomFragment extends Fragment {
 
                             if (recyclerView == null) {
                                 recyclerView = view.findViewById(R.id.recycler);
-                                recyclerView.setAdapter(adapter);
+                                recyclerView.setAdapter(chatMsgAdapter);
                             }
-                            adapter.addMessage(message);
-                            recyclerView.scrollToPosition((adapter.getItemCount() - 1));
+                            chatMsgAdapter.addMessage(message);
+                            recyclerView.scrollToPosition((chatMsgAdapter.getItemCount() - 1));
                         } else if (!message.getUserName().equalsIgnoreCase(name)) {
                             //i am not in the same room as the msg received and am not the sender of the msg. So add it as unread msg
                             Room room = ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.getRoomItem(roomName);
@@ -192,10 +192,10 @@ public class ChatRoomFragment extends Fragment {
                                         public void run() {
                                             if (mProgressBar != null)
                                                 mProgressBar.setVisibility(View.GONE);
-                                            if (adapter != null)
-                                                adapter.addAllMessages(SplashScreenActivity.dkLiveChat.chatEventListener.getChatMessages(mRoomName));
+                                            if (chatMsgAdapter != null)
+                                                chatMsgAdapter.addAllMessages(SplashScreenActivity.dkLiveChat.chatEventListener.getChatMessages(mRoomName));
                                             if (recyclerView != null)
-                                                recyclerView.scrollToPosition(adapter.getItemCount() - 1);
+                                                recyclerView.scrollToPosition(chatMsgAdapter.getItemCount() - 1);
 
                                         }
                                     }, 3000);
@@ -225,7 +225,7 @@ public class ChatRoomFragment extends Fragment {
                                                       String message = editText.getText().toString().replaceAll("^\\s+|\\s+$", "");
                                                       sendMessage(mRoomName, message);
                                                       Utils.hideKeyboard(getActivity());
-                                                      recyclerView.scrollToPosition(adapter.getItemCount() - 1);
+                                                      recyclerView.scrollToPosition(chatMsgAdapter.getItemCount() - 1);
                                                   } else {
                                                       Toast.makeText(BaseActivity.mCurrentActivity, "Please enter message", Toast.LENGTH_LONG).show();
                                                   }
@@ -339,9 +339,9 @@ public class ChatRoomFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         mRoomName = "";
-        if (adapter != null) {
-            adapter.clearMsgs();
-            adapter = null;
+        if (chatMsgAdapter != null) {
+            chatMsgAdapter.clearMsgs();
+            chatMsgAdapter = null;
         }
         unbinder.unbind();
     }

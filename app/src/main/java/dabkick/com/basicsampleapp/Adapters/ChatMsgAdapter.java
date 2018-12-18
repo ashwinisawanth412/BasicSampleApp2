@@ -14,7 +14,7 @@ import java.util.List;
 
 import dabkick.com.basicsampleapp.R;
 
-public class Adapter extends RecyclerView.Adapter<Adapter.MessageHolder> {
+public class ChatMsgAdapter extends RecyclerView.Adapter<ChatMsgAdapter.MessageHolder> {
 
     private volatile List<MessageInfo> messageInfoList = new ArrayList<>();
 
