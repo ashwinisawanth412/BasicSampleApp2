@@ -57,6 +57,7 @@ public class HomePageActivity extends BaseActivity {
     ProgressBar mProgressBar;
     @BindView(R.id.create_room)
     FloatingActionButton mCreateRoomBtn;
+
     List<Room> mRoomList = new ArrayList<Room>();
 
     @Override
@@ -212,6 +213,11 @@ public class HomePageActivity extends BaseActivity {
     @OnClick(R.id.settings_icon)
     public void onClickSetttingsIcon() {
 
+    }
+
+    @OnClick(R.id.refresh_icon)
+    public void onClickRefresh() {
+        initChatRooms();
     }
 
     public void updateFloatingBtn(boolean show) {
