@@ -1,8 +1,8 @@
 package dabkick.com.basicsampleapp.Adapters;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.graphics.Typeface;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatTextView;
@@ -10,15 +10,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import dabkick.com.basicsampleapp.ChatRoomFragment;
 import dabkick.com.basicsampleapp.Model.Room;
 import dabkick.com.basicsampleapp.R;
+import dabkick.com.basicsampleapp.SplashScreenActivity;
 
 public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.RoomHolder> {
 
@@ -46,6 +45,8 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.RoomHo
         if (roomName != null)
             holder.roomName.setText(roomName);
 
+
+
         int count = room.getUnreadMsgCount();
         if (count == 0) {
             holder.unreadMsgCount.setVisibility(View.GONE);
@@ -59,6 +60,11 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.RoomHo
             }
 
             holder.unreadMsgCount.setVisibility(View.VISIBLE);
+        }
+
+        if(SplashScreenActivity.dkLiveChat.isSubscribed(roomName)){
+            holder.roomName.setTextColor(Color.BLACK);
+            holder.roomName.setTypeface(null, Typeface.BOLD_ITALIC);
         }
     }
 
