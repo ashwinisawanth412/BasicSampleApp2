@@ -118,6 +118,13 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.RoomHo
             Collections.swap(roomInfoList, roomInfoList.indexOf(room), roomInfoList.size() - 1);
             notifyDataSetChanged();
         }
+    }
 
+    public void enterRoomOnCreation(String roomName){
+        ChatRoomFragment chatRoom = ChatRoomFragment.newInstance(roomName);
+        android.support.v4.app.FragmentTransaction transaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.frag_container, chatRoom);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 }

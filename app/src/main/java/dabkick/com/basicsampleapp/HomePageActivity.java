@@ -5,12 +5,15 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -19,6 +22,7 @@ import com.dabkick.engine.Public.CallbackListener;
 import com.dabkick.engine.Public.UserInfo;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -70,33 +74,51 @@ public class HomePageActivity extends BaseActivity {
     }
 
     public void initChatRooms() {
-            SplashScreenActivity.dkLiveChat.chatRoomListener.getRoomList(new CallbackListener() {
-                @Override
-                public void onSuccess(String msg, Object... obj) {
+        SplashScreenActivity.dkLiveChat.chatRoomListener.getRoomList(new CallbackListener() {
+            @Override
+            public void onSuccess(String msg, Object... obj) {
 
-                                mProgressBar.setVisibility(View.GONE);
-                                List<String> list = new ArrayList<>();
-                                list = (List<String>) obj[0];
+                mRoomList.clear();
+                mProgressBar.setVisibility(View.GONE);
+                List<String> list = new ArrayList<>();
+                list = (List<String>) obj[0];
 
-                                for (String roomName : list) {
-                                    Room room = new Room();
-                                    room.setRoomName(roomName);
-                                    mRoomList.add(room);
-                                }
-
-                                mRoomListAdapter = new RoomListAdapter(mRoomList, HomePageActivity.this);
-                                mRoomListView.setAdapter(mRoomListAdapter);
-                                mRoomListView.setLayoutManager(new LinearLayoutManager(HomePageActivity.this));
-
+                for (String roomName : list) {
+                    Room room = new Room();
+                    room.setRoomName(roomName);
+                    mRoomList.add(room);
                 }
 
-                @Override
-                public void onError(String msg, Object... obj) {
-                    mProgressBar.setVisibility(View.GONE);
-                }
-            });
+                mRoomListAdapter = new RoomListAdapter(mRoomList, HomePageActivity.this);
+                mRoomListView.setAdapter(mRoomListAdapter);
+                mRoomListView.setLayoutManager(new LinearLayoutManager(HomePageActivity.this));
+
+            }
+
+            @Override
+            public void onError(String msg, Object... obj) {
+                mProgressBar.setVisibility(View.GONE);
+            }
+        });
 
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_home_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.refresh:
+                initChatRooms();
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     public void updateName() {
@@ -148,9 +170,16 @@ public class HomePageActivity extends BaseActivity {
                     //should add the dk room creation apis here
                     Room mRoom = new Room();
                     mRoom.setRoomName(roomName);
+                    for (int i = 0; i < mRoomList.size(); i++) {
+                        if (mRoomList.get(i).getRoomName().equalsIgnoreCase(roomName)) {
+                            Snackbar.make(getCurrentFocus(), "Room Name must be unique", Snackbar.LENGTH_LONG).show();
+                            return;
+                        }
+                    }
+
                     mRoomList.add(mRoom);
                     mRoomListAdapter.notifyDataSetChanged();
-
+                    mRoomListAdapter.enterRoomOnCreation(roomName);
                 }
                 roomNameEditText.setText("");
             }
