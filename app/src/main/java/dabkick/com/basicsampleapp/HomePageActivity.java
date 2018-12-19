@@ -74,34 +74,34 @@ public class HomePageActivity extends BaseActivity {
     }
 
     public void initChatRooms() {
-        SplashScreenActivity.dkLiveChat.chatRoomListener.getRoomList(new CallbackListener() {
-            @Override
-            public void onSuccess(String msg, Object... obj) {
+        if (SplashScreenActivity.dkLiveChat.chatRoomListener != null) {
+            SplashScreenActivity.dkLiveChat.chatRoomListener.getRoomList(new CallbackListener() {
+                @Override
+                public void onSuccess(String msg, Object... obj) {
 
-                mRoomList.clear();
-                mProgressBar.setVisibility(View.GONE);
-                List<String> list = new ArrayList<>();
-                list = (List<String>) obj[0];
+                    mRoomList.clear();
+                    mProgressBar.setVisibility(View.GONE);
+                    List<String> list = new ArrayList<>();
+                    list = (List<String>) obj[0];
 
-                for (String roomName : list) {
-                    Room room = new Room();
-                    room.setRoomName(roomName);
-                    mRoomList.add(room);
+                    for (String roomName : list) {
+                        Room room = new Room();
+                        room.setRoomName(roomName);
+                        mRoomList.add(room);
+                    }
+
+                    mRoomListAdapter = new RoomListAdapter(mRoomList, HomePageActivity.this);
+                    mRoomListView.setAdapter(mRoomListAdapter);
+                    mRoomListView.setLayoutManager(new LinearLayoutManager(HomePageActivity.this));
+
                 }
 
-                mRoomListAdapter = new RoomListAdapter(mRoomList, HomePageActivity.this);
-                mRoomListView.setAdapter(mRoomListAdapter);
-                mRoomListView.setLayoutManager(new LinearLayoutManager(HomePageActivity.this));
-
-            }
-
-            @Override
-            public void onError(String msg, Object... obj) {
-                mProgressBar.setVisibility(View.GONE);
-            }
-        });
-
-
+                @Override
+                public void onError(String msg, Object... obj) {
+                    mProgressBar.setVisibility(View.GONE);
+                }
+            });
+        }
     }
 
     @Override
