@@ -4,7 +4,9 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.AppCompatEditText;
@@ -40,6 +42,8 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import dabkick.com.basicsampleapp.Adapters.RoomListAdapter;
 import dabkick.com.basicsampleapp.Model.Room;
+
+import static dabkick.com.basicsampleapp.ProfileSettingsFragment.PERMISSIONS_REQUEST_CAMERA;
 
 public class HomePageActivity extends BaseActivity {
 
@@ -212,7 +216,11 @@ public class HomePageActivity extends BaseActivity {
 
     @OnClick(R.id.settings_icon)
     public void onClickSetttingsIcon() {
-
+        ProfileSettingsFragment profileSettingsFragment = ProfileSettingsFragment.newInstance();
+        android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.frag_container, profileSettingsFragment, "profile_settings_frag");
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
     @OnClick(R.id.refresh_icon)
@@ -227,6 +235,18 @@ public class HomePageActivity extends BaseActivity {
             mCreateRoomBtn.hide();
     }
 
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == ProfileSettingsFragment.CAMERA_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                Fragment fragment = getSupportFragmentManager().findFragmentByTag("profile_settings_frag");
+                if(fragment instanceof ProfileSettingsFragment){
+                    ((ProfileSettingsFragment)fragment).mProfileImgView.setImageURI(((ProfileSettingsFragment)fragment).profileImgUri);
+
+                    PreferenceHandler.setUserProfileImg(this, ((ProfileSettingsFragment)fragment).profileImgUri.toString());
+                }
+            }
+        }
+    }
 
     @Override
     protected void onDestroy() {
