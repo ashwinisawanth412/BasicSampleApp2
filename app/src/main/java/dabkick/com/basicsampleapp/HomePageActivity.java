@@ -91,7 +91,7 @@ public class HomePageActivity extends BaseActivity {
                         mRoomList.add(room);
                     }
 
-                    if (mRoomListAdapter != null && mRoomListView != null) {
+                    if (mRoomListView != null) {
                         mRoomListAdapter = new RoomListAdapter(mRoomList, HomePageActivity.this);
                         mRoomListView.setAdapter(mRoomListAdapter);
                         mRoomListView.setLayoutManager(new LinearLayoutManager(HomePageActivity.this));
@@ -103,6 +103,10 @@ public class HomePageActivity extends BaseActivity {
                     mProgressBar.setVisibility(View.GONE);
                 }
             });
+        } else {
+            if (mProgressBar != null && mProgressBar.getVisibility() == View.VISIBLE) {
+                mProgressBar.setVisibility(View.GONE);
+            }
         }
     }
 
