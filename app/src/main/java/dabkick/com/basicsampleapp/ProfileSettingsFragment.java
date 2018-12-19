@@ -12,11 +12,14 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -28,13 +31,15 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static android.app.Activity.RESULT_OK;
+
 public class ProfileSettingsFragment extends Fragment {
 
     private Unbinder mUnbinder;
     @BindView(R.id.profile_user_name)
     AppCompatTextView mUserName;
     @BindView(R.id.profile_img_view)
-    CircleImageView mProfileImgView;
+    AppCompatImageView mProfileImgView;
 
     public static final int PERMISSIONS_REQUEST_CAMERA = 0;
     public static final int CAMERA_REQUEST_CODE = 100;
@@ -119,6 +124,15 @@ public class ProfileSettingsFragment extends Fragment {
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == CAMERA_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                Picasso.get().load(profileImgUri).into(mProfileImgView);
+            }
+        }
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
 
@@ -126,15 +140,5 @@ public class ProfileSettingsFragment extends Fragment {
             ((HomePageActivity) getActivity()).updateFloatingBtn(true);
         }
         mUnbinder.unbind();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        releaseCamera();
-    }
-
-    public void releaseCamera() {
-
     }
 }

@@ -235,19 +235,6 @@ public class HomePageActivity extends BaseActivity {
             mCreateRoomBtn.hide();
     }
 
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == ProfileSettingsFragment.CAMERA_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-                Fragment fragment = getSupportFragmentManager().findFragmentByTag("profile_settings_frag");
-                if(fragment instanceof ProfileSettingsFragment){
-                    ((ProfileSettingsFragment)fragment).mProfileImgView.setImageURI(((ProfileSettingsFragment)fragment).profileImgUri);
-
-                    PreferenceHandler.setUserProfileImg(this, ((ProfileSettingsFragment)fragment).profileImgUri.toString());
-                }
-            }
-        }
-    }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
