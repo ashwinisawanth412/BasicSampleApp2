@@ -185,6 +185,7 @@ public class HomePageActivity extends BaseActivity {
                         mRoomListAdapter.enterRoomOnCreation(roomName);
                     } else {
                         mRoomListAdapter = new RoomListAdapter(mRoomList, HomePageActivity.this);
+                        mRoomListAdapter.notifyDataSetChanged();
                         mRoomListAdapter.enterRoomOnCreation(roomName);
                     }
                 }
