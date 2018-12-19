@@ -93,6 +93,10 @@ public class ChatRoomFragment extends Fragment {
         Log.d("chatRoom", "roomTitle: " + mRoomName);
         mRoomTitle.setText(mRoomName);
 
+        if(getActivity().getClass() == HomePageActivity.class) {
+            ((HomePageActivity)getActivity()).updateFloatingBtn(false);
+        }
+
         chatMsgAdapter = new ChatMsgAdapter();
         recyclerView.setAdapter(chatMsgAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -334,6 +338,11 @@ public class ChatRoomFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         mRoomName = "";
+
+        if(getActivity().getClass() == HomePageActivity.class) {
+            ((HomePageActivity)getActivity()).updateFloatingBtn(true);
+        }
+
         if (chatMsgAdapter != null) {
             chatMsgAdapter.clearMsgs();
             chatMsgAdapter = null;

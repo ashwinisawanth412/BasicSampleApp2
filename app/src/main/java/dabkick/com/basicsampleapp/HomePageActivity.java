@@ -69,7 +69,6 @@ public class HomePageActivity extends BaseActivity {
         mProgressBar.setVisibility(View.VISIBLE);
         updateName();
         initChatRooms();
-
     }
 
     @Override
@@ -211,8 +210,15 @@ public class HomePageActivity extends BaseActivity {
     }
 
     @OnClick(R.id.settings_icon)
-    public void onClickSetttingsIcon(){
+    public void onClickSetttingsIcon() {
 
+    }
+
+    public void updateFloatingBtn(boolean show) {
+        if (show)
+            mCreateRoomBtn.show();
+        else
+            mCreateRoomBtn.hide();
     }
 
 

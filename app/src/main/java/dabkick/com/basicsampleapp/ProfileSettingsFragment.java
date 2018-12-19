@@ -13,11 +13,24 @@ public class ProfileSettingsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return super.onCreateView(inflater, container, savedInstanceState);
+
+        View view = inflater.inflate(R.layout.frag_profile_settings, container, false);
+
+        if(getActivity().getClass() == HomePageActivity.class) {
+            ((HomePageActivity)getActivity()).updateFloatingBtn(false);
+        }
+
+
+
+
+        return view;
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        if(getActivity().getClass() == HomePageActivity.class) {
+            ((HomePageActivity)getActivity()).updateFloatingBtn(true);
+        }
     }
 }
