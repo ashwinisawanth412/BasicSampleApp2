@@ -180,8 +180,14 @@ public class HomePageActivity extends BaseActivity {
                     }
 
                     mRoomList.add(mRoom);
-                    mRoomListAdapter.notifyDataSetChanged();
-                    mRoomListAdapter.enterRoomOnCreation(roomName);
+                    if (mRoomListAdapter != null) {
+                        mRoomListAdapter.notifyDataSetChanged();
+                        mRoomListAdapter.enterRoomOnCreation(roomName);
+                    } else {
+                        mRoomListAdapter = new RoomListAdapter(mRoomList, HomePageActivity.this);
+                        mRoomListView.setAdapter(mRoomListAdapter);
+                        mRoomListView.setLayoutManager(new LinearLayoutManager(HomePageActivity.this));
+                    }
                 }
                 roomNameEditText.setText("");
             }
