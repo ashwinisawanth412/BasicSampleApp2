@@ -14,7 +14,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,14 +21,11 @@ import android.view.ViewGroup;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -44,7 +40,7 @@ public class ProfileSettingsFragment extends Fragment {
     public static final int PERMISSIONS_REQUEST_CAMERA = 0;
     public static final int CAMERA_REQUEST_CODE = 100;
     boolean isCameraPermissionGranted;
-    Uri profileImgUri;
+    File mProfileImgFile = null;
 
     public static ProfileSettingsFragment newInstance() {
         ProfileSettingsFragment fragment = new ProfileSettingsFragment();
@@ -89,13 +85,12 @@ public class ProfileSettingsFragment extends Fragment {
         }
     }
 
-
     private void takePicture() {
         if (isCameraPermissionGranted) {
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            profileImgUri = Uri.fromFile(getOutputMediaFile());
-            Log.d("ProfilePicFrag", "take pic: file: " + profileImgUri.toString());
-//            intent.putExtra(MediaStore.EXTRA_OUTPUT, profileImgUri);
+            File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
+            mProfileImgFile = new File(dir, "DabkickProfileImg.jpeg");
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mProfileImgFile));
             startActivityForResult(intent, CAMERA_REQUEST_CODE);
         } else {
             ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.CAMERA, android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSIONS_REQUEST_CAMERA);
@@ -108,26 +103,12 @@ public class ProfileSettingsFragment extends Fragment {
         takePicture();
     }
 
-    private static File getOutputMediaFile() {
-        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES), "DabkickSampleApp");
-
-        if (!mediaStorageDir.exists()) {
-            if (!mediaStorageDir.mkdirs()) {
-                return null;
-            }
-        }
-
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        return new File(mediaStorageDir.getPath() + File.separator +
-                "IMG_" + timeStamp + ".jpg");
-    }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CAMERA_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                Picasso.get().load(profileImgUri).into(mProfileImgView);
+                Picasso.get().load(Uri.fromFile(mProfileImgFile)).placeholder(R.drawable.avatar_img).error(R.drawable.avatar_img).into(mProfileImgView);
+                PreferenceHandler.setUserProfileImg(BaseActivity.mCurrentActivity, Uri.fromFile(mProfileImgFile).toString());
             }
         }
     }
