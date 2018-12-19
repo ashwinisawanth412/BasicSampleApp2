@@ -93,8 +93,8 @@ public class ChatRoomFragment extends Fragment {
         Log.d("chatRoom", "roomTitle: " + mRoomName);
         mRoomTitle.setText(mRoomName);
 
-        if(getActivity().getClass() == HomePageActivity.class) {
-            ((HomePageActivity)getActivity()).updateFloatingBtn(false);
+        if (getActivity().getClass() == HomePageActivity.class) {
+            ((HomePageActivity) getActivity()).updateFloatingBtn(false);
         }
 
         chatMsgAdapter = new ChatMsgAdapter();
@@ -150,10 +150,12 @@ public class ChatRoomFragment extends Fragment {
                             recyclerView.scrollToPosition((chatMsgAdapter.getItemCount() - 1));
                         } else if (!message.getUserName().equalsIgnoreCase(name)) {
                             //i am not in the same room as the msg received and am not the sender of the msg. So add it as unread msg
-                            Room room = ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.getRoomItem(roomName);
-                            if (room != null) {
-                                room.addUnreadMsg(message);
-                                ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.updateRoomUponNewMsg(room);
+                            if (BaseActivity.mCurrentActivity.getClass() == HomePageActivity.class) {
+                                Room room = ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.getRoomItem(roomName);
+                                if (room != null) {
+                                    room.addUnreadMsg(message);
+                                    ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.updateRoomUponNewMsg(room);
+                                }
                             }
                         }
                     }
@@ -184,27 +186,27 @@ public class ChatRoomFragment extends Fragment {
             SplashScreenActivity.dkLiveChat.subscribe(mRoomName, liveChatCallbackListener, userPresenceCallBackListener, new CallbackListener() {
                 @Override
                 public void onSuccess(String msg, Object... obj) {
-                        try {
-                            BaseActivity.mCurrentActivity.runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    new Handler().postDelayed(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            if (mProgressBar != null)
-                                                mProgressBar.setVisibility(View.GONE);
-                                            if (chatMsgAdapter != null)
-                                                chatMsgAdapter.addAllMessages(SplashScreenActivity.dkLiveChat.chatEventListener.getChatMessages(mRoomName));
-                                            if (recyclerView != null)
-                                                recyclerView.scrollToPosition(chatMsgAdapter.getItemCount() - 1);
+                    try {
+                        BaseActivity.mCurrentActivity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (mProgressBar != null)
+                                            mProgressBar.setVisibility(View.GONE);
+                                        if (chatMsgAdapter != null)
+                                            chatMsgAdapter.addAllMessages(SplashScreenActivity.dkLiveChat.chatEventListener.getChatMessages(mRoomName));
+                                        if (recyclerView != null)
+                                            recyclerView.scrollToPosition(chatMsgAdapter.getItemCount() - 1);
 
-                                        }
-                                    }, 3000);
+                                    }
+                                }, 3000);
 
-                                }
-                            });
-                        } catch (Exception e) {
-                        }
+                            }
+                        });
+                    } catch (Exception e) {
+                    }
                 }
 
                 @Override
@@ -340,8 +342,8 @@ public class ChatRoomFragment extends Fragment {
         super.onDestroyView();
         mRoomName = "";
 
-        if(getActivity().getClass() == HomePageActivity.class) {
-            ((HomePageActivity)getActivity()).updateFloatingBtn(true);
+        if (getActivity().getClass() == HomePageActivity.class) {
+            ((HomePageActivity) getActivity()).updateFloatingBtn(true);
         }
 
         if (chatMsgAdapter != null) {
