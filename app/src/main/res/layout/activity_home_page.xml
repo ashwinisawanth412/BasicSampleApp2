@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".HomePageActivity">
 
-    <android.support.v7.widget.Toolbar
+    <RelativeLayout
         android:id="@+id/tool_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
@@ -16,14 +16,24 @@
             android:id="@+id/tool_bar_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="16dp"
             android:fontFamily="cursive"
             android:text="Sample App"
             android:textColor="@color/white"
             android:textSize="30sp"
-            android:textStyle="bold"
-            />
-    </android.support.v7.widget.Toolbar>
+            android:textStyle="bold" />
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/settings_icon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:padding="5dp"
+            android:layout_marginRight="16dp"
+            android:src="@drawable/settings_white_18dp" />
+    </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/room_list_view"
@@ -49,23 +59,22 @@
         android:id="@+id/create_room"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_alignParentRight="true"
         android:layout_above="@+id/disconnect_text_view"
+        android:layout_alignParentRight="true"
         android:layout_marginRight="16dp"
-        android:src="@drawable/add_white_18dp"
-        android:elevation="6dp"/>
+        android:elevation="6dp"
+        android:src="@drawable/add_white_18dp" />
 
     <FrameLayout
         android:id="@+id/frag_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
+        android:layout_height="match_parent" />
 
     <ProgressBar
+        android:id="@+id/progressBar"
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:visibility="visible"
-        android:id="@+id/progressBar" />
+        android:visibility="visible" />
 </RelativeLayout>

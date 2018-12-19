@@ -5,17 +5,25 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AppCompatActivity;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.AppCompatEditText;
+import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.dabkick.engine.Public.CallbackListener;
@@ -44,13 +52,12 @@ public class HomePageActivity extends BaseActivity {
     RoomListAdapter mRoomListAdapter;
 
     @BindView(R.id.tool_bar_layout)
-    android.support.v7.widget.Toolbar mToolBar;
+    RelativeLayout mToolBar;
     @BindView(R.id.progressBar)
     ProgressBar mProgressBar;
     @BindView(R.id.create_room)
     FloatingActionButton mCreateRoomBtn;
     List<Room> mRoomList = new ArrayList<Room>();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,9 +65,6 @@ public class HomePageActivity extends BaseActivity {
         setContentView(R.layout.activity_home_page);
 
         mUnbinder = ButterKnife.bind(this);
-
-        setSupportActionBar(mToolBar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         mProgressBar.setVisibility(View.VISIBLE);
         updateName();
@@ -96,6 +100,7 @@ public class HomePageActivity extends BaseActivity {
                         mRoomListView.setAdapter(mRoomListAdapter);
                         mRoomListView.setLayoutManager(new LinearLayoutManager(HomePageActivity.this));
                     }
+
                 }
 
                 @Override
@@ -204,6 +209,12 @@ public class HomePageActivity extends BaseActivity {
         builder.setCancelable(false);
         builder.create().show();
     }
+
+    @OnClick(R.id.settings_icon)
+    public void onClickSetttingsIcon(){
+
+    }
+
 
     @Override
     protected void onDestroy() {

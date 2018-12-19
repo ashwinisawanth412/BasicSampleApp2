@@ -8,7 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import dabkick.com.basicsampleapp.R;
-import  com.dabkick.engine.Public.UserInfo;
+import de.hdodenhof.circleimageview.CircleImageView;
+
+import com.dabkick.engine.Public.UserInfo;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -31,11 +34,14 @@ public class ParticipantListAdapter extends RecyclerView.Adapter<ParticipantList
 
     @Override
     public void onBindViewHolder(@NonNull ParticipantProfileHolder holder, int position) {
-        UserInfo participant = participantList.get(position);
-        String name = participant.getName();
+        UserInfo userInfo = participantList.get(position);
+        String name = userInfo.getName();
         if (name != null)
             holder.userName.setText(name);
 
+        String profileImgUrl = participantList.get(position).getProfilePicUrl();
+        if(profileImgUrl != null && !profileImgUrl.trim().isEmpty())
+            Picasso.get().load(profileImgUrl).placeholder(R.drawable.avatar_img).error(R.drawable.avatar_img).into(holder.profileImg);
     }
 
     @Override
@@ -44,11 +50,13 @@ public class ParticipantListAdapter extends RecyclerView.Adapter<ParticipantList
     }
 
     public class ParticipantProfileHolder extends RecyclerView.ViewHolder {
-        public AppCompatTextView userName;
+        AppCompatTextView userName;
+        CircleImageView profileImg;
 
         public ParticipantProfileHolder(@NonNull View itemView) {
             super(itemView);
             userName = itemView.findViewById(R.id.profile_name);
+            profileImg = itemView.findViewById(R.id.profile_pic_img);
         }
     }
 }

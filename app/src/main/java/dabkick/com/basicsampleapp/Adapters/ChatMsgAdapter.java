@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dabkick.com.basicsampleapp.R;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ChatMsgAdapter extends RecyclerView.Adapter<ChatMsgAdapter.MessageHolder> {
 
@@ -37,6 +38,9 @@ public class ChatMsgAdapter extends RecyclerView.Adapter<ChatMsgAdapter.MessageH
             messageHolder.name.setText("anonymous"); //if user name is not set, make it gone
 
         messageHolder.msg.setText(messageInfoList.get(i).getChatMessage());
+
+//        String profileImgUrl = messageInfoList.get(i).getImg();
+//        Picasso.get().load("").placeholder(R.drawable.avatar_img).error(R.drawable.avatar_img).into(messageHolder.profileImg);
     }
 
     @Override
@@ -45,12 +49,14 @@ public class ChatMsgAdapter extends RecyclerView.Adapter<ChatMsgAdapter.MessageH
     }
 
     public class MessageHolder extends RecyclerView.ViewHolder {
-        public TextView msg, name;
+        TextView msg, name;
+        CircleImageView profileImg;
 
         public MessageHolder(@NonNull View itemView) {
             super(itemView);
             msg = itemView.findViewById(R.id.message_text_view);
             name = itemView.findViewById(R.id.user_name_text_view);
+            profileImg = itemView.findViewById(R.id.profile_pic_img);
         }
     }
 
