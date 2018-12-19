@@ -63,7 +63,6 @@ public class ChatRoomFragment extends Fragment {
     static ChatMsgAdapter chatMsgAdapter;
     private LiveChatCallbackListener liveChatCallbackListener;
     private UserPresenceCallBackListener userPresenceCallBackListener;
-    private boolean isSubscribeCalled = false;
 
     public ChatRoomFragment() {
     }
@@ -177,12 +176,10 @@ public class ChatRoomFragment extends Fragment {
         };
 
         if (!SplashScreenActivity.dkLiveChat.isSubscribed(mRoomName)) {
-            isSubscribeCalled = true;
             mProgressBar.setVisibility(View.VISIBLE);
             SplashScreenActivity.dkLiveChat.subscribe(mRoomName, liveChatCallbackListener, userPresenceCallBackListener, new CallbackListener() {
                 @Override
                 public void onSuccess(String msg, Object... obj) {
-                    if (isSubscribeCalled) {
                         try {
                             BaseActivity.mCurrentActivity.runOnUiThread(new Runnable() {
                                 @Override
@@ -204,7 +201,6 @@ public class ChatRoomFragment extends Fragment {
                             });
                         } catch (Exception e) {
                         }
-                    }
                 }
 
                 @Override
@@ -240,7 +236,6 @@ public class ChatRoomFragment extends Fragment {
 
     @OnClick(R.id.back_arrow)
     public void backBtnClicked() {
-        isSubscribeCalled = false;
         Utils.hideKeyboard(getActivity());
         getActivity().onBackPressed();
         SplashScreenActivity.dkLiveChat.leaveSession(mRoomName, new CallbackListener() {

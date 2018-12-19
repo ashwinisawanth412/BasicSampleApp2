@@ -1,10 +1,8 @@
 package dabkick.com.basicsampleapp;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.AppCompatEditText;
@@ -12,12 +10,8 @@ import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -76,14 +70,10 @@ public class HomePageActivity extends BaseActivity {
     }
 
     public void initChatRooms() {
-        try {
             SplashScreenActivity.dkLiveChat.chatRoomListener.getRoomList(new CallbackListener() {
                 @Override
                 public void onSuccess(String msg, Object... obj) {
-                    try {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
+
                                 mProgressBar.setVisibility(View.GONE);
                                 List<String> list = new ArrayList<>();
                                 list = (List<String>) obj[0];
@@ -97,11 +87,6 @@ public class HomePageActivity extends BaseActivity {
                                 mRoomListAdapter = new RoomListAdapter(mRoomList, HomePageActivity.this);
                                 mRoomListView.setAdapter(mRoomListAdapter);
                                 mRoomListView.setLayoutManager(new LinearLayoutManager(HomePageActivity.this));
-                            }
-                        });
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
 
                 }
 
@@ -111,9 +96,7 @@ public class HomePageActivity extends BaseActivity {
                 }
             });
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
     }
 
     public void updateName() {
