@@ -185,8 +185,7 @@ public class HomePageActivity extends BaseActivity {
                         mRoomListAdapter.enterRoomOnCreation(roomName);
                     } else {
                         mRoomListAdapter = new RoomListAdapter(mRoomList, HomePageActivity.this);
-                        mRoomListView.setAdapter(mRoomListAdapter);
-                        mRoomListView.setLayoutManager(new LinearLayoutManager(HomePageActivity.this));
+                        mRoomListAdapter.enterRoomOnCreation(roomName);
                     }
                 }
                 roomNameEditText.setText("");
