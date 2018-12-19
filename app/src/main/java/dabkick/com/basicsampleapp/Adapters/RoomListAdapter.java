@@ -65,6 +65,8 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.RoomHo
         if(SplashScreenActivity.dkLiveChat.isSubscribed(roomName)){
             holder.roomName.setTextColor(Color.BLACK);
             holder.roomName.setTypeface(null, Typeface.BOLD_ITALIC);
+        }else{
+            holder.roomName.setTextColor(Color.DKGRAY);
         }
     }
 
