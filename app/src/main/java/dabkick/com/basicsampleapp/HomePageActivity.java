@@ -80,7 +80,8 @@ public class HomePageActivity extends BaseActivity {
                 public void onSuccess(String msg, Object... obj) {
 
                     mRoomList.clear();
-                    mProgressBar.setVisibility(View.GONE);
+                    if (mProgressBar != null)
+                        mProgressBar.setVisibility(View.GONE);
                     List<String> list = new ArrayList<>();
                     list = (List<String>) obj[0];
 
@@ -90,10 +91,11 @@ public class HomePageActivity extends BaseActivity {
                         mRoomList.add(room);
                     }
 
-                    mRoomListAdapter = new RoomListAdapter(mRoomList, HomePageActivity.this);
-                    mRoomListView.setAdapter(mRoomListAdapter);
-                    mRoomListView.setLayoutManager(new LinearLayoutManager(HomePageActivity.this));
-
+                    if (mRoomListAdapter != null && mRoomListView != null) {
+                        mRoomListAdapter = new RoomListAdapter(mRoomList, HomePageActivity.this);
+                        mRoomListView.setAdapter(mRoomListAdapter);
+                        mRoomListView.setLayoutManager(new LinearLayoutManager(HomePageActivity.this));
+                    }
                 }
 
                 @Override
