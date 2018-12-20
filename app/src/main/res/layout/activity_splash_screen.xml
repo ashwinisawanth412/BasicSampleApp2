@@ -19,59 +19,65 @@
         android:textSize="50sp"
         android:textStyle="bold" />
 
-    <RelativeLayout
-        android:id="@+id/container"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_below="@+id/title">
 
-        <android.support.v7.widget.AppCompatEditText
-            android:id="@+id/user_name_edit_text"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginRight="16dp"
-            android:background="@drawable/rounded_corner"
-            android:hint="@string/enter_user_name_hint"
-            android:paddingLeft="10dp" />
+        <RelativeLayout
+            android:id="@+id/container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-        <android.support.v7.widget.AppCompatEditText
-            android:id="@+id/dev_id_edit_text"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_below="@+id/user_name_edit_text"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginRight="16dp"
-            android:background="@drawable/rounded_corner"
-            android:hint="@string/enter_dev_id"
-            android:paddingLeft="10dp" />
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/user_name_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginRight="16dp"
+                android:background="@drawable/rounded_corner"
+                android:hint="@string/enter_user_name_hint"
+                android:paddingLeft="10dp" />
 
-        <android.support.v7.widget.AppCompatEditText
-            android:id="@+id/dev_key_edit_text"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_below="@+id/dev_id_edit_text"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginRight="16dp"
-            android:background="@drawable/rounded_corner"
-            android:hint="@string/enter_dev_key"
-            android:paddingLeft="10dp" />
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/dev_id_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@+id/user_name_edit_text"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginRight="16dp"
+                android:background="@drawable/rounded_corner"
+                android:hint="@string/enter_dev_id"
+                android:paddingLeft="10dp" />
 
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/done_btn"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_below="@+id/dev_key_edit_text"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginRight="16dp"
-            android:background="@drawable/rounded_corner"
-            android:text="Go to chat room"
-            android:textSize="15sp" />
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/dev_key_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@+id/dev_id_edit_text"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginRight="16dp"
+                android:background="@drawable/rounded_corner"
+                android:hint="@string/enter_dev_key"
+                android:paddingLeft="10dp" />
 
-    </RelativeLayout>
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/done_btn"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@+id/dev_key_edit_text"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginRight="16dp"
+                android:background="@drawable/rounded_corner"
+                android:text="Go to chat room"
+                android:textSize="15sp" />
+
+        </RelativeLayout>
+
+    </ScrollView>
 
 </RelativeLayout>
