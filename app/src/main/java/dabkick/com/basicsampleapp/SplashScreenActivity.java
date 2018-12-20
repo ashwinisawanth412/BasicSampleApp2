@@ -48,7 +48,8 @@ public class SplashScreenActivity extends BaseActivity {
 
         unbinder = ButterKnife.bind(this);
         setUserDetailsIfUpdated();
-
+        mUserDevKeyEdiText.setText("3d8a7db548d5d91447d64d09a37f12");
+        mUserDevId.setText("DK09aff676f38011e88a1a06f");
     }
 
     public void setUserDetailsIfUpdated(){

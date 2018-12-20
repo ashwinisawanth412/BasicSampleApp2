@@ -113,12 +113,13 @@ public class ProfileSettingsFragment extends Fragment {
         if (requestCode == CAMERA_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 Picasso.get().load(Uri.fromFile(mProfileImgFile)).placeholder(R.drawable.avatar_img).error(R.drawable.avatar_img).into(mProfileImgView);
+                PreferenceHandler.setUserProfileImg(BaseActivity.mCurrentActivity, Uri.fromFile(mProfileImgFile).toString());
                 //to be used. currently causing app crash
              /*   SplashScreenActivity.dkLiveChat.updateUserProfilePicture(mProfileImgFile.getAbsolutePath(), new CallbackListener() {
                     @Override
                     public void onSuccess(String s, Object... objects) {
                         Toast.makeText(BaseActivity.mCurrentActivity, "Successfully uploaded profile img", Toast.LENGTH_LONG).show();
-                        PreferenceHandler.setUserProfileImg(BaseActivity.mCurrentActivity, Uri.fromFile(mProfileImgFile).toString());
+
                     }
 
                     @Override
