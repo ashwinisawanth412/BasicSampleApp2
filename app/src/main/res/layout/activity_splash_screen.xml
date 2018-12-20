@@ -36,12 +36,35 @@
             android:hint="@string/enter_user_name_hint"
             android:paddingLeft="10dp" />
 
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/dev_id_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_below="@+id/user_name_edit_text"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginRight="16dp"
+            android:background="@drawable/rounded_corner"
+            android:hint="@string/enter_dev_id"
+            android:paddingLeft="10dp" />
+
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/dev_key_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_below="@+id/dev_id_edit_text"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginRight="16dp"
+            android:background="@drawable/rounded_corner"
+            android:hint="@string/enter_dev_key"
+            android:paddingLeft="10dp" />
 
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/done_btn"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_below="@+id/user_name_edit_text"
+            android:layout_below="@+id/dev_key_edit_text"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="30dp"
             android:layout_marginRight="16dp"

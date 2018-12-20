@@ -27,9 +27,30 @@ public class PreferenceHandler {
         return preferences.getString("userProfileImg", "");
     }
 
+    static public void setDevId(Context context, String str) {
+        SharedPreferences.Editor editor = context.getApplicationContext().getSharedPreferences("SampleAppPref", Context.MODE_PRIVATE).edit();
+        editor.putString("devId", str);
+        editor.commit();
+    }
+
+    static public String getDevId(Context context) {
+        SharedPreferences preferences = context.getApplicationContext().getSharedPreferences("SampleAppPref", Context.MODE_PRIVATE);
+        return preferences.getString("devId", "");
+    }
+    static public void setDevKey(Context context, String str) {
+        SharedPreferences.Editor editor = context.getApplicationContext().getSharedPreferences("SampleAppPref", Context.MODE_PRIVATE).edit();
+        editor.putString("devKey", str);
+        editor.commit();
+    }
+
+    static public String getDevKey(Context context) {
+        SharedPreferences preferences = context.getApplicationContext().getSharedPreferences("SampleAppPref", Context.MODE_PRIVATE);
+        return preferences.getString("devKey", "");
+    }
 
     public static void clearAll(Context context) {
         SharedPreferences preferences = context.getApplicationContext().getSharedPreferences("SampleAppPref", Context.MODE_PRIVATE);
         preferences.edit().clear().commit();
     }
+
 }

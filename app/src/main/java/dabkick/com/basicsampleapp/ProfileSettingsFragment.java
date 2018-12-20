@@ -14,10 +14,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.dabkick.engine.Public.CallbackListener;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -110,7 +113,19 @@ public class ProfileSettingsFragment extends Fragment {
         if (requestCode == CAMERA_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 Picasso.get().load(Uri.fromFile(mProfileImgFile)).placeholder(R.drawable.avatar_img).error(R.drawable.avatar_img).into(mProfileImgView);
-                PreferenceHandler.setUserProfileImg(BaseActivity.mCurrentActivity, Uri.fromFile(mProfileImgFile).toString());
+                //to be used. currently causing app crash
+             /*   SplashScreenActivity.dkLiveChat.updateUserProfilePicture(mProfileImgFile.getAbsolutePath(), new CallbackListener() {
+                    @Override
+                    public void onSuccess(String s, Object... objects) {
+                        Toast.makeText(BaseActivity.mCurrentActivity, "Successfully uploaded profile img", Toast.LENGTH_LONG).show();
+                        PreferenceHandler.setUserProfileImg(BaseActivity.mCurrentActivity, Uri.fromFile(mProfileImgFile).toString());
+                    }
+
+                    @Override
+                    public void onError(String s, Object... objects) {
+
+                    }
+                });*/
             }
         }
     }

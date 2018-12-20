@@ -12,6 +12,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.dabkick.engine.Public.Authentication;
 import com.dabkick.engine.Public.CallbackListener;
@@ -29,6 +30,11 @@ public class SplashScreenActivity extends BaseActivity {
     AppCompatButton mDoneBtn;
     @BindView(R.id.user_name_edit_text)
     AppCompatEditText mUserNameEditText;
+    @BindView(R.id.dev_key_edit_text)
+    AppCompatEditText mUserDevKeyEdiText;
+    @BindView(R.id.dev_id_edit_text)
+    AppCompatEditText mUserDevId;
+
     @BindView(R.id.container)
     RelativeLayout mNameEditTextContainer;
     private Unbinder unbinder;
@@ -41,8 +47,6 @@ public class SplashScreenActivity extends BaseActivity {
         setContentView(R.layout.activity_splash_screen);
 
         unbinder = ButterKnife.bind(this);
-        //initialize engine
-        initEngine();
         setUserDetailsIfUpdated();
 
     }
@@ -51,26 +55,43 @@ public class SplashScreenActivity extends BaseActivity {
         String name = PreferenceHandler.getUserName(SplashScreenActivity.this);
         mUserNameEditText.setText(name);
         mUserNameEditText.setSelection(name.length());
+
+        String devKey = PreferenceHandler.getDevKey(SplashScreenActivity.this);
+        mUserDevKeyEdiText.setText(devKey);
+        mUserDevKeyEdiText.setSelection(devKey.length());
+
+        String devId = PreferenceHandler.getDevId(SplashScreenActivity.this);
+        mUserDevId.setText(devId);
+        mUserDevId.setSelection(devId.length());
+
     }
 
     public void initEngine() {
-        Authentication auth = new Authentication("DK09aff676f38011e88a1a06f", "3d8a7db548d5d91447d64d09a37f12");
+        String devId = mUserDevId.getText().toString().trim();
+        String devKey = mUserDevKeyEdiText.getText().toString().trim();
+
+        Authentication auth = new Authentication(devId, devKey);
         dkLiveChat = new DKLiveChat(this, auth, new CallbackListener() {
             @Override
             public void onSuccess(String s, Object... objects) {
+                PreferenceHandler.setUserName(SplashScreenActivity.this, mUserNameEditText.getText().toString().trim());
+                PreferenceHandler.setDevId(BaseActivity.mCurrentActivity, devId);
+                PreferenceHandler.setDevKey(BaseActivity.mCurrentActivity, devKey);
+
+                launchHomePage();
             }
 
             @Override
             public void onError(String s, Object... objects) {
-
+                Toast.makeText(BaseActivity.mCurrentActivity, "Authentication failed.",Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     @OnClick(R.id.done_btn)
     public void doneClick() {
-        PreferenceHandler.setUserName(SplashScreenActivity.this, mUserNameEditText.getText().toString().trim());
-        launchHomePage();
+        //initialize engine
+        initEngine();
     }
 
     public void launchHomePage() {
