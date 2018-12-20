@@ -60,6 +60,8 @@ public class ProfileSettingsFragment extends Fragment {
         }
 
         mUserName.setText("Username: " + PreferenceHandler.getUserName(BaseActivity.mCurrentActivity));
+        if (!PreferenceHandler.getUserProfileImg(BaseActivity.mCurrentActivity).trim().isEmpty())
+            Picasso.get().load(Uri.parse(PreferenceHandler.getUserProfileImg(BaseActivity.mCurrentActivity))).placeholder(R.drawable.avatar_img).error(R.drawable.avatar_img).into(mProfileImgView);
 
         return view;
     }
