@@ -32,13 +32,15 @@ import butterknife.Unbinder;
 
 import static android.app.Activity.RESULT_OK;
 
-public class ProfileSettingsFragment extends Fragment {
+public class ProfileSettingsFragment extends Fragment implements View.OnClickListener {
 
     private Unbinder mUnbinder;
     @BindView(R.id.profile_user_name)
     AppCompatTextView mUserName;
     @BindView(R.id.profile_img_view)
     AppCompatImageView mProfileImgView;
+    @BindView(R.id.profile_pic_edit_view)
+    AppCompatTextView mEditTextBtn;
 
     public static final int PERMISSIONS_REQUEST_CAMERA = 0;
     public static final int CAMERA_REQUEST_CODE = 100;
@@ -57,6 +59,8 @@ public class ProfileSettingsFragment extends Fragment {
         View view = inflater.inflate(R.layout.frag_profile_settings, container, false);
 
         mUnbinder = ButterKnife.bind(this, view);
+
+        mEditTextBtn.setOnClickListener(this);
 
         if (getActivity().getClass() == HomePageActivity.class) {
             ((HomePageActivity) getActivity()).updateFloatingBtn(false);
@@ -102,12 +106,6 @@ public class ProfileSettingsFragment extends Fragment {
         }
     }
 
-
-    @OnClick(R.id.profile_pic_edit_view)
-    public void editProfilePic() {
-        takePicture();
-    }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CAMERA_REQUEST_CODE) {
@@ -139,5 +137,12 @@ public class ProfileSettingsFragment extends Fragment {
             ((HomePageActivity) getActivity()).updateFloatingBtn(true);
         }
         mUnbinder.unbind();
+    }
+
+    @Override
+    public void onClick(View view) {
+        if(view.getId() == R.id.profile_pic_edit_view){
+            takePicture();
+        }
     }
 }
