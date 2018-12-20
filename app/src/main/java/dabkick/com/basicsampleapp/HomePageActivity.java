@@ -4,26 +4,17 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.AppCompatEditText;
-import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -32,7 +23,6 @@ import com.dabkick.engine.Public.CallbackListener;
 import com.dabkick.engine.Public.UserInfo;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -42,8 +32,6 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import dabkick.com.basicsampleapp.Adapters.RoomListAdapter;
 import dabkick.com.basicsampleapp.Model.Room;
-
-import static dabkick.com.basicsampleapp.ProfileSettingsFragment.PERMISSIONS_REQUEST_CAMERA;
 
 public class HomePageActivity extends BaseActivity {
 
@@ -63,6 +51,8 @@ public class HomePageActivity extends BaseActivity {
     FloatingActionButton mCreateRoomBtn;
 
     List<Room> mRoomList = new ArrayList<Room>();
+
+    public static boolean isNewRoomCreated = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -183,6 +173,7 @@ public class HomePageActivity extends BaseActivity {
                 } else {
                     dialog.cancel();
                     //should add the dk room creation apis here
+                    isNewRoomCreated = true;
                     Room mRoom = new Room();
                     mRoom.setRoomName(roomName);
                     for (int i = 0; i < mRoomList.size(); i++) {
