@@ -24,7 +24,8 @@
         android:textColor="@android:color/holo_blue_bright"
         android:textStyle="bold"
         android:layout_toRightOf="@+id/profile_img_view"
-        android:layout_below="@+id/profile_img_view"/>
+        android:layout_below="@+id/profile_img_view"
+        android:clickable="true"/>
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/profile_user_name"
