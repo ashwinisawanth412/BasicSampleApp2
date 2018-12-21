@@ -73,7 +73,7 @@
                 android:layout_marginTop="30dp"
                 android:layout_marginRight="16dp"
                 android:background="@drawable/rounded_corner"
-                android:text="Go to chat room"
+                android:text="Start"
                 android:textSize="15sp" />
 
         </RelativeLayout>

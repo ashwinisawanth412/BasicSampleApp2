@@ -19,7 +19,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="16dp"
             android:fontFamily="cursive"
-            android:text="Sample App"
+            android:text="List of Rooms"
             android:textColor="@color/white"
             android:textSize="30sp"
             android:textStyle="bold" />
