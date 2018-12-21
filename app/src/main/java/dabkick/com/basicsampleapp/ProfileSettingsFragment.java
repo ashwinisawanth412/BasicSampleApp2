@@ -1,6 +1,7 @@
 package dabkick.com.basicsampleapp;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -79,7 +80,7 @@ public class ProfileSettingsFragment extends Fragment implements View.OnClickLis
 
         if (ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             isCameraPermissionGranted = false;
-            ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.CAMERA, android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSIONS_REQUEST_CAMERA);
+            requestPermissions(new String[]{android.Manifest.permission.CAMERA, android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSIONS_REQUEST_CAMERA);
         } else {
             isCameraPermissionGranted = true;
         }
@@ -90,6 +91,7 @@ public class ProfileSettingsFragment extends Fragment implements View.OnClickLis
         switch (requestCode) {
             case PERMISSIONS_REQUEST_CAMERA:
                 isCameraPermissionGranted = true;
+                takePicture();
                 break;
         }
     }
@@ -102,7 +104,7 @@ public class ProfileSettingsFragment extends Fragment implements View.OnClickLis
             intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mProfileImgFile));
             startActivityForResult(intent, CAMERA_REQUEST_CODE);
         } else {
-            ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.CAMERA, android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSIONS_REQUEST_CAMERA);
+            ActivityCompat.requestPermissions((Activity) getContext(), new String[]{android.Manifest.permission.CAMERA, android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSIONS_REQUEST_CAMERA);
         }
     }
 
@@ -113,7 +115,7 @@ public class ProfileSettingsFragment extends Fragment implements View.OnClickLis
                 Picasso.get().load(Uri.fromFile(mProfileImgFile)).placeholder(R.drawable.avatar_img).error(R.drawable.avatar_img).into(mProfileImgView);
                 PreferenceHandler.setUserProfileImg(BaseActivity.mCurrentActivity, Uri.fromFile(mProfileImgFile).toString());
                 //to be used. currently causing app crash
-             /*   SplashScreenActivity.dkLiveChat.updateUserProfilePicture(mProfileImgFile.getAbsolutePath(), new CallbackListener() {
+                SplashScreenActivity.dkLiveChat.updateUserProfilePicture(mProfileImgFile.getAbsolutePath(), new CallbackListener() {
                     @Override
                     public void onSuccess(String s, Object... objects) {
                         Toast.makeText(BaseActivity.mCurrentActivity, "Successfully uploaded profile img", Toast.LENGTH_LONG).show();
@@ -124,7 +126,7 @@ public class ProfileSettingsFragment extends Fragment implements View.OnClickLis
                     public void onError(String s, Object... objects) {
 
                     }
-                });*/
+                });
             }
         }
     }
@@ -141,7 +143,7 @@ public class ProfileSettingsFragment extends Fragment implements View.OnClickLis
 
     @Override
     public void onClick(View view) {
-        if(view.getId() == R.id.profile_pic_edit_view){
+        if (view.getId() == R.id.profile_pic_edit_view) {
             takePicture();
         }
     }
