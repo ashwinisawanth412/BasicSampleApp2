@@ -7,12 +7,14 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Handler;
 
 import dabkick.com.basicsampleapp.ChatRoomFragment;
 import dabkick.com.basicsampleapp.Model.Room;
@@ -62,6 +64,13 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.RoomHo
             holder.unreadMsgCount.setVisibility(View.VISIBLE);
         }
 
+        if(!TextUtils.isEmpty(room.getLatestMsg())) {
+            holder.roomLatestMsg.setVisibility(View.VISIBLE);
+            holder.roomLatestMsg.setText(room.getLatestMsg());
+        } else {
+            holder.roomLatestMsg.setVisibility(View.GONE);
+        }
+
         if(SplashScreenActivity.dkLiveChat.isSubscribed(roomName)){
             holder.roomName.setTextColor(Color.BLACK);
             holder.roomName.setTypeface(null, Typeface.BOLD_ITALIC);
@@ -71,7 +80,7 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.RoomHo
     }
 
     public Room getRoomItem(String roomName) {
-        if (roomName != null && !roomName.isEmpty()) {
+        if (!TextUtils.isEmpty(roomName)) {
             for (Room room : roomInfoList) {
                 if (room.getRoomName().equalsIgnoreCase(roomName)) {
                     return room;
@@ -87,12 +96,13 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.RoomHo
     }
 
     public class RoomHolder extends RecyclerView.ViewHolder {
-        public AppCompatTextView roomName, unreadMsgCount;
+        public AppCompatTextView roomName, unreadMsgCount, roomLatestMsg;
 
         public RoomHolder(@NonNull View itemView) {
             super(itemView);
             roomName = itemView.findViewById(R.id.room_name);
             unreadMsgCount = itemView.findViewById(R.id.unread_count);
+            roomLatestMsg = itemView.findViewById(R.id.room_latest_msg);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -134,5 +144,21 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.RoomHo
         transaction.replace(R.id.frag_container, chatRoom);
         transaction.addToBackStack(null);
         transaction.commit();
+    }
+
+    public void setLatestRoomMsg(String roomName, String msg){
+        if (roomInfoList.contains(getRoomItem(roomName))){
+            Room room = getRoomItem(roomName);
+            room.setLatestMsg(msg);
+            roomInfoList.remove(room);
+            new android.os.Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    roomInfoList.add(0, room);
+                    notifyDataSetChanged();
+
+                }
+            }, 200);
+        }
     }
 }

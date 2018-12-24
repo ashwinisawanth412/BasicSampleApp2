@@ -155,8 +155,9 @@ public class ChatRoomFragment extends Fragment {
                     @Override
                     public void run() {
                         String name = PreferenceHandler.getUserName(BaseActivity.mCurrentActivity);
+                        ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.setLatestRoomMsg(roomName, message.getChatMessage());
                         if (roomName.equalsIgnoreCase(mRoomName)) {
-
+                            //happening sometimes
                             if (recyclerView == null) {
                                 recyclerView = view.findViewById(R.id.recycler);
                                 recyclerView.setAdapter(chatMsgAdapter);
@@ -178,6 +179,8 @@ public class ChatRoomFragment extends Fragment {
                                 }
                             }
                         }
+
+
                     }
                 });
             }

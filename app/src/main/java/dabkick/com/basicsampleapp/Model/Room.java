@@ -9,6 +9,7 @@ public class Room {
     private String roomName;
     List<MessageInfo> unreadMsgList;
     Boolean isSubscribed;
+    String latestMsg;
 
     public Room() {
         unreadMsgList = new ArrayList<MessageInfo>();
@@ -25,6 +26,14 @@ public class Room {
     public void addUnreadMsg(MessageInfo msg) {
         if (this.unreadMsgList != null)
             this.unreadMsgList.add(msg);
+    }
+
+    public String getLatestMsg() {
+        return latestMsg;
+    }
+
+    public void setLatestMsg(String latestMsg) {
+        this.latestMsg = latestMsg;
     }
 
     public void clearUnreadMsgList() {

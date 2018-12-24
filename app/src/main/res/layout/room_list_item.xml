@@ -17,7 +17,6 @@
         android:id="@+id/room_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
         android:layout_marginLeft="10dp"
         android:layout_toRightOf="@+id/room_img"
         android:layout_toLeftOf="@+id/unread_count"
@@ -25,8 +24,23 @@
         android:maxLines="1"
         android:ellipsize="end"
         android:text="ajbkjavhakc ajchjhd jfgsgvskdjhvksdhvskhv"
-        android:textColor="@color/darkGrey"
+        android:textColor="@color/black"
         android:textSize="20sp" />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/room_latest_msg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/room_img"
+        android:layout_toLeftOf="@+id/unread_count"
+        android:layout_marginRight="10dp"
+        android:layout_below="@+id/room_name"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:text="latest msg"
+        android:textColor="@color/black"
+        android:textSize="18sp" />
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/unread_count"
