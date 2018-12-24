@@ -186,7 +186,7 @@ public class ChatRoomFragment extends Fragment {
             }
         };
         userPresenceCallBackListener = new UserPresenceCallBackListener() {
-            @Override
+             @Override
             public void userEntered(String roomName, UserInfo participant) {
                 //process user entry
             }
