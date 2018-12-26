@@ -2,6 +2,7 @@ package dabkick.com.basicsampleapp;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatImageView;
@@ -63,6 +64,8 @@ public class ChatRoomFragment extends Fragment {
     static ChatMsgAdapter chatMsgAdapter;
     private LiveChatCallbackListener liveChatCallbackListener;
     private UserPresenceCallBackListener userPresenceCallBackListener;
+    private boolean isUserAutoSubscribed = true;
+    private View view;
 
     public ChatRoomFragment() {
     }
@@ -83,8 +86,11 @@ public class ChatRoomFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.frag_chat_room, container, false);
+        view = inflater.inflate(R.layout.frag_chat_room, container, false);
         unbinder = ButterKnife.bind(this, view);
+
+
+        isUserAutoSubscribed = true;
 
         if (getArguments() != null) {
             mRoomName = getArguments().getString("roomName");
@@ -128,7 +134,7 @@ public class ChatRoomFragment extends Fragment {
             e.printStackTrace();
         }
 
-        if(HomePageActivity.isNewRoomCreated){
+        if (HomePageActivity.isNewRoomCreated) {
             HomePageActivity.isNewRoomCreated = false;
             SplashScreenActivity.dkLiveChat.chatRoomListener.createNewRoom(new CallbackListener() {
                 @Override
@@ -186,7 +192,7 @@ public class ChatRoomFragment extends Fragment {
             }
         };
         userPresenceCallBackListener = new UserPresenceCallBackListener() {
-             @Override
+            @Override
             public void userEntered(String roomName, UserInfo participant) {
                 //process user entry
             }
@@ -266,6 +272,7 @@ public class ChatRoomFragment extends Fragment {
     @OnClick(R.id.back_arrow)
     public void backBtnClicked() {
         Utils.hideKeyboard(getActivity());
+        Snackbar.make(view, "You are auto-subscribed to this room", Snackbar.LENGTH_LONG).show();
         getActivity().onBackPressed();
         ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.notifyDataSetChanged();
         SplashScreenActivity.dkLiveChat.leaveSession(mRoomName, new CallbackListener() {
