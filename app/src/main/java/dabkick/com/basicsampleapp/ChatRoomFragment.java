@@ -371,6 +371,7 @@ public class ChatRoomFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         mRoomName = "";
+        Snackbar.make(view, "You are auto-subscribed to this room", Snackbar.LENGTH_LONG).show();
 
         if (getActivity().getClass() == HomePageActivity.class) {
             ((HomePageActivity) getActivity()).updateFloatingBtn(true);
