@@ -272,7 +272,6 @@ public class ChatRoomFragment extends Fragment {
     @OnClick(R.id.back_arrow)
     public void backBtnClicked() {
         Utils.hideKeyboard(getActivity());
-        Snackbar.make(view, "You are auto-subscribed to this room", Snackbar.LENGTH_LONG).show();
         getActivity().onBackPressed();
         ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.notifyDataSetChanged();
         SplashScreenActivity.dkLiveChat.leaveSession(mRoomName, new CallbackListener() {
