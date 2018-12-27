@@ -195,12 +195,26 @@ public class ChatRoomFragment extends Fragment {
             @Override
             public void userEntered(String roomName, UserInfo participant) {
                 //process user entry
+                String userEnteredMessage = participant.getName() + " entered the room";
+                MessageInfo messageInfo = new MessageInfo();
+                messageInfo.setUserId(participant.getUserId());
+                messageInfo.setUserName(participant.getName());
+                messageInfo.setChatMessage(userEnteredMessage);
+                messageInfo.setSystemMessage(true);
+                chatMsgAdapter.addMessage(messageInfo);
             }
 
 
             @Override
             public void userExited(String roomName, UserInfo participant) {
                 //process user exit
+                String userEnteredMessage = participant.getName() + " exited the room";
+                MessageInfo messageInfo = new MessageInfo();
+                messageInfo.setUserId(participant.getUserId());
+                messageInfo.setUserName(participant.getName());
+                messageInfo.setChatMessage(userEnteredMessage);
+                messageInfo.setSystemMessage(true);
+                chatMsgAdapter.addMessage(messageInfo);
             }
 
 
