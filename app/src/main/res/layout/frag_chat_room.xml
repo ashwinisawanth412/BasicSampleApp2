@@ -22,7 +22,8 @@
             android:padding="4dp"
             android:src="@drawable/arrow_back_white_24dp" />
 
-        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+        <de.hdodenhof.circleimageview.CircleImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/room_image"
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -110,6 +111,15 @@
             android:src="@drawable/send_msg_black_24dp"
             android:text="SEND" />
     </LinearLayout>
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/down_arrow"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/arrow_down_black_18dp"
+        android:layout_alignParentRight="true"
+        android:layout_above="@+id/layout"
+        android:layout_margin="16dp"/>
 
     <FrameLayout
         android:id="@+id/view_participants_frag_container"

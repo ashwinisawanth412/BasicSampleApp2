@@ -149,10 +149,10 @@ public class ChatRoomFragment extends Fragment {
             });
         }
 
-        if (SplashScreenActivity.dkLiveChat.isSubscribed(mRoomName)) {
+       /* if (SplashScreenActivity.dkLiveChat.isSubscribed(mRoomName)) {
             chatMsgAdapter.addAllMessages(SplashScreenActivity.dkLiveChat.getAllMessageList(mRoomName));
             recyclerView.scrollToPosition(chatMsgAdapter.getItemCount() - 1);
-        }
+        }*/
 
         liveChatCallbackListener = new LiveChatCallbackListener() {
             @Override
@@ -172,7 +172,7 @@ public class ChatRoomFragment extends Fragment {
                             new Handler().postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
-                                    recyclerView.smoothScrollToPosition((chatMsgAdapter.getItemCount() - 1));
+                                    recyclerView.scrollToPosition((chatMsgAdapter.getItemCount() - 1));
                                 }
                             }, 200);
                         } else if (!message.getUserName().equalsIgnoreCase(name)) {
@@ -281,6 +281,12 @@ public class ChatRoomFragment extends Fragment {
         );
 
         return view;
+    }
+
+    @OnClick(R.id.down_arrow)
+    public void scrollToLatestMsg(){
+        Utils.hideKeyboard(getActivity());
+        recyclerView.scrollToPosition(chatMsgAdapter.getItemCount() - 1);
     }
 
     @OnClick(R.id.back_arrow)
