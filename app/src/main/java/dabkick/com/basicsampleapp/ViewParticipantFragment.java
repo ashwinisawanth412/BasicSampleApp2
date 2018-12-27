@@ -68,6 +68,7 @@ public class ViewParticipantFragment extends Fragment {
         mUnbinder = ButterKnife.bind(this, view);
 
         mRoomNameTextView.setText(mRoomName);
+
         participantList = SplashScreenActivity.dkLiveChat.getUsers(mRoomName, new CallbackListener() {
             @Override
             public void onSuccess(String s, Object... objects) {

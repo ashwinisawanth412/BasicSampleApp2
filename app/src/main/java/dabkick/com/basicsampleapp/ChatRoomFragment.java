@@ -60,6 +60,8 @@ public class ChatRoomFragment extends Fragment {
     FrameLayout mViewParticipantsFragContainer;
     @BindView(R.id.progressBar)
     ProgressBar mProgressBar;
+    @BindView(R.id.user_count)
+    AppCompatTextView mUserCount;
 
     static ChatMsgAdapter chatMsgAdapter;
     private LiveChatCallbackListener liveChatCallbackListener;
@@ -149,10 +151,23 @@ public class ChatRoomFragment extends Fragment {
             });
         }
 
-       /* if (SplashScreenActivity.dkLiveChat.isSubscribed(mRoomName)) {
+     /*   if (SplashScreenActivity.dkLiveChat.isSubscribed(mRoomName)) {
             chatMsgAdapter.addAllMessages(SplashScreenActivity.dkLiveChat.getAllMessageList(mRoomName));
             recyclerView.scrollToPosition(chatMsgAdapter.getItemCount() - 1);
         }*/
+
+        SplashScreenActivity.dkLiveChat.getNumberOfUsersLiveNow(mRoomName, new CallbackListener() {
+            @Override
+            public void onSuccess(String s, Object... objects) {
+                mUserCount.setText(s);
+            }
+
+            @Override
+            public void onError(String s, Object... objects) {
+                Log.d("onError", "s" + s);
+            }
+        });
+
 
         liveChatCallbackListener = new LiveChatCallbackListener() {
             @Override
@@ -223,6 +238,7 @@ public class ChatRoomFragment extends Fragment {
                 //process user info change
             }
         };
+
 
         if (!SplashScreenActivity.dkLiveChat.isSubscribed(mRoomName)) {
             mProgressBar.setVisibility(View.VISIBLE);
