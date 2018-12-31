@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,6 +24,8 @@ import com.dabkick.engine.Public.CallbackListener;
 import com.dabkick.engine.Public.UserInfo;
 import com.flipboard.bottomsheet.BottomSheetLayout;
 import com.flipboard.bottomsheet.commons.MenuSheetView;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -231,6 +234,9 @@ public class HomePageActivity extends BaseActivity {
 
     public void showUnsubscribedUserBottomSheet(String roomName) {
 
+        if (TextUtils.isEmpty(roomName))
+            return;
+
         MenuSheetView menuSheetView = new MenuSheetView(this, MenuSheetView.MenuType.LIST, null, new MenuSheetView.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -239,9 +245,32 @@ public class HomePageActivity extends BaseActivity {
                 }
 
                 switch (item.getItemId()) {
+                    case R.id.subscribe:
+                     /*   SplashScreenActivity.dkLiveChat.subscribe(roomName, liveChatCallbackListener, userPresenceCallBackListener, new CallbackListener() {
+                            @Override
+                            public void onSuccess(String msg, Object... obj) {
+                            }
 
+                            @Override
+                            public void onError(String msg, Object... obj) {
+                            }
+                        });*/
+                        break;
+                    case R.id.read_msgs:
+                        ChatRoomFragment chatRoom = ChatRoomFragment.newInstance(roomName, false);
+                        android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                        transaction.replace(R.id.frag_container, chatRoom);
+                        transaction.addToBackStack(null);
+                        transaction.commit();
 
-
+                        break;
+                    case R.id.enter_room:
+                        ChatRoomFragment chatRoom1 = ChatRoomFragment.newInstance(roomName, true);
+                        android.support.v4.app.FragmentTransaction transaction1 = getSupportFragmentManager().beginTransaction();
+                        transaction1.replace(R.id.frag_container, chatRoom1);
+                        transaction1.addToBackStack(null);
+                        transaction1.commit();
+                        break;
                 }
                 return true;
             }
@@ -261,9 +290,43 @@ public class HomePageActivity extends BaseActivity {
                 }
 
                 switch (item.getItemId()) {
+                    case R.id.unsubscribe:
+                     /*   SplashScreenActivity.dkLiveChat
+                                .unSubscribe(roomName, liveChatCallbackListener, userPresenceCallBackListener, new CallbackListener() {
+                                    @Override
+                                    public void onSuccess(String msg, Object... obj) {
+                                    }
 
+                                    @Override
+                                    public void onError(String msg, Object... obj) {
 
+                                    }
+                                });*/
 
+                        break;
+                    case R.id.view_members:
+                        ViewParticipantFragment participantFragment = ViewParticipantFragment.newInstance(roomName);
+                        android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                        transaction.replace(R.id.frag_container, participantFragment);
+                        transaction.addToBackStack(null);
+                        transaction.commit();
+
+                        break;
+                    case R.id.read_msgs:
+                        ChatRoomFragment chatRoomReadmsg = ChatRoomFragment.newInstance(roomName, false);
+                        android.support.v4.app.FragmentTransaction transactionReadMsg = getSupportFragmentManager().beginTransaction();
+                        transactionReadMsg.replace(R.id.frag_container, chatRoomReadmsg);
+                        transactionReadMsg.addToBackStack(null);
+                        transactionReadMsg.commit();
+
+                        break;
+                    case R.id.enter_room:
+                        ChatRoomFragment enterChatRoom = ChatRoomFragment.newInstance(roomName, true);
+                        android.support.v4.app.FragmentTransaction enterRoomTransaction = getSupportFragmentManager().beginTransaction();
+                        enterRoomTransaction.replace(R.id.frag_container, enterChatRoom);
+                        enterRoomTransaction.addToBackStack(null);
+                        enterRoomTransaction.commit();
+                        break;
                 }
                 return true;
             }

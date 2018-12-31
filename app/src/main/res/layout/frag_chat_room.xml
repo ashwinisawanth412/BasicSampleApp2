@@ -28,8 +28,8 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="16dp"
-            android:layout_toLeftOf="@+id/user_count"
             android:layout_marginRight="5dp"
+            android:layout_toLeftOf="@+id/user_count"
             android:layout_toRightOf="@+id/back_arrow"
             android:ellipsize="end"
             android:fontFamily="cursive"
@@ -43,14 +43,14 @@
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/over_flow_icon"
+            android:background="@drawable/unread_msg_drawable"
             android:fontFamily="cursive"
+            android:gravity="center"
             android:textColor="@color/white"
             android:textSize="20sp"
-            android:layout_toLeftOf="@+id/over_flow_icon"
-            android:gravity="center"
             android:textStyle="bold"
-            android:visibility="gone"
-            android:background="@drawable/unread_msg_drawable"/>
+            android:visibility="gone" />
 
         <android.support.v7.widget.AppCompatImageView
             android:id="@+id/over_flow_icon"
@@ -79,6 +79,7 @@
         android:layout_below="@+id/app_bar_layout" />
 
     <View
+        android:id="@+id/line"
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:layout_above="@+id/layout"
@@ -99,8 +100,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_weight="3"
-            android:maxLines="2"
             android:hint="Enter message"
+            android:maxLines="2"
             android:paddingLeft="8dp"
             android:paddingRight="8dp" />
 
@@ -119,11 +120,11 @@
         android:id="@+id/down_arrow"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:src="@drawable/arrow_down_black_18dp"
-        android:layout_alignParentRight="true"
         android:layout_above="@+id/layout"
+        android:layout_alignParentRight="true"
         android:layout_margin="16dp"
-        android:visibility="gone"/>
+        android:src="@drawable/arrow_down_black_18dp"
+        android:visibility="gone" />
 
     <FrameLayout
         android:id="@+id/view_participants_frag_container"

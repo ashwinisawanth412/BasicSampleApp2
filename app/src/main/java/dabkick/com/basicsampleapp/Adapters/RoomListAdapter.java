@@ -115,11 +115,6 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.RoomHo
                             ((HomePageActivity)context).showUnsubscribedUserBottomSheet(roomName.getText().toString());
 
                     }
-                  /*  ChatRoomFragment chatRoom = ChatRoomFragment.newInstance(roomName.getText().toString());
-                    android.support.v4.app.FragmentTransaction transaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
-                    transaction.replace(R.id.frag_container, chatRoom);
-                    transaction.addToBackStack(null);
-                    transaction.commit();*/
                 }
             });
         }
@@ -147,7 +142,7 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.RoomHo
     }
 
     public void enterRoomOnCreation(String roomName){
-        ChatRoomFragment chatRoom = ChatRoomFragment.newInstance(roomName);
+        ChatRoomFragment chatRoom = ChatRoomFragment.newInstance(roomName, true);
         android.support.v4.app.FragmentTransaction transaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.frag_container, chatRoom);
         transaction.addToBackStack(null);

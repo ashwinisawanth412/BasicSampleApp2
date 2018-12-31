@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -62,6 +63,11 @@ public class ChatRoomFragment extends Fragment {
     ProgressBar mProgressBar;
     @BindView(R.id.user_count)
     AppCompatTextView mUserCount;
+    @BindView(R.id.line)
+    View line;
+    @BindView(R.id.layout)
+    LinearLayout editBoxLayout;
+
 
     static ChatMsgAdapter chatMsgAdapter;
     private LiveChatCallbackListener liveChatCallbackListener;
@@ -72,10 +78,11 @@ public class ChatRoomFragment extends Fragment {
     public ChatRoomFragment() {
     }
 
-    public static ChatRoomFragment newInstance(String roomName) {
+    public static ChatRoomFragment newInstance(String roomName, boolean editMode) {
         ChatRoomFragment fragment = new ChatRoomFragment();
         Bundle args = new Bundle();
         args.putString("roomName", roomName);
+        args.putBoolean("editMode", editMode);
         fragment.setArguments(args);
         return fragment;
     }
@@ -96,6 +103,14 @@ public class ChatRoomFragment extends Fragment {
 
         if (getArguments() != null) {
             mRoomName = getArguments().getString("roomName");
+
+            if (getArguments().getBoolean("editMode")) {
+                line.setVisibility(View.VISIBLE);
+                editBoxLayout.setVisibility(View.VISIBLE);
+            } else {
+                line.setVisibility(View.GONE);
+                editBoxLayout.setVisibility(View.GONE);
+            }
         }
 
         Log.d("chatRoom", "roomTitle: " + mRoomName);
@@ -136,6 +151,11 @@ public class ChatRoomFragment extends Fragment {
             e.printStackTrace();
         }
 
+        if (SplashScreenActivity.dkLiveChat.isSubscribed(mRoomName)) {
+            chatMsgAdapter.addAllMessages(SplashScreenActivity.dkLiveChat.getAllMessageList(mRoomName));
+            recyclerView.scrollToPosition(chatMsgAdapter.getItemCount() - 1);
+        }
+
         if (HomePageActivity.isNewRoomCreated) {
             HomePageActivity.isNewRoomCreated = false;
             SplashScreenActivity.dkLiveChat.chatRoomListener.createNewRoom(new CallbackListener() {
@@ -154,7 +174,7 @@ public class ChatRoomFragment extends Fragment {
         SplashScreenActivity.dkLiveChat.getNumberOfUsersLiveNow(mRoomName, new CallbackListener() {
             @Override
             public void onSuccess(String s, Object... objects) {
-                if(mUserCount.getVisibility() == View.GONE)
+                if (mUserCount.getVisibility() == View.GONE)
                     mUserCount.setVisibility(View.VISIBLE);
                 mUserCount.setText(s);
             }
@@ -297,7 +317,7 @@ public class ChatRoomFragment extends Fragment {
     }
 
     @OnClick(R.id.down_arrow)
-    public void scrollToLatestMsg(){
+    public void scrollToLatestMsg() {
         Utils.hideKeyboard(getActivity());
         recyclerView.scrollToPosition(chatMsgAdapter.getItemCount() - 1);
     }
