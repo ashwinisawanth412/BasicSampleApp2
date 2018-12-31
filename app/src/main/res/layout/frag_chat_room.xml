@@ -40,14 +40,17 @@
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/user_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
             android:layout_centerVertical="true"
             android:fontFamily="cursive"
             android:textColor="@color/white"
             android:textSize="20sp"
             android:layout_toLeftOf="@+id/over_flow_icon"
-            android:textStyle="bold"/>
+            android:gravity="center"
+            android:textStyle="bold"
+            android:visibility="gone"
+            android:background="@drawable/unread_msg_drawable"/>
 
         <android.support.v7.widget.AppCompatImageView
             android:id="@+id/over_flow_icon"

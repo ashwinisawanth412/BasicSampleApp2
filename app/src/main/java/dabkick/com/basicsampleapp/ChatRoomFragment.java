@@ -159,6 +159,8 @@ public class ChatRoomFragment extends Fragment {
         SplashScreenActivity.dkLiveChat.getNumberOfUsersLiveNow(mRoomName, new CallbackListener() {
             @Override
             public void onSuccess(String s, Object... objects) {
+                if(mUserCount.getVisibility() == View.GONE)
+                    mUserCount.setVisibility(View.VISIBLE);
                 mUserCount.setText(s);
             }
 
