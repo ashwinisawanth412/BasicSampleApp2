@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.logging.Handler;
 
 import dabkick.com.basicsampleapp.ChatRoomFragment;
+import dabkick.com.basicsampleapp.HomePageActivity;
 import dabkick.com.basicsampleapp.Model.Room;
 import dabkick.com.basicsampleapp.R;
 import dabkick.com.basicsampleapp.SplashScreenActivity;
@@ -107,11 +108,18 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.RoomHo
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ChatRoomFragment chatRoom = ChatRoomFragment.newInstance(roomName.getText().toString());
+                    if(context.getClass() == HomePageActivity.class) {
+                        if (SplashScreenActivity.dkLiveChat.isSubscribed(roomName.getText().toString()))
+                            ((HomePageActivity)context).showSubscribedUserBottomSheet(roomName.getText().toString());
+                        else
+                            ((HomePageActivity)context).showUnsubscribedUserBottomSheet(roomName.getText().toString());
+
+                    }
+                  /*  ChatRoomFragment chatRoom = ChatRoomFragment.newInstance(roomName.getText().toString());
                     android.support.v4.app.FragmentTransaction transaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
                     transaction.replace(R.id.frag_container, chatRoom);
                     transaction.addToBackStack(null);
-                    transaction.commit();
+                    transaction.commit();*/
                 }
             });
         }

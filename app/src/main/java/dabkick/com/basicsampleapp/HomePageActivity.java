@@ -21,6 +21,8 @@ import android.widget.Toast;
 
 import com.dabkick.engine.Public.CallbackListener;
 import com.dabkick.engine.Public.UserInfo;
+import com.flipboard.bottomsheet.BottomSheetLayout;
+import com.flipboard.bottomsheet.commons.MenuSheetView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,9 +51,10 @@ public class HomePageActivity extends BaseActivity {
     ProgressBar mProgressBar;
     @BindView(R.id.create_room)
     FloatingActionButton mCreateRoomBtn;
+    @BindView(R.id.bottomsheet)
+    BottomSheetLayout bottomSheet;
 
     List<Room> mRoomList = new ArrayList<Room>();
-
     public static boolean isNewRoomCreated = false;
 
     @Override
@@ -224,6 +227,50 @@ public class HomePageActivity extends BaseActivity {
             mCreateRoomBtn.show();
         else
             mCreateRoomBtn.hide();
+    }
+
+    public void showUnsubscribedUserBottomSheet(String roomName) {
+
+        MenuSheetView menuSheetView = new MenuSheetView(this, MenuSheetView.MenuType.LIST, null, new MenuSheetView.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (bottomSheet.isSheetShowing()) {
+                    bottomSheet.dismissSheet();
+                }
+
+                switch (item.getItemId()) {
+
+
+
+                }
+                return true;
+            }
+        });
+        menuSheetView.inflateMenu(R.menu.unsubscribed_user_bottom_sheet_layout);
+        bottomSheet.showWithSheetView(menuSheetView);
+
+    }
+
+    public void showSubscribedUserBottomSheet(String roomName) {
+
+        MenuSheetView menuSheetView = new MenuSheetView(this, MenuSheetView.MenuType.LIST, null, new MenuSheetView.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (bottomSheet.isSheetShowing()) {
+                    bottomSheet.dismissSheet();
+                }
+
+                switch (item.getItemId()) {
+
+
+
+                }
+                return true;
+            }
+        });
+
+        menuSheetView.inflateMenu(R.menu.subscribed_user_bottom_sheet_layout);
+        bottomSheet.showWithSheetView(menuSheetView);
     }
 
     @Override

@@ -151,11 +151,6 @@ public class ChatRoomFragment extends Fragment {
             });
         }
 
-     /*   if (SplashScreenActivity.dkLiveChat.isSubscribed(mRoomName)) {
-            chatMsgAdapter.addAllMessages(SplashScreenActivity.dkLiveChat.getAllMessageList(mRoomName));
-            recyclerView.scrollToPosition(chatMsgAdapter.getItemCount() - 1);
-        }*/
-
         SplashScreenActivity.dkLiveChat.getNumberOfUsersLiveNow(mRoomName, new CallbackListener() {
             @Override
             public void onSuccess(String s, Object... objects) {
