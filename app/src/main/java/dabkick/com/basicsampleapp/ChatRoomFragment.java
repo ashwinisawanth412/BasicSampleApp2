@@ -185,76 +185,80 @@ public class ChatRoomFragment extends Fragment {
             }
         });
 
+        if (((HomePageActivity)getActivity()).liveChatCallbackListener == null) {
+            ((HomePageActivity)getActivity()).liveChatCallbackListener = new LiveChatCallbackListener() {
+                @Override
+                public void receivedChatMessage(String roomName, MessageInfo message) {
+                    BaseActivity.mCurrentActivity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            String name = PreferenceHandler.getUserName(BaseActivity.mCurrentActivity);
+                            ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.setLatestRoomMsg(roomName, message.getChatMessage());
+                            if (roomName.equalsIgnoreCase(mRoomName)) {
+                                //happening sometimes
+                                if (recyclerView == null) {
+                                    recyclerView = view.findViewById(R.id.recycler);
+                                    recyclerView.setAdapter(chatMsgAdapter);
+                                }
+                                chatMsgAdapter.addMessage(message);
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        recyclerView.scrollToPosition((chatMsgAdapter.getItemCount() - 1));
+                                    }
+                                }, 200);
+                            } else if (!message.getUserName().equalsIgnoreCase(name)) {
+                                //i am not in the same room as the msg received and am not the sender of the msg. So add it as unread msg
+                                if (BaseActivity.mCurrentActivity.getClass() == HomePageActivity.class) {
+                                    Room room = ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.getRoomItem(roomName);
+                                    if (room != null) {
+                                        room.addUnreadMsg(message);
+                                        ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.updateRoomUponNewMsg(room);
+                                    }
+                                }
+                            }
 
-        liveChatCallbackListener = new LiveChatCallbackListener() {
-            @Override
-            public void receivedChatMessage(String roomName, MessageInfo message) {
-                BaseActivity.mCurrentActivity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        String name = PreferenceHandler.getUserName(BaseActivity.mCurrentActivity);
-                        ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.setLatestRoomMsg(roomName, message.getChatMessage());
-                        if (roomName.equalsIgnoreCase(mRoomName)) {
-                            //happening sometimes
-                            if (recyclerView == null) {
-                                recyclerView = view.findViewById(R.id.recycler);
-                                recyclerView.setAdapter(chatMsgAdapter);
-                            }
-                            chatMsgAdapter.addMessage(message);
-                            new Handler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    recyclerView.scrollToPosition((chatMsgAdapter.getItemCount() - 1));
-                                }
-                            }, 200);
-                        } else if (!message.getUserName().equalsIgnoreCase(name)) {
-                            //i am not in the same room as the msg received and am not the sender of the msg. So add it as unread msg
-                            if (BaseActivity.mCurrentActivity.getClass() == HomePageActivity.class) {
-                                Room room = ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.getRoomItem(roomName);
-                                if (room != null) {
-                                    room.addUnreadMsg(message);
-                                    ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.updateRoomUponNewMsg(room);
-                                }
-                            }
+
                         }
+                    });
+                }
+            };
+        }
+
+        if (((HomePageActivity)getActivity()).userPresenceCallBackListener == null) {
+            ((HomePageActivity)getActivity()).userPresenceCallBackListener = new UserPresenceCallBackListener() {
+                @Override
+                public void userEntered(String roomName, UserInfo participant) {
+                    //process user entry
+                    String userEnteredMessage = participant.getName() + " entered the room";
+                    MessageInfo messageInfo = new MessageInfo();
+                    messageInfo.setUserId(participant.getUserId());
+                    messageInfo.setUserName(participant.getName());
+                    messageInfo.setChatMessage(userEnteredMessage);
+                    messageInfo.setSystemMessage(true);
+                    chatMsgAdapter.addMessage(messageInfo);
+                }
 
 
-                    }
-                });
-            }
-        };
-        userPresenceCallBackListener = new UserPresenceCallBackListener() {
-            @Override
-            public void userEntered(String roomName, UserInfo participant) {
-                //process user entry
-                String userEnteredMessage = participant.getName() + " entered the room";
-                MessageInfo messageInfo = new MessageInfo();
-                messageInfo.setUserId(participant.getUserId());
-                messageInfo.setUserName(participant.getName());
-                messageInfo.setChatMessage(userEnteredMessage);
-                messageInfo.setSystemMessage(true);
-                chatMsgAdapter.addMessage(messageInfo);
-            }
+                @Override
+                public void userExited(String roomName, UserInfo participant) {
+                    //process user exit
+                    String userEnteredMessage = participant.getName() + " exited the room";
+                    MessageInfo messageInfo = new MessageInfo();
+                    messageInfo.setUserId(participant.getUserId());
+                    messageInfo.setUserName(participant.getName());
+                    messageInfo.setChatMessage(userEnteredMessage);
+                    messageInfo.setSystemMessage(true);
+                    chatMsgAdapter.addMessage(messageInfo);
+                }
 
 
-            @Override
-            public void userExited(String roomName, UserInfo participant) {
-                //process user exit
-                String userEnteredMessage = participant.getName() + " exited the room";
-                MessageInfo messageInfo = new MessageInfo();
-                messageInfo.setUserId(participant.getUserId());
-                messageInfo.setUserName(participant.getName());
-                messageInfo.setChatMessage(userEnteredMessage);
-                messageInfo.setSystemMessage(true);
-                chatMsgAdapter.addMessage(messageInfo);
-            }
-
-
-            @Override
-            public void userDataUpdated(String roomName, UserInfo participant) {
-                //process user info change
-            }
-        };
+                @Override
+                public void userDataUpdated(String roomName, UserInfo participant) {
+                    //process user info change
+                }
+            };
+        }
 
 
         if (!SplashScreenActivity.dkLiveChat.isSubscribed(mRoomName)) {
@@ -314,6 +318,81 @@ public class ChatRoomFragment extends Fragment {
         );
 
         return view;
+    }
+
+    public void initLiveChatCallbackListener() {
+        liveChatCallbackListener = new LiveChatCallbackListener() {
+            @Override
+            public void receivedChatMessage(String roomName, MessageInfo message) {
+                BaseActivity.mCurrentActivity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        String name = PreferenceHandler.getUserName(BaseActivity.mCurrentActivity);
+                        ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.setLatestRoomMsg(roomName, message.getChatMessage());
+                        if (roomName.equalsIgnoreCase(mRoomName)) {
+                            //happening sometimes
+                            if (recyclerView == null) {
+                                recyclerView = view.findViewById(R.id.recycler);
+                                recyclerView.setAdapter(chatMsgAdapter);
+                            }
+                            chatMsgAdapter.addMessage(message);
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    recyclerView.scrollToPosition((chatMsgAdapter.getItemCount() - 1));
+                                }
+                            }, 200);
+                        } else if (!message.getUserName().equalsIgnoreCase(name)) {
+                            //i am not in the same room as the msg received and am not the sender of the msg. So add it as unread msg
+                            if (BaseActivity.mCurrentActivity.getClass() == HomePageActivity.class) {
+                                Room room = ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.getRoomItem(roomName);
+                                if (room != null) {
+                                    room.addUnreadMsg(message);
+                                    ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.updateRoomUponNewMsg(room);
+                                }
+                            }
+                        }
+
+
+                    }
+                });
+            }
+        };
+    }
+
+    public void initUserPresenceCallbackListener() {
+        userPresenceCallBackListener = new UserPresenceCallBackListener() {
+            @Override
+            public void userEntered(String roomName, UserInfo participant) {
+                //process user entry
+                String userEnteredMessage = participant.getName() + " entered the room";
+                MessageInfo messageInfo = new MessageInfo();
+                messageInfo.setUserId(participant.getUserId());
+                messageInfo.setUserName(participant.getName());
+                messageInfo.setChatMessage(userEnteredMessage);
+                messageInfo.setSystemMessage(true);
+                chatMsgAdapter.addMessage(messageInfo);
+            }
+
+
+            @Override
+            public void userExited(String roomName, UserInfo participant) {
+                //process user exit
+                String userEnteredMessage = participant.getName() + " exited the room";
+                MessageInfo messageInfo = new MessageInfo();
+                messageInfo.setUserId(participant.getUserId());
+                messageInfo.setUserName(participant.getName());
+                messageInfo.setChatMessage(userEnteredMessage);
+                messageInfo.setSystemMessage(true);
+                chatMsgAdapter.addMessage(messageInfo);
+            }
+
+
+            @Override
+            public void userDataUpdated(String roomName, UserInfo participant) {
+                //process user info change
+            }
+        };
     }
 
     @OnClick(R.id.down_arrow)
