@@ -70,8 +70,8 @@ public class ChatRoomFragment extends Fragment {
 
 
     static ChatMsgAdapter chatMsgAdapter;
-    private LiveChatCallbackListener liveChatCallbackListener;
-    private UserPresenceCallBackListener userPresenceCallBackListener;
+    public LiveChatCallbackListener liveChatCallbackListener;
+    public UserPresenceCallBackListener userPresenceCallBackListener;
     private boolean isUserAutoSubscribed = true;
     private View view;
 

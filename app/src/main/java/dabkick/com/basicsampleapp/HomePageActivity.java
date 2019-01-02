@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,8 +23,6 @@ import com.dabkick.engine.Public.CallbackListener;
 import com.dabkick.engine.Public.UserInfo;
 import com.flipboard.bottomsheet.BottomSheetLayout;
 import com.flipboard.bottomsheet.commons.MenuSheetView;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -246,7 +243,8 @@ public class HomePageActivity extends BaseActivity {
 
                 switch (item.getItemId()) {
                     case R.id.subscribe:
-                     /*   SplashScreenActivity.dkLiveChat.subscribe(roomName, liveChatCallbackListener, userPresenceCallBackListener, new CallbackListener() {
+                        ChatRoomFragment chatRoom = ChatRoomFragment.newInstance(roomName, false);
+                        SplashScreenActivity.dkLiveChat.subscribe(roomName, chatRoom.liveChatCallbackListener, chatRoom.userPresenceCallBackListener, new CallbackListener() {
                             @Override
                             public void onSuccess(String msg, Object... obj) {
                             }
@@ -254,12 +252,12 @@ public class HomePageActivity extends BaseActivity {
                             @Override
                             public void onError(String msg, Object... obj) {
                             }
-                        });*/
+                        });
                         break;
                     case R.id.read_msgs:
-                        ChatRoomFragment chatRoom = ChatRoomFragment.newInstance(roomName, false);
+                        ChatRoomFragment chatRoom2 = ChatRoomFragment.newInstance(roomName, false);
                         android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                        transaction.replace(R.id.frag_container, chatRoom);
+                        transaction.replace(R.id.frag_container, chatRoom2);
                         transaction.addToBackStack(null);
                         transaction.commit();
 
@@ -278,6 +276,7 @@ public class HomePageActivity extends BaseActivity {
         menuSheetView.inflateMenu(R.menu.unsubscribed_user_bottom_sheet_layout);
         bottomSheet.showWithSheetView(menuSheetView);
 
+
     }
 
     public void showSubscribedUserBottomSheet(String roomName) {
@@ -291,8 +290,9 @@ public class HomePageActivity extends BaseActivity {
 
                 switch (item.getItemId()) {
                     case R.id.unsubscribe:
-                     /*   SplashScreenActivity.dkLiveChat
-                                .unSubscribe(roomName, liveChatCallbackListener, userPresenceCallBackListener, new CallbackListener() {
+                        ChatRoomFragment chatRoom = ChatRoomFragment.newInstance(roomName, false);
+                        SplashScreenActivity.dkLiveChat
+                                .unSubscribe(roomName, chatRoom.liveChatCallbackListener, chatRoom.userPresenceCallBackListener, new CallbackListener() {
                                     @Override
                                     public void onSuccess(String msg, Object... obj) {
                                     }
@@ -301,7 +301,7 @@ public class HomePageActivity extends BaseActivity {
                                     public void onError(String msg, Object... obj) {
 
                                     }
-                                });*/
+                                });
 
                         break;
                     case R.id.view_members:
