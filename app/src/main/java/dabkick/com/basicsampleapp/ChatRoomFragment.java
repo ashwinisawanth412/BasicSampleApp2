@@ -171,22 +171,19 @@ public class ChatRoomFragment extends Fragment {
             });
         }
 
-        SplashScreenActivity.dkLiveChat.getNumberOfUsersLiveNow(mRoomName, new CallbackListener() {
+        mUserCount.setText(String.valueOf(SplashScreenActivity.dkLiveChat.getNumberOfUsersLiveNow(mRoomName, new CallbackListener() {
             @Override
             public void onSuccess(String s, Object... objects) {
-                if (mUserCount.getVisibility() == View.GONE)
-                    mUserCount.setVisibility(View.VISIBLE);
-                mUserCount.setText(s);
             }
 
             @Override
             public void onError(String s, Object... objects) {
                 Log.d("onError", "s" + s);
             }
-        });
+        })));
 
-        if (((HomePageActivity)getActivity()).liveChatCallbackListener == null) {
-            ((HomePageActivity)getActivity()).liveChatCallbackListener = new LiveChatCallbackListener() {
+        if (((HomePageActivity) getActivity()).liveChatCallbackListener == null) {
+            ((HomePageActivity) getActivity()).liveChatCallbackListener = new LiveChatCallbackListener() {
                 @Override
                 public void receivedChatMessage(String roomName, MessageInfo message) {
                     BaseActivity.mCurrentActivity.runOnUiThread(new Runnable() {
@@ -225,8 +222,8 @@ public class ChatRoomFragment extends Fragment {
             };
         }
 
-        if (((HomePageActivity)getActivity()).userPresenceCallBackListener == null) {
-            ((HomePageActivity)getActivity()).userPresenceCallBackListener = new UserPresenceCallBackListener() {
+        if (((HomePageActivity) getActivity()).userPresenceCallBackListener == null) {
+            ((HomePageActivity) getActivity()).userPresenceCallBackListener = new UserPresenceCallBackListener() {
                 @Override
                 public void userEntered(String roomName, UserInfo participant) {
                     //process user entry
@@ -263,7 +260,7 @@ public class ChatRoomFragment extends Fragment {
 
         if (!SplashScreenActivity.dkLiveChat.isSubscribed(mRoomName)) {
             mProgressBar.setVisibility(View.VISIBLE);
-            SplashScreenActivity.dkLiveChat.subscribe(mRoomName, liveChatCallbackListener, userPresenceCallBackListener, new CallbackListener() {
+            SplashScreenActivity.dkLiveChat.subscribe(mRoomName, ((HomePageActivity) getActivity()).liveChatCallbackListener, ((HomePageActivity) getActivity()).userPresenceCallBackListener, new CallbackListener() {
                 @Override
                 public void onSuccess(String msg, Object... obj) {
                     try {

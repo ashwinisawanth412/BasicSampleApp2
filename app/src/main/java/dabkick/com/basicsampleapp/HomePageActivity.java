@@ -429,7 +429,6 @@ public class HomePageActivity extends BaseActivity {
         super.onDestroy();
         //disconnect from firebase but retain user details
         SplashScreenActivity.dkLiveChat.endLiveChat();
-
         mUnbinder.unbind();
     }
 }
