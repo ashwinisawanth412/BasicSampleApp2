@@ -358,15 +358,15 @@ public class HomePageActivity extends BaseActivity {
                         ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.setLatestRoomMsg(roomName, message.getChatMessage());
                         if (roomName.equalsIgnoreCase("")) {
                             //happening sometimes
-                            // if (recyclerView == null) {
-                            //  recyclerView = view.findViewById(R.id.recycler);
-                            // recyclerView.setAdapter(chatMsgAdapter);
+                            // if (chatListRecyclerView == null) {
+                            //  chatListRecyclerView = view.findViewById(R.id.recycler);
+                            // chatListRecyclerView.setAdapter(chatMsgAdapter);
                         }
                         //chatMsgAdapter.addMessage(message);
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                //recyclerView.scrollToPosition((chatMsgAdapter.getItemCount() - 1));
+                                //chatListRecyclerView.scrollToPosition((chatMsgAdapter.getItemCount() - 1));
                             }
                         }, 200);
                     }

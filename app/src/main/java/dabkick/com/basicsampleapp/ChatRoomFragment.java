@@ -47,8 +47,8 @@ public class ChatRoomFragment extends Fragment {
 
     @BindView(R.id.edittext)
     EditText editText;
-    @BindView(R.id.recycler)
-    RecyclerView recyclerView;
+    @BindView(R.id.chat_list)
+    RecyclerView chatListRecyclerView;
     @BindView(R.id.button)
     AppCompatImageView button;
     @BindView(R.id.back_arrow)
@@ -98,6 +98,8 @@ public class ChatRoomFragment extends Fragment {
         view = inflater.inflate(R.layout.frag_chat_room, container, false);
         unbinder = ButterKnife.bind(this, view);
 
+        //some reason not setting correctly
+        chatListRecyclerView = view.findViewById(R.id.chat_list);
 
         isUserAutoSubscribed = true;
 
@@ -113,7 +115,6 @@ public class ChatRoomFragment extends Fragment {
             }
         }
 
-        Log.d("chatRoom", "roomTitle: " + mRoomName);
         mRoomTitle.setText(mRoomName);
 
         if (getActivity().getClass() == HomePageActivity.class) {
@@ -121,8 +122,8 @@ public class ChatRoomFragment extends Fragment {
         }
 
         chatMsgAdapter = new ChatMsgAdapter();
-        recyclerView.setAdapter(chatMsgAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        chatListRecyclerView.setAdapter(chatMsgAdapter);
+        chatListRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         //clear unread msg list
         if (BaseActivity.mCurrentActivity.getClass() == HomePageActivity.class) {
@@ -153,7 +154,7 @@ public class ChatRoomFragment extends Fragment {
 
         if (SplashScreenActivity.dkLiveChat.isSubscribed(mRoomName)) {
             chatMsgAdapter.addAllMessages(SplashScreenActivity.dkLiveChat.getAllMessageList(mRoomName));
-            recyclerView.scrollToPosition(chatMsgAdapter.getItemCount() - 1);
+            chatListRecyclerView.scrollToPosition(chatMsgAdapter.getItemCount() - 1);
         }
 
         if (HomePageActivity.isNewRoomCreated) {
@@ -193,15 +194,18 @@ public class ChatRoomFragment extends Fragment {
                             ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.setLatestRoomMsg(roomName, message.getChatMessage());
                             if (roomName.equalsIgnoreCase(mRoomName)) {
                                 //happening sometimes
-                                if (recyclerView == null) {
-                                    recyclerView = view.findViewById(R.id.recycler);
-                                    recyclerView.setAdapter(chatMsgAdapter);
+                                if (chatListRecyclerView == null) {
+                                    chatListRecyclerView = view.findViewById(R.id.recycler);
+                                    chatListRecyclerView.setAdapter(chatMsgAdapter);
                                 }
                                 chatMsgAdapter.addMessage(message);
+                             /*   if() {
+                                    ((LinearLayoutManager) chatListRecyclerView.getLayoutManager()).findLastCompletelyVisibleItemPosition();
+                                }*/
                                 new Handler().postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
-                                        recyclerView.scrollToPosition((chatMsgAdapter.getItemCount() - 1));
+                                        chatListRecyclerView.scrollToPosition((chatMsgAdapter.getItemCount() - 1));
                                     }
                                 }, 200);
                             } else if (!message.getUserName().equalsIgnoreCase(name)) {
@@ -274,8 +278,8 @@ public class ChatRoomFragment extends Fragment {
                                             mProgressBar.setVisibility(View.GONE);
                                         if (chatMsgAdapter != null)
                                             chatMsgAdapter.addAllMessages(SplashScreenActivity.dkLiveChat.chatEventListener.getChatMessages(mRoomName));
-                                        if (recyclerView != null)
-                                            recyclerView.scrollToPosition(chatMsgAdapter.getItemCount() - 1);
+                                        if (chatListRecyclerView != null)
+                                            chatListRecyclerView.scrollToPosition(chatMsgAdapter.getItemCount() - 1);
 
                                     }
                                 }, 3000);
@@ -304,7 +308,7 @@ public class ChatRoomFragment extends Fragment {
                                                       String message = editText.getText().toString().replaceAll("^\\s+|\\s+$", "");
                                                       sendMessage(mRoomName, message);
                                                       Utils.hideKeyboard(getActivity());
-                                                      recyclerView.scrollToPosition(chatMsgAdapter.getItemCount() - 1);
+                                                      chatListRecyclerView.scrollToPosition(chatMsgAdapter.getItemCount() - 1);
                                                   } else {
                                                       Toast.makeText(BaseActivity.mCurrentActivity, "Please enter message", Toast.LENGTH_LONG).show();
                                                   }
@@ -328,15 +332,15 @@ public class ChatRoomFragment extends Fragment {
                         ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.setLatestRoomMsg(roomName, message.getChatMessage());
                         if (roomName.equalsIgnoreCase(mRoomName)) {
                             //happening sometimes
-                            if (recyclerView == null) {
-                                recyclerView = view.findViewById(R.id.recycler);
-                                recyclerView.setAdapter(chatMsgAdapter);
+                            if (chatListRecyclerView == null) {
+                                chatListRecyclerView = view.findViewById(R.id.recycler);
+                                chatListRecyclerView.setAdapter(chatMsgAdapter);
                             }
                             chatMsgAdapter.addMessage(message);
                             new Handler().postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
-                                    recyclerView.scrollToPosition((chatMsgAdapter.getItemCount() - 1));
+                                    chatListRecyclerView.scrollToPosition((chatMsgAdapter.getItemCount() - 1));
                                 }
                             }, 200);
                         } else if (!message.getUserName().equalsIgnoreCase(name)) {
@@ -395,7 +399,7 @@ public class ChatRoomFragment extends Fragment {
     @OnClick(R.id.down_arrow)
     public void scrollToLatestMsg() {
         Utils.hideKeyboard(getActivity());
-        recyclerView.scrollToPosition(chatMsgAdapter.getItemCount() - 1);
+        chatListRecyclerView.scrollToPosition(chatMsgAdapter.getItemCount() - 1);
     }
 
     @OnClick(R.id.back_arrow)
