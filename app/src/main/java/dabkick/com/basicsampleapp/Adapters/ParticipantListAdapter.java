@@ -1,5 +1,6 @@
 package dabkick.com.basicsampleapp.Adapters;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +11,8 @@ import android.view.ViewGroup;
 import dabkick.com.basicsampleapp.R;
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.dabkick.engine.Public.UserInfo;
 import com.squareup.picasso.Picasso;
 
@@ -18,8 +21,10 @@ import java.util.List;
 public class ParticipantListAdapter extends RecyclerView.Adapter<ParticipantListAdapter.ParticipantProfileHolder> {
 
     private List<UserInfo> participantList;
+    private Context mContext;
 
-    public ParticipantListAdapter(List<UserInfo> participantList) {
+    public ParticipantListAdapter(Context context, List<UserInfo> participantList) {
+        mContext = context;
         this.participantList = participantList;
     }
 
@@ -40,8 +45,16 @@ public class ParticipantListAdapter extends RecyclerView.Adapter<ParticipantList
             holder.userName.setText(name);
 
         String profileImgUrl = participantList.get(position).getProfilePicUrl();
-        if(profileImgUrl != null && !profileImgUrl.trim().isEmpty())
-            Picasso.get().load(profileImgUrl).placeholder(R.drawable.avatar_img).error(R.drawable.avatar_img).into(holder.profileImg);
+//        if (profileImgUrl != null && !profileImgUrl.trim().isEmpty())
+//            Picasso.get().load(profileImgUrl).placeholder(R.drawable.avatar_img).error(R.drawable.avatar_img).into(holder.profileImg);
+
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.placeholder(R.drawable.avatar_img);
+
+        Glide.with(mContext)
+                .setDefaultRequestOptions(requestOptions)
+                .load(profileImgUrl)
+                .into(holder.profileImg);
     }
 
     @Override

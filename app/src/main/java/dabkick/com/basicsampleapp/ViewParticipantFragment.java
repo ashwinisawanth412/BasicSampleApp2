@@ -90,7 +90,7 @@ public class ViewParticipantFragment extends Fragment {
 
 
     public void setAdapter() {
-        participantListAdapter = new ParticipantListAdapter(participantList);
+        participantListAdapter = new ParticipantListAdapter(getContext(), participantList);
         mParticipantListView.setAdapter(participantListAdapter);
         mParticipantListView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
