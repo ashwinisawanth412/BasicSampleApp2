@@ -41,8 +41,6 @@ import dabkick.com.basicsampleapp.Model.Room;
 
 public class HomePageActivity extends BaseActivity {
 
-    private Unbinder mUnbinder;
-
     @BindView(R.id.disconnect_text_view)
     AppCompatTextView mDisconnect;
     @BindView(R.id.room_list_view)
@@ -68,7 +66,7 @@ public class HomePageActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
 
-        mUnbinder = ButterKnife.bind(this);
+        ButterKnife.bind(this);
 
         mProgressBar.setVisibility(View.VISIBLE);
         updateName();
@@ -429,6 +427,5 @@ public class HomePageActivity extends BaseActivity {
         super.onDestroy();
         //disconnect from firebase but retain user details
         SplashScreenActivity.dkLiveChat.endLiveChat();
-        mUnbinder.unbind();
     }
 }

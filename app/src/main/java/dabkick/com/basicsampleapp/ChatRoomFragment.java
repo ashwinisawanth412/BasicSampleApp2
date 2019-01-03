@@ -1,5 +1,6 @@
 package dabkick.com.basicsampleapp;
 
+import android.os.Binder;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
@@ -65,6 +66,8 @@ public class ChatRoomFragment extends Fragment {
     View line;
     @BindView(R.id.layout)
     LinearLayout editBoxLayout;
+    @BindView(R.id.down_arrow)
+    AppCompatImageView mNewMsgArrow;
 
 
     static ChatMsgAdapter chatMsgAdapter;
@@ -94,11 +97,7 @@ public class ChatRoomFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.frag_chat_room, container, false);
-        unbinder = ButterKnife.bind(this, view);
-
-        //some reason not setting correctly
-        chatListRecyclerView = view.findViewById(R.id.chat_list);
-
+        ButterKnife.bind(this, view);
         isUserAutoSubscribed = true;
 
         if (getArguments() != null) {
@@ -188,24 +187,17 @@ public class ChatRoomFragment extends Fragment {
                     BaseActivity.mCurrentActivity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            Log.d("CHatRoomFrag", "testing: " + mProgressBar + " userCount: " + mUserCount);
+
                             String name = PreferenceHandler.getUserName(BaseActivity.mCurrentActivity);
                             ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.setLatestRoomMsg(roomName, message.getChatMessage());
                             if (roomName.equalsIgnoreCase(mRoomName)) {
-                                //happening sometimes
-                                if (chatListRecyclerView == null) {
-                                    chatListRecyclerView = view.findViewById(R.id.recycler);
-                                    chatListRecyclerView.setAdapter(chatMsgAdapter);
-                                }
                                 chatMsgAdapter.addMessage(message);
-                             /*   if() {
-                                    ((LinearLayoutManager) chatListRecyclerView.getLayoutManager()).findLastCompletelyVisibleItemPosition();
-                                }*/
-                                new Handler().postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        chatListRecyclerView.scrollToPosition((chatMsgAdapter.getItemCount() - 1));
-                                    }
-                                }, 200);
+                                if ((chatMsgAdapter.getItemCount() - ((LinearLayoutManager) chatListRecyclerView.getLayoutManager()).findLastCompletelyVisibleItemPosition()) > 2) {
+                                    mNewMsgArrow.setVisibility(View.VISIBLE);
+                                } else {
+                                    scrollToLatestMsg();
+                                }
                             } else if (!message.getUserName().equalsIgnoreCase(name)) {
                                 //i am not in the same room as the msg received and am not the sender of the msg. So add it as unread msg
                                 if (BaseActivity.mCurrentActivity.getClass() == HomePageActivity.class) {
@@ -216,8 +208,6 @@ public class ChatRoomFragment extends Fragment {
                                     }
                                 }
                             }
-
-
                         }
                     });
                 }
@@ -295,6 +285,22 @@ public class ChatRoomFragment extends Fragment {
             });
         }
 
+       chatListRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+           @Override
+           public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+               super.onScrollStateChanged(recyclerView, newState);
+           }
+
+           @Override
+           public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+               super.onScrolled(recyclerView, dx, dy);
+
+               if ((chatMsgAdapter.getItemCount() - ((LinearLayoutManager) chatListRecyclerView.getLayoutManager()).findLastCompletelyVisibleItemPosition()) < 2) {
+                   mNewMsgArrow.setVisibility(View.GONE);
+               }
+           }
+       });
+
 
         button.setOnClickListener(new View.OnClickListener() {
                                       @Override
@@ -319,84 +325,9 @@ public class ChatRoomFragment extends Fragment {
         return view;
     }
 
-    public void initLiveChatCallbackListener() {
-        liveChatCallbackListener = new LiveChatCallbackListener() {
-            @Override
-            public void receivedChatMessage(String roomName, MessageInfo message) {
-                BaseActivity.mCurrentActivity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        String name = PreferenceHandler.getUserName(BaseActivity.mCurrentActivity);
-                        ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.setLatestRoomMsg(roomName, message.getChatMessage());
-                        if (roomName.equalsIgnoreCase(mRoomName)) {
-                            //happening sometimes
-                            if (chatListRecyclerView == null) {
-                                chatListRecyclerView = view.findViewById(R.id.recycler);
-                                chatListRecyclerView.setAdapter(chatMsgAdapter);
-                            }
-                            chatMsgAdapter.addMessage(message);
-                            new Handler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    chatListRecyclerView.scrollToPosition((chatMsgAdapter.getItemCount() - 1));
-                                }
-                            }, 200);
-                        } else if (!message.getUserName().equalsIgnoreCase(name)) {
-                            //i am not in the same room as the msg received and am not the sender of the msg. So add it as unread msg
-                            if (BaseActivity.mCurrentActivity.getClass() == HomePageActivity.class) {
-                                Room room = ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.getRoomItem(roomName);
-                                if (room != null) {
-                                    room.addUnreadMsg(message);
-                                    ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.updateRoomUponNewMsg(room);
-                                }
-                            }
-                        }
-
-
-                    }
-                });
-            }
-        };
-    }
-
-    public void initUserPresenceCallbackListener() {
-        userPresenceCallBackListener = new UserPresenceCallBackListener() {
-            @Override
-            public void userEntered(String roomName, UserInfo participant) {
-                //process user entry
-                String userEnteredMessage = participant.getName() + " entered the room";
-                MessageInfo messageInfo = new MessageInfo();
-                messageInfo.setUserId(participant.getUserId());
-                messageInfo.setUserName(participant.getName());
-                messageInfo.setChatMessage(userEnteredMessage);
-                messageInfo.setSystemMessage(true);
-                chatMsgAdapter.addMessage(messageInfo);
-            }
-
-
-            @Override
-            public void userExited(String roomName, UserInfo participant) {
-                //process user exit
-                String userEnteredMessage = participant.getName() + " exited the room";
-                MessageInfo messageInfo = new MessageInfo();
-                messageInfo.setUserId(participant.getUserId());
-                messageInfo.setUserName(participant.getName());
-                messageInfo.setChatMessage(userEnteredMessage);
-                messageInfo.setSystemMessage(true);
-                chatMsgAdapter.addMessage(messageInfo);
-            }
-
-
-            @Override
-            public void userDataUpdated(String roomName, UserInfo participant) {
-                //process user info change
-            }
-        };
-    }
-
     @OnClick(R.id.down_arrow)
     public void scrollToLatestMsg() {
-        Utils.hideKeyboard(getActivity());
+        Utils.hideKeyboard(BaseActivity.mCurrentActivity);
         chatListRecyclerView.scrollToPosition(chatMsgAdapter.getItemCount() - 1);
     }
 
