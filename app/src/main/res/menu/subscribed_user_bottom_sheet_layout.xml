@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/unsubscribe"
-        android:title="Unsubscribe" />
-
+        android:id="@+id/enter_room"
+        android:title="Enter Room" />
     <item
         android:id="@+id/view_members"
         android:title="View Members" />
-
     <item
         android:id="@+id/read_msgs"
         android:title="Read Messages" />
     <item
-        android:id="@+id/enter_room"
-        android:title="Enter Room" />
+        android:id="@+id/unsubscribe"
+        android:title="Unsubscribe" />
 </menu>
