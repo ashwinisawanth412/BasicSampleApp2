@@ -6,7 +6,6 @@ import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +40,7 @@ public class ViewParticipantFragment extends Fragment {
 
     String mRoomName = "";
     List<UserInfo> participantList = new ArrayList<UserInfo>();
+
     public ViewParticipantFragment() {
     }
 
@@ -85,6 +85,10 @@ public class ViewParticipantFragment extends Fragment {
             }
         });
 
+        if (getActivity().getClass() == HomePageActivity.class) {
+            ((HomePageActivity) getActivity()).updateFloatingBtn(false);
+        }
+
         return view;
     }
 
@@ -104,7 +108,7 @@ public class ViewParticipantFragment extends Fragment {
     }
 
     @OnClick(R.id.back_arrow_participant)
-    public void backArrowClicked(){
+    public void backArrowClicked() {
         getActivity().onBackPressed();
     }
 }
