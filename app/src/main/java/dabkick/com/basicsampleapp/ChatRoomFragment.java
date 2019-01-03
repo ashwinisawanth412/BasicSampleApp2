@@ -15,6 +15,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -329,6 +330,30 @@ public class ChatRoomFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if(getView() == null){
+            return;
+        }
+
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK){
+                    // handle back button's click listener
+                    backBtnClicked();
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
+
     @OnClick(R.id.down_arrow)
     public void scrollToLatestMsg() {
         Utils.hideKeyboard(BaseActivity.mCurrentActivity);
@@ -339,8 +364,6 @@ public class ChatRoomFragment extends Fragment {
     @OnClick(R.id.back_arrow)
     public void backBtnClicked() {
         Utils.hideKeyboard(getActivity());
-
-//        getActivity().onBackPressed();
         ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.notifyDataSetChanged();
         SplashScreenActivity.dkLiveChat.leaveSession(mRoomName, new CallbackListener() {
             @Override
@@ -355,6 +378,8 @@ public class ChatRoomFragment extends Fragment {
         });
         showAlertDialogWhileExiting();
     }
+
+
 
 
     public void showAlertDialogWhileExiting() {
