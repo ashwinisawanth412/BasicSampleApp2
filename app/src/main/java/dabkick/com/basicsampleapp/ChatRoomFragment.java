@@ -43,8 +43,6 @@ public class ChatRoomFragment extends Fragment {
 
     private static String mRoomName;
 
-    private Unbinder unbinder;
-
     @BindView(R.id.edittext)
     EditText editText;
     @BindView(R.id.chat_list)
@@ -513,6 +511,5 @@ public class ChatRoomFragment extends Fragment {
             chatMsgAdapter.clearMsgs();
             chatMsgAdapter = null;
         }
-        unbinder.unbind();
     }
 }
