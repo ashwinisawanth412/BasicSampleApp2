@@ -270,7 +270,7 @@ public class ChatRoomFragment extends Fragment {
                                             mProgressBar.setVisibility(View.GONE);
                                         if (chatMsgAdapter != null)
                                             chatMsgAdapter.addAllMessages(SplashScreenActivity.dkLiveChat.chatEventListener.getChatMessages(mRoomName));
-                                        if (chatListRecyclerView != null)
+                                        if (chatListRecyclerView != null && chatMsgAdapter != null)
                                             chatListRecyclerView.scrollToPosition(chatMsgAdapter.getItemCount() - 1);
 
                                     }
@@ -339,7 +339,7 @@ public class ChatRoomFragment extends Fragment {
     @OnClick(R.id.back_arrow)
     public void backBtnClicked() {
         Utils.hideKeyboard(getActivity());
-        showAlertDialogWhileExiting();
+
 //        getActivity().onBackPressed();
         ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.notifyDataSetChanged();
         SplashScreenActivity.dkLiveChat.leaveSession(mRoomName, new CallbackListener() {
@@ -353,9 +353,7 @@ public class ChatRoomFragment extends Fragment {
 
             }
         });
-
-
-
+        showAlertDialogWhileExiting();
     }
 
 
@@ -364,16 +362,32 @@ public class ChatRoomFragment extends Fragment {
         builder.setMessage("Would you like to")
                 .setPositiveButton("Stay Subscribed", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-
-
+                        getActivity().onBackPressed();
+                        //do nothing else as the user will remain subscribed
                     }
                 })
                 .setNegativeButton("Unsubscribe", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        // User cancelled the dialog
+                        SplashScreenActivity.dkLiveChat
+                                .unSubscribe(mRoomName, liveChatCallbackListener, userPresenceCallBackListener, new CallbackListener() {
+                                    @Override
+                                    public void onSuccess(String msg, Object... obj) {
+                                        if (((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter != null) {
+                                            Room room = ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.getRoomItem(mRoomName);
+                                            if (room != null)
+                                                ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.updateRoomUponUnsubscribe(room);
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onError(String msg, Object... obj) {}
+                                });
+
+                        getActivity().onBackPressed();
+
                     }
                 });
-        builder.setCancelable(true);
+        builder.setCancelable(false);
         builder.create().show();
     }
 
@@ -460,7 +474,7 @@ public class ChatRoomFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         mRoomName = "";
-        Snackbar.make(view, "You are auto-subscribed to this room", Snackbar.LENGTH_LONG).show();
+//        Snackbar.make(view, "You are auto-subscribed to this room", Snackbar.LENGTH_LONG).show();
 
         if (getActivity().getClass() == HomePageActivity.class) {
             ((HomePageActivity) getActivity()).updateFloatingBtn(true);
