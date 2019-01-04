@@ -69,7 +69,7 @@ public class ViewParticipantFragment extends Fragment {
 
         mRoomNameTextView.setText(mRoomName);
 
-        participantList = SplashScreenActivity.dkLiveChat.getUsers(mRoomName, new CallbackListener() {
+        SplashScreenActivity.dkLiveChat.viewUsers(mRoomName, new CallbackListener() {
             @Override
             public void onSuccess(String s, Object... objects) {
                 participantList = (List<UserInfo>) objects[0];

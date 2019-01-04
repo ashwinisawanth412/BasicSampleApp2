@@ -1,20 +1,12 @@
 package dabkick.com.basicsampleapp;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatEditText;
-import android.text.TextUtils;
-import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.dabkick.engine.Public.Authentication;
 import com.dabkick.engine.Public.CallbackListener;
 import com.dabkick.engine.Public.DKLiveChat;
 
@@ -34,6 +26,8 @@ public class SplashScreenActivity extends BaseActivity {
     AppCompatEditText mUserDevKeyEdiText;
     @BindView(R.id.dev_id_edit_text)
     AppCompatEditText mUserDevId;
+    @BindView(R.id.user_id_edit_text)
+    AppCompatEditText mUserId;
 
     @BindView(R.id.container)
     RelativeLayout mNameEditTextContainer;
@@ -52,7 +46,7 @@ public class SplashScreenActivity extends BaseActivity {
         mUserDevId.setText("DK09aff676f38011e88a1a06f");
     }
 
-    public void setUserDetailsIfUpdated(){
+    public void setUserDetailsIfUpdated() {
         String name = PreferenceHandler.getUserName(SplashScreenActivity.this);
         mUserNameEditText.setText(name);
         mUserNameEditText.setSelection(name.length());
@@ -68,11 +62,16 @@ public class SplashScreenActivity extends BaseActivity {
     }
 
     public void initEngine() {
+        String enteredUserId;
         String devId = mUserDevId.getText().toString().trim();
         String devKey = mUserDevKeyEdiText.getText().toString().trim();
+        if (!mUserId.getText().toString().isEmpty()) {
+            enteredUserId = mUserId.getText().toString();
+        } else {
+            enteredUserId = "";
+        }
 
-        Authentication auth = new Authentication(devId, devKey);
-        dkLiveChat = new DKLiveChat(this, auth, new CallbackListener() {
+        dkLiveChat = new DKLiveChat(this, enteredUserId, new CallbackListener() {
             @Override
             public void onSuccess(String s, Object... objects) {
                 PreferenceHandler.setUserName(SplashScreenActivity.this, mUserNameEditText.getText().toString().trim());
@@ -84,7 +83,7 @@ public class SplashScreenActivity extends BaseActivity {
 
             @Override
             public void onError(String s, Object... objects) {
-                Toast.makeText(BaseActivity.mCurrentActivity, "Authentication failed.",Toast.LENGTH_SHORT).show();
+                Toast.makeText(BaseActivity.mCurrentActivity, "Authentication failed.", Toast.LENGTH_SHORT).show();
             }
         });
     }

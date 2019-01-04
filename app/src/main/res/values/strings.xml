@@ -4,6 +4,7 @@
     <string name="enter_dev_key">Enter your developer key</string>
     <string name="enter_dev_id">Enter your developer id</string>
     <string name="end_chat">Exit</string>
+    <string name="enter_user_id">Enter User Id (Optional)</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
