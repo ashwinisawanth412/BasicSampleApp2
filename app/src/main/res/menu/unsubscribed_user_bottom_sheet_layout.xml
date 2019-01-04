@@ -9,4 +9,7 @@
     <item
         android:id="@+id/subscribe"
         android:title="Subscribe" />
+  <!--  <item
+        android:id="@+id/view_members"
+        android:title="View Members" />-->
 </menu>

@@ -278,6 +278,13 @@ public class HomePageActivity extends BaseActivity {
                         transaction1.addToBackStack(null);
                         transaction1.commit();
                         break;
+                   /* case R.id.view_members:
+                        ViewParticipantFragment participantFragment = ViewParticipantFragment.newInstance(roomName);
+                        android.support.v4.app.FragmentTransaction memberTransaction = getSupportFragmentManager().beginTransaction();
+                        memberTransaction.replace(R.id.frag_container, participantFragment);
+                        memberTransaction.addToBackStack(null);
+                        memberTransaction.commit();
+                        break;*/
                 }
                 return true;
             }
@@ -427,5 +434,14 @@ public class HomePageActivity extends BaseActivity {
         super.onDestroy();
         //disconnect from firebase but retain user details
         SplashScreenActivity.dkLiveChat.endLiveChat();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (bottomSheet != null && bottomSheet.isSheetShowing())
+            bottomSheet.dismissSheet();
+        else
+            super.onBackPressed();
+
     }
 }

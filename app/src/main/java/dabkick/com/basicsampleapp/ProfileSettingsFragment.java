@@ -35,7 +35,6 @@ import static android.app.Activity.RESULT_OK;
 
 public class ProfileSettingsFragment extends Fragment implements View.OnClickListener {
 
-    private Unbinder mUnbinder;
     @BindView(R.id.profile_user_name)
     AppCompatTextView mUserName;
     @BindView(R.id.profile_img_view)
@@ -59,8 +58,7 @@ public class ProfileSettingsFragment extends Fragment implements View.OnClickLis
 
         View view = inflater.inflate(R.layout.frag_profile_settings, container, false);
 
-        mUnbinder = ButterKnife.bind(this, view);
-
+       ButterKnife.bind(this, view);
         mEditTextBtn.setOnClickListener(this);
 
         if (getActivity().getClass() == HomePageActivity.class) {
@@ -138,7 +136,6 @@ public class ProfileSettingsFragment extends Fragment implements View.OnClickLis
         if (getActivity().getClass() == HomePageActivity.class) {
             ((HomePageActivity) getActivity()).updateFloatingBtn(true);
         }
-        mUnbinder.unbind();
     }
 
     @Override

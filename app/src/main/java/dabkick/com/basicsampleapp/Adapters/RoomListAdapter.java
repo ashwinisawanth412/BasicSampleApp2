@@ -49,7 +49,6 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.RoomHo
             holder.roomName.setText(roomName);
 
 
-
         int count = room.getUnreadMsgCount();
         if (count == 0) {
             holder.unreadMsgCount.setVisibility(View.GONE);
@@ -65,17 +64,17 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.RoomHo
             holder.unreadMsgCount.setVisibility(View.VISIBLE);
         }
 
-        if(!TextUtils.isEmpty(room.getLatestMsg())) {
+        if (!TextUtils.isEmpty(room.getLatestMsg())) {
             holder.roomLatestMsg.setVisibility(View.VISIBLE);
             holder.roomLatestMsg.setText(room.getLatestMsg());
         } else {
             holder.roomLatestMsg.setVisibility(View.GONE);
         }
 
-        if(SplashScreenActivity.dkLiveChat.isSubscribed(roomName)){
+        if (SplashScreenActivity.dkLiveChat.isSubscribed(roomName)) {
             holder.roomName.setTextColor(Color.BLACK);
             holder.roomName.setTypeface(null, Typeface.BOLD_ITALIC);
-        }else{
+        } else {
             holder.roomName.setTextColor(Color.DKGRAY);
         }
     }
@@ -108,11 +107,11 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.RoomHo
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(context.getClass() == HomePageActivity.class) {
+                    if (context.getClass() == HomePageActivity.class) {
                         if (SplashScreenActivity.dkLiveChat.isSubscribed(roomName.getText().toString()))
-                            ((HomePageActivity)context).showSubscribedUserBottomSheet(roomName.getText().toString());
+                            ((HomePageActivity) context).showSubscribedUserBottomSheet(roomName.getText().toString());
                         else
-                            ((HomePageActivity)context).showUnsubscribedUserBottomSheet(roomName.getText().toString());
+                            ((HomePageActivity) context).showUnsubscribedUserBottomSheet(roomName.getText().toString());
 
                     }
                 }
@@ -127,10 +126,17 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.RoomHo
 
     public void updateRoomUponNewMsg(Room room) {
         if (roomInfoList.contains(room)) {
-            if(room.getUnreadMsgCount() > 0) {
+            if (room.getUnreadMsgCount() > 0) {
                 Collections.swap(roomInfoList, roomInfoList.indexOf(room), 0);
                 notifyDataSetChanged();
             }
+        }
+    }
+
+    public void moveRoomToTop(Room room) {
+        if (roomInfoList.contains(room)) {
+            Collections.swap(roomInfoList, roomInfoList.indexOf(room), 0);
+            notifyDataSetChanged();
         }
     }
 
@@ -141,7 +147,7 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.RoomHo
         }
     }
 
-    public void enterRoomOnCreation(String roomName){
+    public void enterRoomOnCreation(String roomName) {
         ChatRoomFragment chatRoom = ChatRoomFragment.newInstance(roomName, true);
         android.support.v4.app.FragmentTransaction transaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.frag_container, chatRoom);
@@ -149,8 +155,8 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.RoomHo
         transaction.commit();
     }
 
-    public void setLatestRoomMsg(String roomName, String msg){
-        if (roomInfoList.contains(getRoomItem(roomName))){
+    public void setLatestRoomMsg(String roomName, String msg) {
+        if (roomInfoList.contains(getRoomItem(roomName))) {
             Room room = getRoomItem(roomName);
             room.setLatestMsg(msg);
             roomInfoList.remove(room);

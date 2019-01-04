@@ -290,21 +290,21 @@ public class ChatRoomFragment extends Fragment {
             });
         }
 
-       chatListRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-           @Override
-           public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-               super.onScrollStateChanged(recyclerView, newState);
-           }
+        chatListRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
 
-           @Override
-           public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-               super.onScrolled(recyclerView, dx, dy);
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
 
-               if ((chatMsgAdapter.getItemCount() - ((LinearLayoutManager) chatListRecyclerView.getLayoutManager()).findLastCompletelyVisibleItemPosition()) < 2) {
-                   mNewMsgArrow.setVisibility(View.GONE);
-               }
-           }
-       });
+                if ((chatMsgAdapter.getItemCount() - ((LinearLayoutManager) chatListRecyclerView.getLayoutManager()).findLastCompletelyVisibleItemPosition()) < 2) {
+                    mNewMsgArrow.setVisibility(View.GONE);
+                }
+            }
+        });
 
 
         button.setOnClickListener(new View.OnClickListener() {
@@ -334,7 +334,7 @@ public class ChatRoomFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        if(getView() == null){
+        if (getView() == null) {
             return;
         }
 
@@ -344,7 +344,7 @@ public class ChatRoomFragment extends Fragment {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
 
-                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK){
+                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
                     // handle back button's click listener
                     backBtnClicked();
                     return true;
@@ -380,8 +380,6 @@ public class ChatRoomFragment extends Fragment {
     }
 
 
-
-
     public void showAlertDialogWhileExiting() {
         AlertDialog.Builder builder = new AlertDialog.Builder(BaseActivity.mCurrentActivity);
         builder.setMessage("Would you like to")
@@ -405,7 +403,8 @@ public class ChatRoomFragment extends Fragment {
                                     }
 
                                     @Override
-                                    public void onError(String msg, Object... obj) {}
+                                    public void onError(String msg, Object... obj) {
+                                    }
                                 });
 
                         getActivity().onBackPressed();
@@ -498,8 +497,12 @@ public class ChatRoomFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+
+        Room room = ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.getRoomItem(mRoomName);
+        if (room != null) {
+            ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.moveRoomToTop(room);
+        }
         mRoomName = "";
-//        Snackbar.make(view, "You are auto-subscribed to this room", Snackbar.LENGTH_LONG).show();
 
         if (getActivity().getClass() == HomePageActivity.class) {
             ((HomePageActivity) getActivity()).updateFloatingBtn(true);
