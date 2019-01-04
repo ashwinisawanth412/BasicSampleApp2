@@ -360,7 +360,7 @@ public class HomePageActivity extends BaseActivity {
                     @Override
                     public void run() {
                         String name = PreferenceHandler.getUserName(BaseActivity.mCurrentActivity);
-                        ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.setLatestRoomMsg(roomName, message.getChatMessage());
+                        ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.setLatestRoomMsg(roomName, message.getChatMessage()/*time stamp*/);
                         if (roomName.equalsIgnoreCase("")) {
                             //happening sometimes
                             // if (chatListRecyclerView == null) {

@@ -195,7 +195,7 @@ public class ChatRoomFragment extends Fragment {
                             Log.d("CHatRoomFrag", "testing: " + mProgressBar + " userCount: " + mUserCount);
 
                             String name = PreferenceHandler.getUserName(BaseActivity.mCurrentActivity);
-                            ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.setLatestRoomMsg(roomName, message.getChatMessage());
+                            ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.setLatestRoomMsg(roomName, message.getChatMessage()/*, timestamp to be passed here*/);
                             if (roomName.equalsIgnoreCase(mRoomName)) {
                                 chatMsgAdapter.addMessage(message);
                                 if ((chatMsgAdapter.getItemCount() - ((LinearLayoutManager) chatListRecyclerView.getLayoutManager()).findLastCompletelyVisibleItemPosition()) > 2) {

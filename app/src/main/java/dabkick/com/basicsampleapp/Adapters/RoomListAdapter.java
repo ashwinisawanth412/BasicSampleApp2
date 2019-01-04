@@ -155,7 +155,7 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.RoomHo
         transaction.commit();
     }
 
-    public void setLatestRoomMsg(String roomName, String msg) {
+    public void setLatestRoomMsg(String roomName, String msg/*, timestamp to be passed here*/) {
         if (roomInfoList.contains(getRoomItem(roomName))) {
             Room room = getRoomItem(roomName);
             room.setLatestMsg(msg);
