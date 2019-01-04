@@ -411,8 +411,7 @@ public class ChatRoomFragment extends Fragment {
 
                     }
                 });
-        builder.setCancelable(false);
-        builder.create().show();
+        builder.setCancelable(false).create().show();
     }
 
     public void sendMessage(String roomName, final String message) {

@@ -311,12 +311,11 @@ public class HomePageActivity extends BaseActivity {
                                 .unSubscribe(roomName, chatRoom.liveChatCallbackListener, chatRoom.userPresenceCallBackListener, new CallbackListener() {
                                     @Override
                                     public void onSuccess(String msg, Object... obj) {
+                                        mRoomListAdapter.notifyDataSetChanged();
                                     }
 
                                     @Override
-                                    public void onError(String msg, Object... obj) {
-
-                                    }
+                                    public void onError(String msg, Object... obj) {}
                                 });
 
                         break;
