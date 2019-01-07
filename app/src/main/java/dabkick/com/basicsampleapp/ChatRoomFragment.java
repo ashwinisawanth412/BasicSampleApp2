@@ -467,6 +467,7 @@ public class ChatRoomFragment extends Fragment {
                                     public void onSuccess(String msg, Object... obj) {
                                         //move room to last pos
 //                                        backBtnClicked();
+                                        Snackbar.make(view,"Unsubscribed successfully", Snackbar.LENGTH_LONG).show();
                                         if (((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter != null) {
                                             Room room = ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.getRoomItem(mRoomName);
                                             if (room != null)
