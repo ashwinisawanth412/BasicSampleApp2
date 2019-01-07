@@ -361,33 +361,8 @@ public class HomePageActivity extends BaseActivity {
                         String name = PreferenceHandler.getUserName(BaseActivity.mCurrentActivity);
                         ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.setLatestRoomMsg(roomName, message.getChatMessage()/*time stamp*/);
                         if (roomName.equalsIgnoreCase("")) {
-                            //happening sometimes
-                            // if (chatListRecyclerView == null) {
-                            //  chatListRecyclerView = view.findViewById(R.id.recycler);
-                            // chatListRecyclerView.setAdapter(chatMsgAdapter);
                         }
-                        //chatMsgAdapter.addMessage(message);
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                //chatListRecyclerView.scrollToPosition((chatMsgAdapter.getItemCount() - 1));
-                            }
-                        }, 200);
                     }
-                    //}
-                       /* else if (!message.getUserName().equalsIgnoreCase(name)) {
-                            //i am not in the same room as the msg received and am not the sender of the msg. So add it as unread msg
-                            if (BaseActivity.mCurrentActivity.getClass() == HomePageActivity.class) {
-                                Room room = ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.getRoomItem(roomName);
-                                if (room != null) {
-                                    room.addUnreadMsg(message);
-                                    ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.updateRoomUponNewMsg(room);
-                                }
-                            }
-                        }*/
-
-
-                    //}
                 });
             }
         };

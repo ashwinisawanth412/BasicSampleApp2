@@ -238,7 +238,8 @@ public class ChatRoomFragment extends Fragment {
                     messageInfo.setUserName(participant.getName());
                     messageInfo.setChatMessage(userEnteredMessage);
                     messageInfo.setSystemMessage(true);
-                    chatMsgAdapter.addMessage(messageInfo);
+                    if(chatMsgAdapter != null)
+                        chatMsgAdapter.addMessage(messageInfo);
                 }
 
 
