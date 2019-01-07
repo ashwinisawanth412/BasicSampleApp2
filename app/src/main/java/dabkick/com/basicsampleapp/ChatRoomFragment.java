@@ -185,6 +185,14 @@ public class ChatRoomFragment extends Fragment {
             }
         })));
 
+        mNewMsgArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("CHatRoomFrag", "testing in onClick: " + mProgressBar + " userCount: " + mUserCount);
+
+            }
+        });
+
         if (((HomePageActivity) getActivity()).liveChatCallbackListener == null) {
             ((HomePageActivity) getActivity()).liveChatCallbackListener = new LiveChatCallbackListener() {
                 @Override
@@ -192,7 +200,7 @@ public class ChatRoomFragment extends Fragment {
                     BaseActivity.mCurrentActivity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Log.d("CHatRoomFrag", "testing: " + mProgressBar + " userCount: " + mUserCount);
+                            Log.d("CHatRoomFrag", "testing in receivedChat: " + mProgressBar + " userCount: " + mUserCount);
 
                             String name = PreferenceHandler.getUserName(BaseActivity.mCurrentActivity);
                             ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.setLatestRoomMsg(roomName, message.getChatMessage()/*, timestamp to be passed here*/);
@@ -466,8 +474,7 @@ public class ChatRoomFragment extends Fragment {
                                     @Override
                                     public void onSuccess(String msg, Object... obj) {
                                         //move room to last pos
-//                                        backBtnClicked();
-                                        Snackbar.make(view,"Unsubscribed successfully", Snackbar.LENGTH_LONG).show();
+                                        backBtnClicked();
                                         if (((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter != null) {
                                             Room room = ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.getRoomItem(mRoomName);
                                             if (room != null)
