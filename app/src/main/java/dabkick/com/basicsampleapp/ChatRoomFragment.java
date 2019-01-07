@@ -376,7 +376,11 @@ public class ChatRoomFragment extends Fragment {
 
             }
         });
-        showAlertDialogWhileExiting();
+
+        if(SplashScreenActivity.dkLiveChat.isSubscribed(mRoomName))
+            showAlertDialogWhileExiting();
+        else
+            getActivity().onBackPressed();
     }
 
 
@@ -462,7 +466,7 @@ public class ChatRoomFragment extends Fragment {
                                     @Override
                                     public void onSuccess(String msg, Object... obj) {
                                         //move room to last pos
-                                        backBtnClicked();
+//                                        backBtnClicked();
                                         if (((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter != null) {
                                             Room room = ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.getRoomItem(mRoomName);
                                             if (room != null)
