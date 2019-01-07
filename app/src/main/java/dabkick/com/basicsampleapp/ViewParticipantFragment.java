@@ -6,6 +6,7 @@ import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -85,10 +86,6 @@ public class ViewParticipantFragment extends Fragment {
             }
         });
 
-        if (getActivity().getClass() == HomePageActivity.class) {
-            ((HomePageActivity) getActivity()).updateFloatingBtn(false);
-        }
-
         return view;
     }
 
@@ -99,12 +96,45 @@ public class ViewParticipantFragment extends Fragment {
         mParticipantListView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (getActivity().getClass() == HomePageActivity.class) {
+            ((HomePageActivity) getActivity()).updateFloatingBtn(false);
+        }
+
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+                    backArrowClicked();
+                    return true;
+                }
+                return false;
+            }
+        });
+
+    }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         mUnbinder.unbind();
         participantList.clear();
+
+        if (getActivity().getClass() == HomePageActivity.class) {
+            ChatRoomFragment chatRoomFragment = (ChatRoomFragment) (BaseActivity.mCurrentActivity.getSupportFragmentManager()).findFragmentByTag("chatRoom");
+            if (chatRoomFragment != null && chatRoomFragment.isVisible()) {
+
+            } else {
+                ((HomePageActivity) getActivity()).updateFloatingBtn(true);
+            }
+        }
+
     }
 
     @OnClick(R.id.back_arrow_participant)

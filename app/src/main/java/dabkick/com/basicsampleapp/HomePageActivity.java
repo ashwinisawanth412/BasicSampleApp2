@@ -266,7 +266,7 @@ public class HomePageActivity extends BaseActivity {
                     case R.id.read_msgs:
                         ChatRoomFragment chatRoom2 = ChatRoomFragment.newInstance(roomName, false);
                         android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                        transaction.replace(R.id.frag_container, chatRoom2);
+                        transaction.replace(R.id.frag_container, chatRoom2, "chatRoom");
                         transaction.addToBackStack(null);
                         transaction.commit();
 
@@ -274,7 +274,7 @@ public class HomePageActivity extends BaseActivity {
                     case R.id.enter_room:
                         ChatRoomFragment chatRoom1 = ChatRoomFragment.newInstance(roomName, true);
                         android.support.v4.app.FragmentTransaction transaction1 = getSupportFragmentManager().beginTransaction();
-                        transaction1.replace(R.id.frag_container, chatRoom1);
+                        transaction1.replace(R.id.frag_container, chatRoom1, "chatRoom");
                         transaction1.addToBackStack(null);
                         transaction1.commit();
                         break;
@@ -330,7 +330,7 @@ public class HomePageActivity extends BaseActivity {
                     case R.id.read_msgs:
                         ChatRoomFragment chatRoomReadmsg = ChatRoomFragment.newInstance(roomName, false);
                         android.support.v4.app.FragmentTransaction transactionReadMsg = getSupportFragmentManager().beginTransaction();
-                        transactionReadMsg.replace(R.id.frag_container, chatRoomReadmsg);
+                        transactionReadMsg.replace(R.id.frag_container, chatRoomReadmsg, "chatRoom");
                         transactionReadMsg.addToBackStack(null);
                         transactionReadMsg.commit();
 
@@ -338,7 +338,7 @@ public class HomePageActivity extends BaseActivity {
                     case R.id.enter_room:
                         ChatRoomFragment enterChatRoom = ChatRoomFragment.newInstance(roomName, true);
                         android.support.v4.app.FragmentTransaction enterRoomTransaction = getSupportFragmentManager().beginTransaction();
-                        enterRoomTransaction.replace(R.id.frag_container, enterChatRoom);
+                        enterRoomTransaction.replace(R.id.frag_container, enterChatRoom, "chatRoom");
                         enterRoomTransaction.addToBackStack(null);
                         enterRoomTransaction.commit();
                         break;

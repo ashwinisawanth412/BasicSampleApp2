@@ -119,10 +119,6 @@ public class ChatRoomFragment extends Fragment {
 
         mRoomTitle.setText(mRoomName);
 
-        if (getActivity().getClass() == HomePageActivity.class) {
-            ((HomePageActivity) getActivity()).updateFloatingBtn(false);
-        }
-
         chatMsgAdapter = new ChatMsgAdapter();
         chatListRecyclerView.setAdapter(chatMsgAdapter);
         chatListRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -185,13 +181,6 @@ public class ChatRoomFragment extends Fragment {
             }
         })));
 
-        mNewMsgArrow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("CHatRoomFrag", "testing in onClick: " + mProgressBar + " userCount: " + mUserCount);
-
-            }
-        });
 
         if (((HomePageActivity) getActivity()).liveChatCallbackListener == null) {
             ((HomePageActivity) getActivity()).liveChatCallbackListener = new LiveChatCallbackListener() {
@@ -200,7 +189,7 @@ public class ChatRoomFragment extends Fragment {
                     BaseActivity.mCurrentActivity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Log.d("CHatRoomFrag", "testing in receivedChat: " + mProgressBar + " userCount: " + mUserCount);
+                            Log.d("CHatRoomFrag", "testing in receivedChat: " +chatMsgAdapter.getItemCount());
 
                             String name = PreferenceHandler.getUserName(BaseActivity.mCurrentActivity);
                             ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.setLatestRoomMsg(roomName, message.getChatMessage()/*, timestamp to be passed here*/);
@@ -238,7 +227,7 @@ public class ChatRoomFragment extends Fragment {
                     messageInfo.setUserName(participant.getName());
                     messageInfo.setChatMessage(userEnteredMessage);
                     messageInfo.setSystemMessage(true);
-                    if(chatMsgAdapter != null)
+                    if (chatMsgAdapter != null)
                         chatMsgAdapter.addMessage(messageInfo);
                 }
 
@@ -280,6 +269,7 @@ public class ChatRoomFragment extends Fragment {
                                             mProgressBar.setVisibility(View.GONE);
                                         if (chatMsgAdapter != null)
                                             chatMsgAdapter.addAllMessages(SplashScreenActivity.dkLiveChat.chatEventListener.getChatMessages(mRoomName));
+
                                         if (chatListRecyclerView != null && chatMsgAdapter != null)
                                             chatListRecyclerView.scrollToPosition(chatMsgAdapter.getItemCount() - 1);
 
@@ -343,6 +333,10 @@ public class ChatRoomFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
+        if (getActivity().getClass() == HomePageActivity.class) {
+            ((HomePageActivity) getActivity()).updateFloatingBtn(false);
+        }
+
         if (getView() == null) {
             return;
         }
@@ -365,8 +359,14 @@ public class ChatRoomFragment extends Fragment {
 
     @OnClick(R.id.down_arrow)
     public void scrollToLatestMsg() {
-        Utils.hideKeyboard(BaseActivity.mCurrentActivity);
-        chatListRecyclerView.scrollToPosition(chatMsgAdapter.getItemCount() - 1);
+        BaseActivity.mCurrentActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Log.d("CHatRoomFrag", "scrollToLatest" + chatMsgAdapter.getItemCount());
+                Utils.hideKeyboard(BaseActivity.mCurrentActivity);
+                chatListRecyclerView.scrollToPosition(chatMsgAdapter.getItemCount() - 1);
+            }
+        });
     }
 
 
@@ -386,7 +386,7 @@ public class ChatRoomFragment extends Fragment {
             }
         });
 
-        if(SplashScreenActivity.dkLiveChat.isSubscribed(mRoomName))
+        if (SplashScreenActivity.dkLiveChat.isSubscribed(mRoomName))
             showAlertDialogWhileExiting();
         else
             getActivity().onBackPressed();
