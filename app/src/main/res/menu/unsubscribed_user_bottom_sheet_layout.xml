@@ -4,12 +4,12 @@
         android:id="@+id/enter_room"
         android:title="Join Room" />
     <item
+        android:id="@+id/view_members"
+        android:title="View Members" />
+    <item
         android:id="@+id/read_msgs"
         android:title="Read Messages" />
     <item
         android:id="@+id/subscribe"
         android:title="Subscribe" />
-    <item
-        android:id="@+id/view_members"
-        android:title="View Members" />
 </menu>
