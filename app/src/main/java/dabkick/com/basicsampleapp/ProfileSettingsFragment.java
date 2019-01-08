@@ -1,7 +1,6 @@
 package dabkick.com.basicsampleapp;
 
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -10,12 +9,10 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,8 +25,6 @@ import java.io.File;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -58,7 +53,7 @@ public class ProfileSettingsFragment extends Fragment implements View.OnClickLis
 
         View view = inflater.inflate(R.layout.frag_profile_settings, container, false);
 
-       ButterKnife.bind(this, view);
+        ButterKnife.bind(this, view);
         mEditTextBtn.setOnClickListener(this);
 
         if (getActivity().getClass() == HomePageActivity.class) {
@@ -95,14 +90,18 @@ public class ProfileSettingsFragment extends Fragment implements View.OnClickLis
     }
 
     private void takePicture() {
-        if (isCameraPermissionGranted) {
-            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
-            mProfileImgFile = new File(dir, "DabkickProfileImg.jpeg");
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mProfileImgFile));
-            startActivityForResult(intent, CAMERA_REQUEST_CODE);
+        if (ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+            if (isCameraPermissionGranted) {
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
+                mProfileImgFile = new File(dir, "DabkickProfileImg.jpeg");
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mProfileImgFile));
+                startActivityForResult(intent, CAMERA_REQUEST_CODE);
+            } else {
+                requestPermissions(new String[]{android.Manifest.permission.CAMERA, android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSIONS_REQUEST_CAMERA);
+            }
         } else {
-            requestPermissions(new String[]{android.Manifest.permission.CAMERA, android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSIONS_REQUEST_CAMERA);
+
         }
     }
 
@@ -141,7 +140,12 @@ public class ProfileSettingsFragment extends Fragment implements View.OnClickLis
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.profile_pic_edit_view) {
-            takePicture();
+            if (ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                isCameraPermissionGranted = false;
+                requestPermissions(new String[]{android.Manifest.permission.CAMERA, android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSIONS_REQUEST_CAMERA);
+            } else {
+                takePicture();
+            }
         }
     }
 }
