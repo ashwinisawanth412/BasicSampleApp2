@@ -81,6 +81,8 @@ public class ChatRoomFragment extends Fragment {
     private boolean isUserAutoSubscribed = true;
     private View view;
 
+    Object object = new Object();
+
     public ChatRoomFragment() {
     }
 
@@ -189,22 +191,24 @@ public class ChatRoomFragment extends Fragment {
                     BaseActivity.mCurrentActivity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            String name = PreferenceHandler.getUserName(BaseActivity.mCurrentActivity);
-                            ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.setLatestRoomMsg(roomName, message.getChatMessage()/*, timestamp to be passed here*/);
-                            if (roomName.equalsIgnoreCase(mRoomName)) {
-                                chatMsgAdapter.addMessage(message);
-                                if ((chatMsgAdapter.getItemCount() - ((LinearLayoutManager) chatListRecyclerView.getLayoutManager()).findLastCompletelyVisibleItemPosition()) > 2) {
-                                    mNewMsgArrow.setVisibility(View.VISIBLE);
-                                } else {
-                                    scrollToLatestMsg();
-                                }
-                            } else if (!message.getUserName().equalsIgnoreCase(name)) {
-                                //i am not in the same room as the msg received and am not the sender of the msg. So add it as unread msg
-                                if (BaseActivity.mCurrentActivity.getClass() == HomePageActivity.class) {
-                                    Room room = ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.getRoomItem(roomName);
-                                    if (room != null) {
-                                        room.addUnreadMsg(message);
-                                        ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.updateRoomUponNewMsg(room);
+                            synchronized (object){
+                                String name = PreferenceHandler.getUserName(BaseActivity.mCurrentActivity);
+                                ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.setLatestRoomMsg(roomName, message.getChatMessage()/*, timestamp to be passed here*/);
+                                if (roomName.equalsIgnoreCase(mRoomName)) {
+                                    chatMsgAdapter.addMessage(message);
+                                    if ((chatMsgAdapter.getItemCount() - ((LinearLayoutManager) chatListRecyclerView.getLayoutManager()).findLastCompletelyVisibleItemPosition()) > 2) {
+                                        mNewMsgArrow.setVisibility(View.VISIBLE);
+                                    } else {
+                                        scrollToLatestMsg();
+                                    }
+                                } else if (!message.getUserName().equalsIgnoreCase(name)) {
+                                    //i am not in the same room as the msg received and am not the sender of the msg. So add it as unread msg
+                                    if (BaseActivity.mCurrentActivity.getClass() == HomePageActivity.class) {
+                                        Room room = ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.getRoomItem(roomName);
+                                        if (room != null) {
+                                            room.addUnreadMsg(message);
+                                            ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.updateRoomUponNewMsg(room);
+                                        }
                                     }
                                 }
                             }
