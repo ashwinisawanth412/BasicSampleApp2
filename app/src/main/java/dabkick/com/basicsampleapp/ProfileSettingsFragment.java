@@ -94,7 +94,7 @@ public class ProfileSettingsFragment extends Fragment implements View.OnClickLis
             if (isCameraPermissionGranted) {
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
-                mProfileImgFile = new File(dir, "DabkickProfileImg.jpeg");
+                mProfileImgFile = new File(dir, "DabkickProfileImg.jpg");
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mProfileImgFile));
                 startActivityForResult(intent, CAMERA_REQUEST_CODE);
             } else {
