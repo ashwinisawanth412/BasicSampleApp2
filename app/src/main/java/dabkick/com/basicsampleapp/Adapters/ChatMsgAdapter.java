@@ -2,6 +2,7 @@ package dabkick.com.basicsampleapp.Adapters;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,13 +12,15 @@ import com.dabkick.engine.Public.MessageInfo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import dabkick.com.basicsampleapp.R;
+import dabkick.com.basicsampleapp.Utils.Utils;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ChatMsgAdapter extends RecyclerView.Adapter<ChatMsgAdapter.MessageHolder> {
 
-    private volatile List<MessageInfo> messageInfoList = new ArrayList<>();
+    private List<MessageInfo> messageInfoList = new ArrayList<>();
 
     @NonNull
     @Override
@@ -44,7 +47,12 @@ public class ChatMsgAdapter extends RecyclerView.Adapter<ChatMsgAdapter.MessageH
 //        Picasso.get().load("").placeholder(R.drawable.avatar_img).error(R.drawable.avatar_img).into(messageHolder.profileImg);
 
         //for time stamp
-//        messageHolder.timeStamp.setText(messageInfoList.get(i).);
+        try {
+            messageHolder.timeStamp.setText(Utils.millisToDate(messageInfoList.get(i).getMessageTime()));
+            Log.d("currentTime", "time: " + Utils.millisToDate(System.currentTimeMillis()));
+        }catch (NumberFormatException e){
+            e.printStackTrace();
+        }
     }
 
     @Override

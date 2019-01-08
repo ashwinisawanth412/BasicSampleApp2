@@ -4,11 +4,15 @@ import android.app.Activity;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 public class Utils {
 
@@ -47,13 +51,11 @@ public class Utils {
 
     }
 
-    public static String getDateFromMillis(long milliSeconds) {
-        // Create a DateFormatter object for displaying date in specified format.
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-        // Create a calendar object that will convert the date and time value in milliseconds to date.
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(milliSeconds);
-        return formatter.format(calendar.getTime());
+    public static String millisToDate(long milliSeconds) {
+        Date date = new Date(milliSeconds);
+        String pattern = "dd MMMMM HH:mm";
+        DateFormat dateFormat = new SimpleDateFormat(pattern);
+        return ((dateFormat.format(date)).toString());
     }
 }
 
