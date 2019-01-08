@@ -38,6 +38,7 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import dabkick.com.basicsampleapp.Adapters.RoomListAdapter;
 import dabkick.com.basicsampleapp.Model.Room;
+import dabkick.com.basicsampleapp.Utils.Utils;
 
 public class HomePageActivity extends BaseActivity {
 
@@ -165,6 +166,7 @@ public class HomePageActivity extends BaseActivity {
 
     @OnClick(R.id.create_room)
     public void createNewRoom() {
+        Utils.showKB(HomePageActivity.this);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater layoutInflater = getLayoutInflater();
         View view = layoutInflater.inflate(R.layout.create_new_room_layout, null);
@@ -174,6 +176,7 @@ public class HomePageActivity extends BaseActivity {
         builder.setPositiveButton("Create", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int id) {
+                Utils.hideKeyboard(HomePageActivity.this, roomNameEditText);
                 String roomName = roomNameEditText.getText().toString().replaceAll("^\\s+|\\s+$", "");
                 if (TextUtils.isEmpty(roomName)) {
                     Toast.makeText(HomePageActivity.this, "Enter Room Name", Toast.LENGTH_SHORT).show();
@@ -204,6 +207,7 @@ public class HomePageActivity extends BaseActivity {
             }
         }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
+                Utils.hideKeyboard(HomePageActivity.this, roomNameEditText);
                 dialog.cancel();
                 roomNameEditText.setText("");
             }
@@ -401,6 +405,12 @@ public class HomePageActivity extends BaseActivity {
                 //process user info change
             }
         };
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Utils.hideKeyboard(HomePageActivity.this);
     }
 
     @Override

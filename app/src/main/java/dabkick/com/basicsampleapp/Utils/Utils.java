@@ -21,6 +21,21 @@ public class Utils {
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
+    public static void hideKeyboard(Activity activity, View view) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        if (view != null)
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    public static void showKB(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        View view = activity.getCurrentFocus();
+        if (view == null) {
+            view = new View(activity);
+        }
+        imm.showSoftInput(view, InputMethodManager.SHOW_FORCED);
+    }
+
     static public boolean isWifiConnected(Activity mActivity) {
         if (mActivity == null)
             return false;
