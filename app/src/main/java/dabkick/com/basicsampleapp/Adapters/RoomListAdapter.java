@@ -85,12 +85,10 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.RoomHo
             for (int i = 0; i < roomInfoList.size(); i++) {
                 Room room = roomInfoList.get(i);
                 if (room.getRoomName().equalsIgnoreCase(roomName)) {
-                    Log.d("RomListAdapter", "returning room");
                     return room;
                 }
             }
         }
-        Log.d("RomListAdapter", "returning null");
         return null;
     }
 
