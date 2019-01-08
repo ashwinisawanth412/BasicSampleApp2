@@ -189,7 +189,6 @@ public class ChatRoomFragment extends Fragment {
                     BaseActivity.mCurrentActivity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Log.d("CHatRoomFrag", "testing in receivedChat: " +chatMsgAdapter.getItemCount());
 
                             String name = PreferenceHandler.getUserName(BaseActivity.mCurrentActivity);
                             ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.setLatestRoomMsg(roomName, message.getChatMessage()/*, timestamp to be passed here*/);
