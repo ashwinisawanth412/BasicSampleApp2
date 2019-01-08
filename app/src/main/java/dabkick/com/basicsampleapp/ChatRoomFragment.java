@@ -2,13 +2,10 @@ package dabkick.com.basicsampleapp;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.os.Binder;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -39,9 +36,7 @@ import java.util.UUID;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.Unbinder;
 import dabkick.com.basicsampleapp.Adapters.ChatMsgAdapter;
-import dabkick.com.basicsampleapp.Adapters.RoomListAdapter;
 import dabkick.com.basicsampleapp.Model.Room;
 import dabkick.com.basicsampleapp.Utils.Utils;
 
@@ -191,7 +186,7 @@ public class ChatRoomFragment extends Fragment {
                     BaseActivity.mCurrentActivity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            synchronized (object){
+                            synchronized (object) {
                                 String name = PreferenceHandler.getUserName(BaseActivity.mCurrentActivity);
                                 ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.setLatestRoomMsg(roomName, message.getChatMessage()/*, timestamp to be passed here*/);
                                 if (roomName.equalsIgnoreCase(mRoomName)) {
@@ -351,7 +346,8 @@ public class ChatRoomFragment extends Fragment {
 
                 if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
                     // handle back button's click listener
-                    backBtnClicked();
+                    //backBtnClicked();
+                    showAlertDialogWhileExiting();
                     return true;
                 }
                 return false;
