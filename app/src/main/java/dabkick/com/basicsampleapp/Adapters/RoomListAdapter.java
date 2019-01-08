@@ -159,19 +159,12 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.RoomHo
         transaction.commit();
     }
 
-    public void setLatestRoomMsg(String roomName, String msg/*, timestamp to be passed here*/) {
-        if (roomInfoList.contains(roomName)) {
+    public void setLatestRoomMsg(String roomName, String msg) {
+        if (roomInfoList.contains(getRoomItem(roomName))) {
             Room room = getRoomItem(roomName);
             room.setLatestMsg(msg);
-            roomInfoList.remove(room);
-            new android.os.Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    roomInfoList.add(0, room);
-                    notifyDataSetChanged();
-
-                }
-            }, 200);
+            roomInfoList.set(roomInfoList.indexOf(room), room);
+            notifyItemChanged(roomInfoList.indexOf(room));
         }
     }
 }
