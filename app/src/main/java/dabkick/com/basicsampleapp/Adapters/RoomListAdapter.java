@@ -27,6 +27,7 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.RoomHo
 
     private volatile List<Room> roomInfoList;
     private Activity context;
+    Object obj = new Object();
 
     public RoomListAdapter(List<Room> roomList, Activity activity) {
         this.roomInfoList = roomList;
@@ -81,15 +82,17 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.RoomHo
     }
 
     public Room getRoomItem(String roomName) {
-        if (roomName != null && !roomName.isEmpty()) {
-            for (int i = 0; i < roomInfoList.size(); i++) {
-                Room room = roomInfoList.get(i);
-                if (room.getRoomName().equalsIgnoreCase(roomName)) {
-                    return room;
+        synchronized (obj){
+            if (roomName != null && !roomName.isEmpty()) {
+                for (int i = 0; i < roomInfoList.size(); i++) {
+                    Room room = roomInfoList.get(i);
+                    if (room.getRoomName().equalsIgnoreCase(roomName)) {
+                        return room;
+                    }
                 }
             }
+            return null;
         }
-        return null;
     }
 
     @Override
