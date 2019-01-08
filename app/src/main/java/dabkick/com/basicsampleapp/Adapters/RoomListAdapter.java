@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +25,7 @@ import dabkick.com.basicsampleapp.SplashScreenActivity;
 
 public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.RoomHolder> {
 
-    private List<Room> roomInfoList;
+    private volatile List<Room> roomInfoList;
     private Activity context;
 
     public RoomListAdapter(List<Room> roomList, Activity activity) {
@@ -80,13 +81,16 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.RoomHo
     }
 
     public Room getRoomItem(String roomName) {
-        if (!TextUtils.isEmpty(roomName)) {
-            for (Room room : roomInfoList) {
+        if (roomName != null && !roomName.isEmpty()) {
+            for (int i = 0; i < roomInfoList.size(); i++) {
+                Room room = roomInfoList.get(i);
                 if (room.getRoomName().equalsIgnoreCase(roomName)) {
+                    Log.d("RomListAdapter", "returning room");
                     return room;
                 }
             }
         }
+        Log.d("RomListAdapter", "returning null");
         return null;
     }
 
@@ -156,7 +160,7 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.RoomHo
     }
 
     public void setLatestRoomMsg(String roomName, String msg/*, timestamp to be passed here*/) {
-        if (roomInfoList.contains(getRoomItem(roomName))) {
+        if (roomInfoList.contains(roomName)) {
             Room room = getRoomItem(roomName);
             room.setLatestMsg(msg);
             roomInfoList.remove(room);
