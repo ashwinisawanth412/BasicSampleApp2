@@ -405,6 +405,17 @@ public class ChatRoomFragment extends Fragment {
                 })
                 .setNegativeButton("Unsubscribe", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+                        SplashScreenActivity.dkLiveChat.leaveSession(mRoomName, new CallbackListener() {
+                            @Override
+                            public void onSuccess(String s, Object... objects) {
+
+                            }
+
+                            @Override
+                            public void onError(String s, Object... objects) {
+
+                            }
+                        });
                         SplashScreenActivity.dkLiveChat
                                 .unSubscribe(mRoomName, liveChatCallbackListener, userPresenceCallBackListener, new CallbackListener() {
                                     @Override
