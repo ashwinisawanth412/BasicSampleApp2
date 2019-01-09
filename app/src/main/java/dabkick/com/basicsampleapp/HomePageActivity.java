@@ -85,7 +85,7 @@ public class HomePageActivity extends BaseActivity {
                 @Override
                 public void onSuccess(String msg, Object... obj) {
 
-                    mRoomList.clear();
+//                    mRoomList.clear();
                     if (mProgressBar != null)
                         mProgressBar.setVisibility(View.GONE);
                     List<String> list = new ArrayList<>();
@@ -356,6 +356,7 @@ public class HomePageActivity extends BaseActivity {
         bottomSheet.showWithSheetView(menuSheetView);
     }
 
+    Object object = new Object();
     private void initLiveChatCallbackListener() {
         liveChatCallbackListener = new LiveChatCallbackListener() {
             @Override
@@ -363,9 +364,18 @@ public class HomePageActivity extends BaseActivity {
                 BaseActivity.mCurrentActivity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        String name = PreferenceHandler.getUserName(BaseActivity.mCurrentActivity);
-                        ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.setLatestRoomMsg(roomName, message.getChatMessage()/*time stamp*/);
-                        if (roomName.equalsIgnoreCase("")) {
+                        synchronized (object) {
+                            String name = PreferenceHandler.getUserName(BaseActivity.mCurrentActivity);
+                            ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.setLatestRoomMsg(roomName, message.getChatMessage());
+                            if (!message.getUserName().equalsIgnoreCase(name)) {
+                                if (BaseActivity.mCurrentActivity.getClass() == HomePageActivity.class) {
+                                    Room room = ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.getRoomItem(roomName);
+                                    if (room != null) {
+                                        room.addUnreadMsg(message);
+                                        ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.updateRoomUponNewMsg(room);
+                                    }
+                                }
+                            }
                         }
                     }
                 });

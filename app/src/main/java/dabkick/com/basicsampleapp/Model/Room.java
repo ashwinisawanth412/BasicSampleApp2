@@ -54,4 +54,16 @@ public class Room {
     public void setSubscribed(Boolean subscribed) {
         isSubscribed = subscribed;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) return false;
+
+        if (!(obj instanceof Room))
+            return false;
+
+        final Room roomObj = (Room) obj;
+
+        return roomObj.getRoomName().equalsIgnoreCase(this.roomName);
+    }
 }
