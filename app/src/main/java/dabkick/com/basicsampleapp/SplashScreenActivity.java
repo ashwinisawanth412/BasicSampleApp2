@@ -84,12 +84,12 @@ public class SplashScreenActivity extends BaseActivity {
                 PreferenceHandler.setUserId(SplashScreenActivity.this, enteredUserId);
                 PreferenceHandler.setDevId(BaseActivity.mCurrentActivity, devId);
                 PreferenceHandler.setDevKey(BaseActivity.mCurrentActivity, devKey);
-
                 launchHomePage();
             }
 
             @Override
             public void onError(String s, Object... objects) {
+                mDoneBtn.setEnabled(true);
                 Toast.makeText(BaseActivity.mCurrentActivity, "Authentication failed.", Toast.LENGTH_SHORT).show();
             }
         });
@@ -98,6 +98,7 @@ public class SplashScreenActivity extends BaseActivity {
     @OnClick(R.id.done_btn)
     public void doneClick() {
         //initialize engine
+        mDoneBtn.setEnabled(false);
         initEngine();
     }
 
