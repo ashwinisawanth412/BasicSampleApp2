@@ -288,35 +288,6 @@ public class HomePageActivity extends BaseActivity {
                         memberTransaction.addToBackStack(null);
                         memberTransaction.commit();
                         break;
-                    case R.id.unsubscribe:
-                        SplashScreenActivity.dkLiveChat.leaveSession(roomName, new CallbackListener() {
-                            @Override
-                            public void onSuccess(String s, Object... objects) {
-
-                            }
-
-                            @Override
-                            public void onError(String s, Object... objects) {
-
-                            }
-                        });
-                        SplashScreenActivity.dkLiveChat
-                                .unSubscribe(roomName, liveChatCallbackListener, userPresenceCallBackListener, new CallbackListener() {
-                                    @Override
-                                    public void onSuccess(String msg, Object... obj) {
-                                        if (mRoomListAdapter != null) {
-                                            Room room = mRoomListAdapter.getRoomItem(roomName);
-                                            if (room != null)
-                                                mRoomListAdapter.updateRoomUponUnsubscribe(room);
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onError(String msg, Object... obj) {
-                                    }
-                                });
-
-                        break;
                 }
                 return true;
             }
