@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.AppCompatEditText;
@@ -35,7 +34,6 @@ import java.util.UUID;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.Unbinder;
 import dabkick.com.basicsampleapp.Adapters.RoomListAdapter;
 import dabkick.com.basicsampleapp.Model.Room;
 import dabkick.com.basicsampleapp.Utils.Utils;
@@ -94,7 +92,7 @@ public class HomePageActivity extends BaseActivity {
                     for (String roomName : list) {
                         Room room = new Room();
                         room.setRoomName(roomName);
-                        if(!mRoomList.contains(room))
+                        if (!mRoomList.contains(room))
                             mRoomList.add(room);
                     }
 
@@ -290,6 +288,35 @@ public class HomePageActivity extends BaseActivity {
                         memberTransaction.addToBackStack(null);
                         memberTransaction.commit();
                         break;
+                    case R.id.unsubscribe:
+                        SplashScreenActivity.dkLiveChat.leaveSession(roomName, new CallbackListener() {
+                            @Override
+                            public void onSuccess(String s, Object... objects) {
+
+                            }
+
+                            @Override
+                            public void onError(String s, Object... objects) {
+
+                            }
+                        });
+                        SplashScreenActivity.dkLiveChat
+                                .unSubscribe(roomName, liveChatCallbackListener, userPresenceCallBackListener, new CallbackListener() {
+                                    @Override
+                                    public void onSuccess(String msg, Object... obj) {
+                                        if (mRoomListAdapter != null) {
+                                            Room room = mRoomListAdapter.getRoomItem(roomName);
+                                            if (room != null)
+                                                mRoomListAdapter.updateRoomUponUnsubscribe(room);
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onError(String msg, Object... obj) {
+                                    }
+                                });
+
+                        break;
                 }
                 return true;
             }
@@ -320,7 +347,8 @@ public class HomePageActivity extends BaseActivity {
                                     }
 
                                     @Override
-                                    public void onError(String msg, Object... obj) {}
+                                    public void onError(String msg, Object... obj) {
+                                    }
                                 });
 
                         break;
@@ -357,6 +385,7 @@ public class HomePageActivity extends BaseActivity {
     }
 
     Object object = new Object();
+
     private void initLiveChatCallbackListener() {
         liveChatCallbackListener = new LiveChatCallbackListener() {
             @Override
