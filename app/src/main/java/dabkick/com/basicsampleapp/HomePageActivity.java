@@ -367,7 +367,7 @@ public class HomePageActivity extends BaseActivity {
                         synchronized (object) {
                             String name = PreferenceHandler.getUserName(BaseActivity.mCurrentActivity);
                             ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.setLatestRoomMsg(roomName, message.getChatMessage());
-                            if (!message.getUserName().equalsIgnoreCase(name)) {
+                            /*if (!message.getUserName().equalsIgnoreCase(name)) {
                                 if (BaseActivity.mCurrentActivity.getClass() == HomePageActivity.class) {
                                     Room room = ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.getRoomItem(roomName);
                                     if (room != null) {
@@ -375,7 +375,7 @@ public class HomePageActivity extends BaseActivity {
                                         ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.updateRoomUponNewMsg(room);
                                     }
                                 }
-                            }
+                            }*/
                         }
                     }
                 });
