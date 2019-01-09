@@ -59,6 +59,11 @@ public class SplashScreenActivity extends BaseActivity {
         mUserDevId.setText(devId);
         mUserDevId.setSelection(devId.length());
 
+        String userId = PreferenceHandler.getUserId(SplashScreenActivity.this);
+        mUserId.setText(userId);
+        mUserId.setSelection(userId.length());
+
+
     }
 
     public void initEngine() {
@@ -71,10 +76,12 @@ public class SplashScreenActivity extends BaseActivity {
             enteredUserId = "";
         }
 
+
         dkLiveChat = new DKLiveChat(this, enteredUserId, new CallbackListener() {
             @Override
             public void onSuccess(String s, Object... objects) {
                 PreferenceHandler.setUserName(SplashScreenActivity.this, mUserNameEditText.getText().toString().trim());
+                PreferenceHandler.setUserId(SplashScreenActivity.this, enteredUserId);
                 PreferenceHandler.setDevId(BaseActivity.mCurrentActivity, devId);
                 PreferenceHandler.setDevKey(BaseActivity.mCurrentActivity, devKey);
 

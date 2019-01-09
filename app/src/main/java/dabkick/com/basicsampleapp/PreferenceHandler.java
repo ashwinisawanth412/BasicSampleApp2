@@ -48,6 +48,17 @@ public class PreferenceHandler {
         return preferences.getString("devKey", "");
     }
 
+    static public void setUserId(Context context, String str) {
+        SharedPreferences.Editor editor = context.getApplicationContext().getSharedPreferences("SampleAppPref", Context.MODE_PRIVATE).edit();
+        editor.putString("userId", str);
+        editor.apply();
+    }
+
+    static public String getUserId(Context context) {
+        SharedPreferences preferences = context.getApplicationContext().getSharedPreferences("SampleAppPref", Context.MODE_PRIVATE);
+        return preferences.getString("userId", "");
+    }
+
     public static void clearAll(Context context) {
         SharedPreferences preferences = context.getApplicationContext().getSharedPreferences("SampleAppPref", Context.MODE_PRIVATE);
         preferences.edit().clear().commit();
