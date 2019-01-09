@@ -38,6 +38,8 @@ public class ViewParticipantFragment extends Fragment {
     ParticipantListAdapter participantListAdapter;
     @BindView(R.id.progressBar)
     ProgressBar mProgressBar;
+    @BindView(R.id.no_users_text_view)
+    AppCompatTextView mNoCurrentUsersText;
 
     String mRoomName = "";
     List<UserInfo> participantList = new ArrayList<UserInfo>();
@@ -74,7 +76,12 @@ public class ViewParticipantFragment extends Fragment {
             @Override
             public void onSuccess(String s, Object... objects) {
                 participantList = (List<UserInfo>) objects[0];
-                setAdapter();
+                if(participantList != null && participantList.size() > 0) {
+                    setAdapter();
+                    mNoCurrentUsersText.setVisibility(View.GONE);
+                } else {
+                    mNoCurrentUsersText.setVisibility(View.VISIBLE);
+                }
                 mProgressBar.setVisibility(View.GONE);
 
             }

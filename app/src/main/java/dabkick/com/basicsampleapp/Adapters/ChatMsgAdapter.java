@@ -48,8 +48,7 @@ public class ChatMsgAdapter extends RecyclerView.Adapter<ChatMsgAdapter.MessageH
 
         //for time stamp
         try {
-            messageHolder.timeStamp.setText(Utils.millisToDate(messageInfoList.get(i).getMessageTime()));
-            Log.d("currentTime", "time: " + Utils.millisToDate(System.currentTimeMillis()));
+            messageHolder.timeStamp.setText(Utils.millisToTime(messageInfoList.get(i).getMessageTime()));
         }catch (NumberFormatException e){
             e.printStackTrace();
         }
@@ -58,6 +57,13 @@ public class ChatMsgAdapter extends RecyclerView.Adapter<ChatMsgAdapter.MessageH
     @Override
     public int getItemCount() {
         return this.messageInfoList.size();
+    }
+
+    public MessageInfo getItem(int pos){
+        if(messageInfoList.size() > pos)
+            return messageInfoList.get(pos);
+
+        return null;
     }
 
     public class MessageHolder extends RecyclerView.ViewHolder {

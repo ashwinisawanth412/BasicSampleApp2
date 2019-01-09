@@ -68,6 +68,8 @@ public class ChatRoomFragment extends Fragment {
     LinearLayout editBoxLayout;
     @BindView(R.id.down_arrow)
     AppCompatImageView mNewMsgArrow;
+    @BindView(R.id.date_time_stamp)
+    AppCompatTextView mDateTimeStamp;
 
 
     static ChatMsgAdapter chatMsgAdapter;
@@ -290,6 +292,22 @@ public class ChatRoomFragment extends Fragment {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
+
+           /*     int pos = ((LinearLayoutManager) chatListRecyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
+                if (pos > 0 && pos < chatMsgAdapter.getItemCount()) {
+                    MessageInfo messageInfo = chatMsgAdapter.getItem(pos);
+                    Date msgDate = Utils.millisToDate(messageInfo.getMessageTime());
+                    Date currentDate = Utils.millisToDate(System.currentTimeMillis());
+                    if (msgDate.before(currentDate)) {
+                        DateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy");
+                        mDateTimeStamp.setText((dateFormat.format(msgDate)).toString());
+                        mDateTimeStamp.setVisibility(View.VISIBLE);
+                    } else if (msgDate.compareTo(currentDate) == 0) {
+                        //same day
+                        mDateTimeStamp.setText("Today");
+                        mDateTimeStamp.setVisibility(View.VISIBLE);
+                    }
+                }*/
             }
 
             @Override

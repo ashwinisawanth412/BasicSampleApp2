@@ -51,9 +51,13 @@ public class Utils {
 
     }
 
-    public static String millisToDate(long milliSeconds) {
+    public static Date millisToDate(long milliSeconds){
+        return new Date(milliSeconds);
+
+    }
+    public static String millisToTime(long milliSeconds) {
         Date date = new Date(milliSeconds);
-        String pattern = "dd MMMMM HH:mm";
+        String pattern = "hh:mm aa";
         DateFormat dateFormat = new SimpleDateFormat(pattern);
         return ((dateFormat.format(date)).toString());
     }

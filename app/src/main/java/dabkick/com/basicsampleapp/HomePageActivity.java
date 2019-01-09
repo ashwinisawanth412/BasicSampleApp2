@@ -94,7 +94,8 @@ public class HomePageActivity extends BaseActivity {
                     for (String roomName : list) {
                         Room room = new Room();
                         room.setRoomName(roomName);
-                        mRoomList.add(room);
+                        if(!mRoomList.contains(room))
+                            mRoomList.add(room);
                     }
 
                     if (mRoomListView != null) {
