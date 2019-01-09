@@ -372,22 +372,25 @@ public class ChatRoomFragment extends Fragment {
     public void backBtnClicked() {
         Utils.hideKeyboard(getActivity());
         ((HomePageActivity) BaseActivity.mCurrentActivity).mRoomListAdapter.notifyDataSetChanged();
-        SplashScreenActivity.dkLiveChat.leaveSession(mRoomName, new CallbackListener() {
-            @Override
-            public void onSuccess(String s, Object... objects) {
-
-            }
-
-            @Override
-            public void onError(String s, Object... objects) {
-
-            }
-        });
-
-        if (SplashScreenActivity.dkLiveChat.isSubscribed(mRoomName))
+        if (SplashScreenActivity.dkLiveChat.isSubscribed(mRoomName)) {
             showAlertDialogWhileExiting();
-        else
+            return;
+        } else {
+            SplashScreenActivity.dkLiveChat.leaveSession(mRoomName, new CallbackListener() {
+                @Override
+                public void onSuccess(String s, Object... objects) {
+
+                }
+
+                @Override
+                public void onError(String s, Object... objects) {
+
+                }
+            });
             getActivity().onBackPressed();
+        }
+
+
     }
 
 
