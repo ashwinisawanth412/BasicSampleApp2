@@ -37,6 +37,7 @@
                 android:layout_marginRight="16dp"
                 android:background="@drawable/rounded_corner"
                 android:hint="@string/enter_user_name_hint"
+                android:visibility="gone"
                 android:paddingLeft="10dp" />
 
             <android.support.v7.widget.AppCompatEditText

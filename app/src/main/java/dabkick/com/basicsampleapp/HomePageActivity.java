@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -272,9 +273,10 @@ public class HomePageActivity extends BaseActivity {
                         transaction.replace(R.id.frag_container, chatRoom2, "chatRoom");
                         transaction.addToBackStack(null);
                         transaction.commit();
-
+                        Toast.makeText(getApplicationContext(), "You will be auto subscribed to this room", Toast.LENGTH_LONG).show();
                         break;
                     case R.id.enter_room:
+                        showAlertForEnteringName();
                         ChatRoomFragment chatRoom1 = ChatRoomFragment.newInstance(roomName, true);
                         android.support.v4.app.FragmentTransaction transaction1 = getSupportFragmentManager().beginTransaction();
                         transaction1.replace(R.id.frag_container, chatRoom1, "chatRoom");
@@ -296,6 +298,23 @@ public class HomePageActivity extends BaseActivity {
         bottomSheet.showWithSheetView(menuSheetView);
 
 
+    }
+
+    public void showAlertForEnteringName() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(BaseActivity.mCurrentActivity);
+        final EditText edittext = new EditText(getApplicationContext());
+        builder.setTitle("How would you like yourself to be called as?");
+        builder.setView(edittext);
+        builder.setPositiveButton("Set Name", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                PreferenceHandler.setUserName(HomePageActivity.this, edittext.getText().toString().trim());
+            }
+        })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                    }
+                });
+        builder.setCancelable(true).create().show();
     }
 
     public void showSubscribedUserBottomSheet(String roomName) {

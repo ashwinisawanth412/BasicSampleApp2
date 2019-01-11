@@ -1,10 +1,10 @@
 <resources>
-    <string name="app_name">Dabkick Chat Sample</string>
+    <string name="app_name">DK Live Chat</string>
     <string name="enter_user_name_hint">Enter your user name (Optional)</string>
     <string name="enter_dev_key">Enter your developer key</string>
     <string name="enter_dev_id">Enter your developer id</string>
     <string name="end_chat">Exit</string>
-    <string name="enter_user_id">Enter User Id (Optional)</string>
+    <string name="enter_user_id">Enter Public Room Name (Optional)</string>
     <string name="no_users_in_room">Currently there are no live users in this room</string>
 
     <!-- TODO: Remove or change this placeholder text -->
