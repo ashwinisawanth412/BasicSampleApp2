@@ -13,7 +13,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
         android:fontFamily="cursive"
-        android:text="Dk Chat App"
+        android:text="DK Live Chat"
         android:textColor="@color/white"
         android:textSize="50sp"
         android:textStyle="bold" />

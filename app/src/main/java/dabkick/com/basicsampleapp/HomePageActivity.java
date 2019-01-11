@@ -276,12 +276,7 @@ public class HomePageActivity extends BaseActivity {
                         Toast.makeText(getApplicationContext(), "You will be auto subscribed to this room", Toast.LENGTH_LONG).show();
                         break;
                     case R.id.enter_room:
-                        showAlertForEnteringName();
-                        ChatRoomFragment chatRoom1 = ChatRoomFragment.newInstance(roomName, true);
-                        android.support.v4.app.FragmentTransaction transaction1 = getSupportFragmentManager().beginTransaction();
-                        transaction1.replace(R.id.frag_container, chatRoom1, "chatRoom");
-                        transaction1.addToBackStack(null);
-                        transaction1.commit();
+                        showAlertForEnteringName(roomName);
                         break;
                     case R.id.view_members:
                         ViewParticipantFragment participantFragment = ViewParticipantFragment.newInstance(roomName);
@@ -300,7 +295,7 @@ public class HomePageActivity extends BaseActivity {
 
     }
 
-    public void showAlertForEnteringName() {
+    public void showAlertForEnteringName(String roomName) {
         AlertDialog.Builder builder = new AlertDialog.Builder(BaseActivity.mCurrentActivity);
         final EditText edittext = new EditText(getApplicationContext());
         builder.setTitle("How would you like yourself to be called as?");
@@ -308,10 +303,20 @@ public class HomePageActivity extends BaseActivity {
         builder.setPositiveButton("Set Name", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 PreferenceHandler.setUserName(HomePageActivity.this, edittext.getText().toString().trim());
+                ChatRoomFragment chatRoom1 = ChatRoomFragment.newInstance(roomName, true);
+                android.support.v4.app.FragmentTransaction transaction1 = getSupportFragmentManager().beginTransaction();
+                transaction1.replace(R.id.frag_container, chatRoom1, "chatRoom");
+                transaction1.addToBackStack(null);
+                transaction1.commit();
             }
         })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+                        ChatRoomFragment chatRoom1 = ChatRoomFragment.newInstance(roomName, true);
+                        android.support.v4.app.FragmentTransaction transaction1 = getSupportFragmentManager().beginTransaction();
+                        transaction1.replace(R.id.frag_container, chatRoom1, "chatRoom");
+                        transaction1.addToBackStack(null);
+                        transaction1.commit();
                     }
                 });
         builder.setCancelable(true).create().show();

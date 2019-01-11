@@ -49,7 +49,7 @@ public class ChatMsgAdapter extends RecyclerView.Adapter<ChatMsgAdapter.MessageH
         //for time stamp
         try {
             messageHolder.timeStamp.setText(Utils.millisToTime(messageInfoList.get(i).getMessageTime()));
-        }catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             e.printStackTrace();
         }
     }
@@ -59,8 +59,8 @@ public class ChatMsgAdapter extends RecyclerView.Adapter<ChatMsgAdapter.MessageH
         return this.messageInfoList.size();
     }
 
-    public MessageInfo getItem(int pos){
-        if(messageInfoList.size() > pos)
+    public MessageInfo getItem(int pos) {
+        if (messageInfoList.size() > pos)
             return messageInfoList.get(pos);
 
         return null;
