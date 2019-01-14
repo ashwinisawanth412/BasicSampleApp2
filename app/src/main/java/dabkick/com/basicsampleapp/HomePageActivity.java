@@ -196,11 +196,19 @@ public class HomePageActivity extends BaseActivity {
                     mRoomList.add(mRoom);
                     if (mRoomListAdapter != null) {
                         mRoomListAdapter.notifyDataSetChanged();
-                        showAlertForEnteringName(roomName);
+                        if (PreferenceHandler.getUserName(getApplicationContext()).isEmpty()) {
+                            showAlertForEnteringName(roomName);
+                        } else {
+                            mRoomListAdapter.enterRoomOnCreation(roomName);
+                        }
                     } else {
                         mRoomListAdapter = new RoomListAdapter(mRoomList, HomePageActivity.this);
                         mRoomListAdapter.notifyDataSetChanged();
-                        showAlertForEnteringName(roomName);
+                        if (PreferenceHandler.getUserName(getApplicationContext()).isEmpty()) {
+                            showAlertForEnteringName(roomName);
+                        } else {
+                            mRoomListAdapter.enterRoomOnCreation(roomName);
+                        }
                     }
                 }
                 roomNameEditText.setText("");
@@ -276,7 +284,15 @@ public class HomePageActivity extends BaseActivity {
                         Toast.makeText(getApplicationContext(), "You will be auto subscribed to this room", Toast.LENGTH_LONG).show();
                         break;
                     case R.id.enter_room:
-                        showAlertForEnteringName(roomName);
+                        if (PreferenceHandler.getUserName(getApplicationContext()).isEmpty()) {
+                            showAlertForEnteringName(roomName);
+                        } else {
+                            ChatRoomFragment chatRoom1 = ChatRoomFragment.newInstance(roomName, true);
+                            android.support.v4.app.FragmentTransaction transaction1 = getSupportFragmentManager().beginTransaction();
+                            transaction1.replace(R.id.frag_container, chatRoom1, "chatRoom");
+                            transaction1.addToBackStack(null);
+                            transaction1.commit();
+                        }
                         break;
                     case R.id.view_members:
                         ViewParticipantFragment participantFragment = ViewParticipantFragment.newInstance(roomName);
