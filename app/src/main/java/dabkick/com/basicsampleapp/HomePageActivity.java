@@ -196,11 +196,11 @@ public class HomePageActivity extends BaseActivity {
                     mRoomList.add(mRoom);
                     if (mRoomListAdapter != null) {
                         mRoomListAdapter.notifyDataSetChanged();
-                        mRoomListAdapter.enterRoomOnCreation(roomName);
+                        showAlertForEnteringName(roomName);
                     } else {
                         mRoomListAdapter = new RoomListAdapter(mRoomList, HomePageActivity.this);
                         mRoomListAdapter.notifyDataSetChanged();
-                        mRoomListAdapter.enterRoomOnCreation(roomName);
+                        showAlertForEnteringName(roomName);
                     }
                 }
                 roomNameEditText.setText("");
