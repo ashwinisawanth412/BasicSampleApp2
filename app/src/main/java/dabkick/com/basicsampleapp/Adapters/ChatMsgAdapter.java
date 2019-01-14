@@ -2,7 +2,6 @@ package dabkick.com.basicsampleapp.Adapters;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,11 +11,11 @@ import com.dabkick.engine.Public.MessageInfo;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import dabkick.com.basicsampleapp.R;
 import dabkick.com.basicsampleapp.Utils.Utils;
 import de.hdodenhof.circleimageview.CircleImageView;
+import timber.log.Timber;
 
 public class ChatMsgAdapter extends RecyclerView.Adapter<ChatMsgAdapter.MessageHolder> {
 
@@ -35,6 +34,7 @@ public class ChatMsgAdapter extends RecyclerView.Adapter<ChatMsgAdapter.MessageH
     public void onBindViewHolder(@NonNull MessageHolder messageHolder, int i) {
         String name = messageInfoList.get(i).getUserName();
         //dont diplay user name if not set
+        Timber.d("Value of user id is " + messageInfoList.get(i).getUserId());
         if (name != null && !name.trim().isEmpty())
             messageHolder.name.setText(messageInfoList.get(i).getUserName());
         else
@@ -89,7 +89,7 @@ public class ChatMsgAdapter extends RecyclerView.Adapter<ChatMsgAdapter.MessageH
         notifyDataSetChanged();
     }
 
-    public void clearMsgs(){
+    public void clearMsgs() {
         this.messageInfoList.clear();
     }
 

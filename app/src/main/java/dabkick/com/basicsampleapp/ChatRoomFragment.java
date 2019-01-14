@@ -330,6 +330,7 @@ public class ChatRoomFragment extends Fragment {
                                               public void run() {
                                                   if (!TextUtils.isEmpty(editText.getText().toString().trim())) {
                                                       String message = editText.getText().toString().replaceAll("^\\s+|\\s+$", "");
+
                                                       sendMessage(mRoomName, message);
                                                       Utils.hideKeyboard(getActivity());
                                                       chatListRecyclerView.scrollToPosition(chatMsgAdapter.getItemCount() - 1);
@@ -465,8 +466,6 @@ public class ChatRoomFragment extends Fragment {
                 return;
             MessageInfo messageInfo = new MessageInfo();
             messageInfo.setChatMessage(message);
-
-            messageInfo.setUserId(dkLiveChat.getUserId());
             dkLiveChat.chatEventListener.sendMessage(roomName, messageInfo, new CallbackListener() {
                 @Override
                 public void onSuccess(String msg, Object... obj) {
