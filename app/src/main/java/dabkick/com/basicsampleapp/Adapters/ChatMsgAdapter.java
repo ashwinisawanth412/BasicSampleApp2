@@ -1,6 +1,7 @@
 package dabkick.com.basicsampleapp.Adapters;
 
 import android.support.annotation.NonNull;
+import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import com.dabkick.engine.Public.MessageInfo;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import dabkick.com.basicsampleapp.R;
@@ -48,10 +50,18 @@ public class ChatMsgAdapter extends RecyclerView.Adapter<ChatMsgAdapter.MessageH
 
         //for time stamp
         try {
-            messageHolder.timeStamp.setText(Utils.millisToTime(messageInfoList.get(i).getMessageTime()));
+            long currentMsgTime = messageInfoList.get(i).getMessageTime();
+            long prevMsgTime = 0L;
+            if (i > 0) {
+                prevMsgTime = (messageInfoList.get(i - 1)).getMessageTime();
+            }
+            messageHolder.timeStamp.setText(Utils.millisToTime(currentMsgTime));
+            setTimeTextVisibility(currentMsgTime, prevMsgTime, messageHolder.dateTextLayout);
+
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
+
     }
 
     @Override
@@ -68,6 +78,7 @@ public class ChatMsgAdapter extends RecyclerView.Adapter<ChatMsgAdapter.MessageH
 
     public class MessageHolder extends RecyclerView.ViewHolder {
         TextView msg, name, timeStamp;
+        AppCompatTextView dateTextLayout;
         CircleImageView profileImg;
 
         public MessageHolder(@NonNull View itemView) {
@@ -76,6 +87,7 @@ public class ChatMsgAdapter extends RecyclerView.Adapter<ChatMsgAdapter.MessageH
             name = itemView.findViewById(R.id.user_name_text_view);
             profileImg = itemView.findViewById(R.id.profile_pic_img);
             timeStamp = itemView.findViewById(R.id.time_stamp_text_view);
+            dateTextLayout = itemView.findViewById(R.id.date_time_stamp_layout);
         }
     }
 
@@ -93,4 +105,27 @@ public class ChatMsgAdapter extends RecyclerView.Adapter<ChatMsgAdapter.MessageH
         this.messageInfoList.clear();
     }
 
+    private void setTimeTextVisibility(long currentMsgDate, long prevMsgDate, TextView timeText) {
+        if (prevMsgDate == 0) {
+            timeText.setVisibility(View.VISIBLE);
+            timeText.setText(Utils.dateToString(currentMsgDate));
+        } else {
+            Calendar cal1 = Calendar.getInstance();
+            Calendar cal2 = Calendar.getInstance();
+            cal1.setTimeInMillis(currentMsgDate);
+            cal2.setTimeInMillis(prevMsgDate);
+
+            boolean sameDate = (cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR)) &&
+                    (cal1.get(Calendar.MONTH) == cal2.get(Calendar.MONTH)) &&
+                    (cal1.get(Calendar.DATE) == cal2.get(Calendar.DATE));
+
+            if(sameDate){
+                timeText.setVisibility(View.GONE);
+            } else {
+                timeText.setVisibility(View.VISIBLE);
+                timeText.setText(Utils.dateToString(currentMsgDate));
+            }
+        }
+    }
 }
+

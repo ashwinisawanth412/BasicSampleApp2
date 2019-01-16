@@ -4,15 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 
 public class Utils {
 
@@ -53,13 +50,17 @@ public class Utils {
 
     public static Date millisToDate(long milliSeconds){
         return new Date(milliSeconds);
+    }
 
+    public static String dateToString(long milliSec){
+        DateFormat format = new SimpleDateFormat("E, dd MMM yyyy");
+        return format.format(millisToDate(milliSec));
     }
     public static String millisToTime(long milliSeconds) {
         Date date = new Date(milliSeconds);
         String pattern = "hh:mm aa";
         DateFormat dateFormat = new SimpleDateFormat(pattern);
-        return ((dateFormat.format(date)).toString());
+        return dateFormat.format(date);
     }
 }
 
