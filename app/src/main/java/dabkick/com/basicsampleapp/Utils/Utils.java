@@ -9,7 +9,9 @@ import android.view.inputmethod.InputMethodManager;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 public class Utils {
 
@@ -48,18 +50,25 @@ public class Utils {
 
     }
 
-    public static Date millisToDate(long milliSeconds){
+    public static Date millisToDate(long milliSeconds) {
         return new Date(milliSeconds);
     }
 
-    public static String dateToString(long milliSec){
+    public static String dateToString(long milliSec) {
         DateFormat format = new SimpleDateFormat("E, dd MMM yyyy");
+        Calendar cal = Calendar.getInstance();
+        TimeZone tz = cal.getTimeZone();
+        format.setTimeZone(tz);
         return format.format(millisToDate(milliSec));
     }
+
     public static String millisToTime(long milliSeconds) {
+        Calendar cal = Calendar.getInstance();
+        TimeZone tz = cal.getTimeZone();
         Date date = new Date(milliSeconds);
         String pattern = "hh:mm aa";
         DateFormat dateFormat = new SimpleDateFormat(pattern);
+        dateFormat.setTimeZone(tz);
         return dateFormat.format(date);
     }
 }

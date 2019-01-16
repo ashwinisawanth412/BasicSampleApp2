@@ -3,6 +3,7 @@ package dabkick.com.basicsampleapp.Adapters;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,6 +50,7 @@ public class ChatMsgAdapter extends RecyclerView.Adapter<ChatMsgAdapter.MessageH
 //        Picasso.get().load("").placeholder(R.drawable.avatar_img).error(R.drawable.avatar_img).into(messageHolder.profileImg);
 
         //for time stamp
+        Log.d("TIMESTAMP", "" + messageInfoList.get(i).getMessageTime());
         try {
             long currentMsgTime = messageInfoList.get(i).getMessageTime();
             long prevMsgTime = 0L;
@@ -119,7 +121,7 @@ public class ChatMsgAdapter extends RecyclerView.Adapter<ChatMsgAdapter.MessageH
                     (cal1.get(Calendar.MONTH) == cal2.get(Calendar.MONTH)) &&
                     (cal1.get(Calendar.DATE) == cal2.get(Calendar.DATE));
 
-            if(sameDate){
+            if (sameDate) {
                 timeText.setVisibility(View.GONE);
             } else {
                 timeText.setVisibility(View.VISIBLE);
