@@ -76,7 +76,7 @@ public class HomePageActivity extends BaseActivity {
             @Override
             public void onSheetStateChanged(BottomSheetLayout.State state) {
                 if(state == BottomSheetLayout.State.HIDDEN){
-                    updateFloatingBtn(true);
+                    //updateFloatingBtn(true);
                 } else {
                     updateFloatingBtn(false);
                 }
