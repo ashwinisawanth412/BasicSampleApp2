@@ -23,6 +23,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import dabkick.com.basicsampleapp.Adapters.FragmentCloseListener;
 import dabkick.com.basicsampleapp.Adapters.ParticipantListAdapter;
 
 public class ViewParticipantFragment extends Fragment {
@@ -43,6 +44,7 @@ public class ViewParticipantFragment extends Fragment {
 
     String mRoomName = "";
     List<UserInfo> participantList = new ArrayList<UserInfo>();
+    public FragmentCloseListener fragmentCloseListener;
 
     public ViewParticipantFragment() {
     }
@@ -76,7 +78,7 @@ public class ViewParticipantFragment extends Fragment {
             @Override
             public void onSuccess(String s, Object... objects) {
                 participantList = (List<UserInfo>) objects[0];
-                if(participantList != null && participantList.size() > 0) {
+                if (participantList != null && participantList.size() > 0) {
                     setAdapter();
                     mNoCurrentUsersText.setVisibility(View.GONE);
                 } else {
@@ -103,6 +105,12 @@ public class ViewParticipantFragment extends Fragment {
         mParticipantListView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
+
+    public void setFragmentCloseListener(FragmentCloseListener closeListener) {
+        this.fragmentCloseListener = closeListener;
+    }
+
+
     @Override
     public void onResume() {
         super.onResume();
@@ -118,6 +126,8 @@ public class ViewParticipantFragment extends Fragment {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
 
                 if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+                    if (fragmentCloseListener != null)
+                        fragmentCloseListener.handleFragmentClose();
                     backArrowClicked();
                     return true;
                 }

@@ -37,6 +37,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import dabkick.com.basicsampleapp.Adapters.ChatMsgAdapter;
+import dabkick.com.basicsampleapp.Adapters.FragmentCloseListener;
 import dabkick.com.basicsampleapp.Model.Room;
 import dabkick.com.basicsampleapp.Utils.Utils;
 
@@ -77,6 +78,7 @@ public class ChatRoomFragment extends Fragment {
     public UserPresenceCallBackListener userPresenceCallBackListener;
     private boolean isUserAutoSubscribed = true;
     private View view;
+    public FragmentCloseListener fragmentCloseListener;
 
     Object object = new Object();
 
@@ -343,6 +345,35 @@ public class ChatRoomFragment extends Fragment {
                                   }
         );
 
+        fragmentCloseListener = new FragmentCloseListener() {
+            @Override
+            public void handleFragmentClose() {
+                if (getActivity().getClass() == HomePageActivity.class) {
+                    ((HomePageActivity) getActivity()).updateFloatingBtn(false);
+                }
+
+                if (getView() == null) {
+                    return;
+                }
+
+                getView().setFocusableInTouchMode(true);
+                getView().requestFocus();
+                getView().setOnKeyListener(new View.OnKeyListener() {
+                    @Override
+                    public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+                        if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+                            // handle back button's click listener
+                            //backBtnClicked();
+                            showAlertDialogWhileExiting();
+                            return true;
+                        }
+                        return false;
+                    }
+                });
+            }
+        };
+
         return view;
     }
 
@@ -386,7 +417,6 @@ public class ChatRoomFragment extends Fragment {
             }
         });
     }
-
 
     @OnClick(R.id.back_arrow)
     public void backBtnClicked() {
@@ -493,6 +523,7 @@ public class ChatRoomFragment extends Fragment {
                 switch (item.getItemId()) {
                     case R.id.view_participants:
                         ViewParticipantFragment participantFragment = ViewParticipantFragment.newInstance(mRoomName);
+                        participantFragment.setFragmentCloseListener(fragmentCloseListener);
                         android.support.v4.app.FragmentTransaction transaction = ((AppCompatActivity) getActivity()).getSupportFragmentManager().beginTransaction();
                         transaction.replace(R.id.view_participants_frag_container, participantFragment);
                         transaction.addToBackStack(null);
