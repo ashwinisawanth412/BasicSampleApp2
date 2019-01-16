@@ -374,6 +374,8 @@ public class ChatRoomFragment extends Fragment {
             }
         };
 
+
+
         return view;
     }
 

@@ -143,6 +143,7 @@ public class ViewParticipantFragment extends Fragment {
         mUnbinder.unbind();
         participantList.clear();
 
+
         if (getActivity().getClass() == HomePageActivity.class) {
             ChatRoomFragment chatRoomFragment = (ChatRoomFragment) (BaseActivity.mCurrentActivity.getSupportFragmentManager()).findFragmentByTag("chatRoom");
             if (chatRoomFragment != null && chatRoomFragment.isVisible()) {
@@ -156,6 +157,8 @@ public class ViewParticipantFragment extends Fragment {
 
     @OnClick(R.id.back_arrow_participant)
     public void backArrowClicked() {
+        if (fragmentCloseListener != null)
+            fragmentCloseListener.handleFragmentClose();
         getActivity().onBackPressed();
     }
 }
