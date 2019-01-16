@@ -166,6 +166,9 @@ public class HomePageActivity extends BaseActivity {
 
     @OnClick(R.id.create_room)
     public void createNewRoom() {
+        if(bottomSheet != null && bottomSheet.isSheetShowing())
+            bottomSheet.dismissSheet();
+
         Utils.showKB(HomePageActivity.this);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater layoutInflater = getLayoutInflater();
