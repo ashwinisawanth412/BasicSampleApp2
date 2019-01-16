@@ -318,12 +318,17 @@ public class HomePageActivity extends BaseActivity {
         builder.setView(edittext);
         builder.setPositiveButton("Set Name", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                PreferenceHandler.setUserName(HomePageActivity.this, edittext.getText().toString().trim());
-                ChatRoomFragment chatRoom1 = ChatRoomFragment.newInstance(roomName, true);
-                android.support.v4.app.FragmentTransaction transaction1 = getSupportFragmentManager().beginTransaction();
-                transaction1.replace(R.id.frag_container, chatRoom1, "chatRoom");
-                transaction1.addToBackStack(null);
-                transaction1.commit();
+                if (edittext.getText().toString().isEmpty()) {
+                    Snackbar.make(getCurrentFocus(), "Enter Name", Snackbar.LENGTH_LONG).show();
+                    return;
+                } else {
+                    PreferenceHandler.setUserName(HomePageActivity.this, edittext.getText().toString().trim());
+                    ChatRoomFragment chatRoom1 = ChatRoomFragment.newInstance(roomName, true);
+                    android.support.v4.app.FragmentTransaction transaction1 = getSupportFragmentManager().beginTransaction();
+                    transaction1.replace(R.id.frag_container, chatRoom1, "chatRoom");
+                    transaction1.addToBackStack(null);
+                    transaction1.commit();
+                }
             }
         })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

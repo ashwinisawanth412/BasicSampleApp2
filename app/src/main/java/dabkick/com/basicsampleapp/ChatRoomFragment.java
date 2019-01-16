@@ -449,6 +449,17 @@ public class ChatRoomFragment extends Fragment {
         builder.setMessage("Would you like to")
                 .setPositiveButton("Stay Subscribed", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+                        SplashScreenActivity.dkLiveChat.leaveSession(mRoomName, new CallbackListener() {
+                            @Override
+                            public void onSuccess(String s, Object... objects) {
+
+                            }
+
+                            @Override
+                            public void onError(String s, Object... objects) {
+
+                            }
+                        });
                         getActivity().onBackPressed();
                         //do nothing else as the user will remain subscribed
                     }
