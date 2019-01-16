@@ -71,6 +71,17 @@ public class HomePageActivity extends BaseActivity {
         mProgressBar.setVisibility(View.VISIBLE);
         updateName();
         initChatRooms();
+
+        bottomSheet.addOnSheetStateChangeListener(new BottomSheetLayout.OnSheetStateChangeListener() {
+            @Override
+            public void onSheetStateChanged(BottomSheetLayout.State state) {
+                if(state == BottomSheetLayout.State.HIDDEN){
+                    updateFloatingBtn(true);
+                } else {
+                    updateFloatingBtn(false);
+                }
+            }
+        });
     }
 
     @Override
